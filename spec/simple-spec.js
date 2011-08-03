@@ -3,7 +3,7 @@ var assert = require("assert");
 var loop = require(__dirname + "/../lib/loop");
 
 vows.describe("Simple source to source transformation").addBatch({
-  'variables': {
+  'defines': {
     "it should use define in place of var": function() {
       loop.transform("(define x)", function(str) {
         assert.equal(str, "var x;\n");
@@ -35,6 +35,20 @@ vows.describe("Simple source to source transformation").addBatch({
     "it should work with numbers": function() {
       loop.transform("(define x 10)", function(str) {
         assert.equal(str, "var x = 10;\n");
+      });
+    }
+  },
+
+  "user defined functions": {
+    "it should be able to transform a call to one": function() {
+      loop.transform("(foo 10 20)", function(str) {
+        assert.equal(str, "foo(10, 20);\n");
+      });
+    },
+
+    "it should transform a call to one with no args": function() {
+      loop.transform("(foo)", function(str) {
+        assert.equal(str, "foo();\n");
       });
     }
   }
