@@ -27,7 +27,7 @@ vows.describe("Simple source to source transformation").addBatch({
 
       loop.transform("(define x y)", function() {
         called = true;
-      })
+      });
 
       assert.equal(called, true);
     },
