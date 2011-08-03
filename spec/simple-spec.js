@@ -10,7 +10,7 @@ vows.describe("Simple source to source transformation").addBatch({
       loop.transform("(define x)", function(str) {
         console.log(str);
 
-        assert.equal(str, "var x;");
+        assert.equal(str, "var x;\n");
       });
     },
 
@@ -20,7 +20,7 @@ vows.describe("Simple source to source transformation").addBatch({
       loop.transform("(define foo)", function(str) {
         console.log(str);
 
-        assert.equal(str, "var foo;");
+        assert.equal(str, "var foo;\n");
       });
     }
   }
