@@ -59,6 +59,32 @@ vows.describe("Simple source to source transformation").addBatch({
         assert.equal(str, "x = 10;\n");
       });
     }
+  },
+
+  "objects": {
+    "it should be able to get a property": function() {
+      loop.transform("(propget x foo)", function(str) {
+        assert.equal(str, "x.foo;\n");
+      });
+    },
+
+    "it should be able to set a property": function() {
+      loop.transform("(propset x foo 10)", function(str) {
+        assert.equal(str, "x.foo = 10;\n");
+      });
+    },
+
+    "it can use the shorthand x.y for propget": "pending",// function() {
+    //       loop.transform("x.y", function(str) {
+    //         assert.equal(str, "x.y;\n");
+    //       });
+    // }
+
+    "it can treat a period like a function in function position": "pending", // function() {
+    //       loop.transform("(x.y)", function(str) {
+    //         assert.equal(str, "x.y()");
+    //       });
+    //     }
   }
 
   // "it should transform an assignment": function() {
