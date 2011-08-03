@@ -51,6 +51,14 @@ vows.describe("Simple source to source transformation").addBatch({
         assert.equal(str, "foo();\n");
       });
     }
+  },
+
+  "assignments": {
+    "it should work with a simple assignment": function() {
+      loop.transform("(= x 10)", function(str) {
+        assert.equal(str, "x = 10;\n");
+      });
+    }
   }
 
   // "it should transform an assignment": function() {
