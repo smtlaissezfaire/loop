@@ -74,15 +74,33 @@ vows.describe("Simple source to source transformation").addBatch({
       });
     },
 
-    "it can use the shorthand x.y for propget": "pending",// function() {
-    //       loop.transform("x.y", function(str) {
-    //         assert.equal(str, "x.y;\n");
-    //       });
-    // }
+    "it can use the shorthand x.y for propget": "pending", //function() {
+    //   loop.transform("x.y", function(str) {
+    //     assert.equal(str, "x.y;\n");
+    //   });
+    // },
 
     "it can treat a period like a function in function position": "pending", // function() {
     //       loop.transform("(x.y)", function(str) {
     //         assert.equal(str, "x.y()");
+    //       });
+    //     }
+
+    "it can use integers": function() {
+      loop.transform("7", function(str) {
+        assert.equal(str, "7");
+      });
+    },
+
+    "it uses the correct int": function() {
+      loop.transform("8", function(str) {
+        assert.equal(str, "8");
+      });
+    },
+
+    "it should use floating point numbers": "pending"// function() {
+    //       loop.transform("3.1415926", function(str) {
+    //         assert.equal(str, "3.1415926");
     //       });
     //     }
   }
