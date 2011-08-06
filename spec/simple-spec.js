@@ -2,28 +2,28 @@ var vows = require("vows");
 var assert = require("assert");
 var loop = require(__dirname + "/../lib/loop");
 
+var transformEqual = function(input, expectedOut) {
+  loop.transform(input, function(str) {
+    assert.equal(str, expectedOut);
+  });
+};
+
 vows.describe("Simple source to source transformation").addBatch({
   'vars': {
     "it should use var": function() {
-      loop.transform("(var x)", function(str) {
-        assert.equal(str, "var x;\n");
-      });
+      transformEqual("(var x)", "var x;\n");
     },
 
     "it should use the correct variable in var": function() {
-      loop.transform("(var foo)", function(str) {
-        assert.equal(str, "var foo;\n");
-      });
+      transformEqual("(var foo)", "var foo;\n");
     },
 
     "it should be able to var and set a variable": function() {
-      loop.transform("(var x y)", function(str) {
-        assert.equal(str, "var x = y;\n");
-      });
+      transformEqual("(var x y)", "var x = y;\n");
     },
 
     "it should actually call the body of transform": function() {
-      var called;
+      var called = false;
 
       loop.transform("(var x y)", function() {
         called = true;
@@ -33,80 +33,58 @@ vows.describe("Simple source to source transformation").addBatch({
     },
 
     "it should work with numbers": function() {
-      loop.transform("(var x 10)", function(str) {
-        assert.equal(str, "var x = 10;\n");
-      });
+      transformEqual("(var x 10)", "var x = 10;\n");
     }
   },
 
   "user defined functions": {
     "it should be able to transform a call to one": function() {
-      loop.transform("(foo 10 20)", function(str) {
-        assert.equal(str, "foo(10, 20);\n");
-      });
+      transformEqual("(foo 10 20)", "foo(10, 20);\n");
     },
 
     "it should transform a call to one with no args": function() {
-      loop.transform("(foo)", function(str) {
-        assert.equal(str, "foo();\n");
-      });
+      transformEqual("(foo)", "foo();\n");
     }
   },
 
   "assignments": {
     "it should work with a simple assignment": function() {
-      loop.transform("(= x 10)", function(str) {
-        assert.equal(str, "x = 10;\n");
-      });
+      transformEqual("(= x 10)", "x = 10;\n");
     }
   },
 
   "objects": {
     "it should be able to get a property": function() {
-      loop.transform("(propget x foo)", function(str) {
-        assert.equal(str, "x.foo;\n");
-      });
+      transformEqual("(propget x foo)", "x.foo;\n");
     },
 
     "it should be able to set a property": function() {
-      loop.transform("(propset x foo 10)", function(str) {
-        assert.equal(str, "x.foo = 10;\n");
-      });
+      transformEqual("(propset x foo 10)", "x.foo = 10;\n");
     },
 
     "it can use the shorthand x.y for propget": "pending", //function() {
-    //   loop.transform("x.y", function(str) {
-    //     assert.equal(str, "x.y;\n");
-    //   });
+    //   transformEqual("x.y", "x.y;\n");
     // },
 
     "it can treat a period like a function in function position": "pending", // function() {
-    //       loop.transform("(x.y)", function(str) {
-    //         assert.equal(str, "x.y()");
-    //       });
+    //       transformEqual("(x.y)", "x.y()");
     //     }
 
     "it can use integers": function() {
-      loop.transform("7", function(str) {
-        assert.equal(str, "7");
-      });
+      transformEqual("7", "7");
     },
 
     "it uses the correct int": function() {
-      loop.transform("8", function(str) {
-        assert.equal(str, "8");
-      });
+      transformEqual("8", "8");
     },
 
     "it should use floating point numbers": "pending"// function() {
-    //       loop.transform("3.1415926", function(str) {
-    //         assert.equal(str, "3.1415926");
-    //       });
+    //       transformEqual("3.1415926", "3.1415926");
     //     }
   }
 
   // "it should transform an assignment": function() {
-  //   assert.equal(loop.transform("(= x 10)"), "x = 10;\n");
+  //   assert.equal(transformEqual("(= x 10)"),
   // },
   //
   // "it should transform two assignments to only use one var statment": "pending",
