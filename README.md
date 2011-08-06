@@ -7,4 +7,7 @@ Dependencies:
     npm install jake -g
     npm install jslint -g
     npm install async
+    npm install jison
 
+TODO:
+  - move to packages.json

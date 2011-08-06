@@ -2,7 +2,7 @@ var async = require('async');
 var childProcess = require("child_process");
 
 desc("Lint + Run tests");
-task("default", ["lint", "test"]);
+task("default", ["grammar", "lint", "test"]);
 
 var backtick = function(command, args, options, callback) {
   var stream = childProcess.spawn(command, args, options);
@@ -43,6 +43,7 @@ task("spec", ["test"]);
 
 var EXCLUDED_LINT_FILES = [
   /node_modules/,
+  /grammar.js/
 ];
 
 desc("Run js lint (jsl)");
@@ -80,3 +81,14 @@ task("lint", [], function() {
     });
   });
 });
+
+desc("Compile the jison grammar");
+task("grammar", [], function() {
+  backtick("jison", ["./lib/grammar.jison", "-o", "./lib/grammar.js"], null, function(err, out) {
+    if (err) {
+      throw new Error(err);
+    }
+
+    complete();
+  });
+}, true);

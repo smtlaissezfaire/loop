@@ -18,19 +18,20 @@ vows.describe("Simple source to source transformation").addBatch({
       transformEqual("(var foo)", "var foo;\n");
     },
 
-    "it should be able to var and set a variable": function() {
-      transformEqual("(var x y)", "var x = y;\n");
-    },
-
     "it should actually call the body of transform": function() {
       var called = false;
 
-      loop.transform("(var x y)", function() {
+      loop.transform("(var x)", function() {
         called = true;
       });
 
       assert.equal(called, true);
     },
+
+    "it should be able to var and set a variable": function() {
+      transformEqual("(var x y)", "var x = y;\n");
+    },
+
 
     "it should work with numbers": function() {
       transformEqual("(var x 10)", "var x = 10;\n");
@@ -69,6 +70,16 @@ vows.describe("Simple source to source transformation").addBatch({
     "it can treat a period like a function in function position": "pending", // function() {
     //       transformEqual("(x.y)", "x.y()");
     //     }
+
+    "it should actually call the body of transform": function() {
+      var called = false;
+
+      loop.transform("17", function() {
+        called = true;
+      });
+
+      assert.equal(called, true);
+    },
 
     "it can use integers": function() {
       transformEqual("7", "7");
