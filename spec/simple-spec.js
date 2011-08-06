@@ -3,21 +3,21 @@ var assert = require("assert");
 var loop = require(__dirname + "/../lib/loop");
 
 vows.describe("Simple source to source transformation").addBatch({
-  'defines': {
-    "it should use define in place of var": function() {
-      loop.transform("(define x)", function(str) {
+  'vars': {
+    "it should use var": function() {
+      loop.transform("(var x)", function(str) {
         assert.equal(str, "var x;\n");
       });
     },
 
-    "it should use the correct variable in define": function() {
-      loop.transform("(define foo)", function(str) {
+    "it should use the correct variable in var": function() {
+      loop.transform("(var foo)", function(str) {
         assert.equal(str, "var foo;\n");
       });
     },
 
-    "it should be able to define and set a variable": function() {
-      loop.transform("(define x y)", function(str) {
+    "it should be able to var and set a variable": function() {
+      loop.transform("(var x y)", function(str) {
         assert.equal(str, "var x = y;\n");
       });
     },
@@ -25,7 +25,7 @@ vows.describe("Simple source to source transformation").addBatch({
     "it should actually call the body of transform": function() {
       var called;
 
-      loop.transform("(define x y)", function() {
+      loop.transform("(var x y)", function() {
         called = true;
       });
 
@@ -33,7 +33,7 @@ vows.describe("Simple source to source transformation").addBatch({
     },
 
     "it should work with numbers": function() {
-      loop.transform("(define x 10)", function(str) {
+      loop.transform("(var x 10)", function(str) {
         assert.equal(str, "var x = 10;\n");
       });
     }
