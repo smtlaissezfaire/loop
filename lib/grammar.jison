@@ -4,7 +4,7 @@
 \s+                   /* skip whitespace */
 "("                  return "OPEN_PAREN";
 ")"                  return "CLOSE_PAREN";
-[a-z\=\*\/\+\-]+     return "SYMBOL";
+[a-z\=\*\/\+\-\.]+   return "SYMBOL";
 [0-9]+               return "INT";
 \.+                  return "PERIOD";
 
@@ -14,12 +14,17 @@
 %%
 
 program
-  : s-expression { return $1; }
+  : prog { return $1; }
+;
+
+prog
+  : prog s-expression { $$ = $1.concat($2); }
+  | s-expression      { $$ = [$1]; }
 ;
 
 s-expression
-  : atom { $$ = $1; }
-  | list { $$ = $1; }
+  : list { $$ = $1; }
+  | atom { $$ = $1; }
 ;
 
 list
@@ -40,5 +45,3 @@ atom
   : INT     { $$ = require(__dirname + "/loop/transformers").makeNumber($1); }
   | SYMBOL  { $$ = require(__dirname + "/loop/transformers").makeSymbol($1); }
 ;
-
-

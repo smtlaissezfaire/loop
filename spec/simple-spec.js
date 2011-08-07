@@ -103,13 +103,13 @@ vows.describe("Simple source to source transformation").addBatch({
       transformEqual("(propset x foo 10)", "x.foo = 10;\n");
     },
 
-    "it can use the shorthand x.y for propget": "pending", //function() {
-    //   transformEqual("x.y", "x.y;\n");
-    // },
+    "it can use the shorthand x.y for propget": function() {
+      transformEqual("x.y", "x.y");
+    },
 
-    "it can treat a period like a function in function position": "pending", // function() {
-    //       transformEqual("(x.y)", "x.y()");
-    //     }
+    "it can treat a period like a function in function position": function() {
+      transformEqual("(x.y)", "x.y();\n");
+    },
 
     "it should actually call the body of transform": function() {
       var called = false;
@@ -154,7 +154,13 @@ vows.describe("Simple source to source transformation").addBatch({
     "it can use /": function() {
       transformEqual("(/ 1 2)", "1 / 2;\n");
     }
-  }
+  },
+
+  "multiple statements": {
+    "it should handle two of them": function() {
+      transformEqual("(foo 1) (bar 2)", "foo(1);\nbar(2);\n");
+    }
+  },
 
   // "it should transform an assignment": function() {
   //   assert.equal(transformEqual("(= x 10)"),
