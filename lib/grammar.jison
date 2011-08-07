@@ -4,7 +4,7 @@
 \s+                   /* skip whitespace */
 "("                  return "OPEN_PAREN";
 ")"                  return "CLOSE_PAREN";
-[a-z\=]+             return "SYMBOL";
+[a-z\=\*\/\+\-]+     return "SYMBOL";
 [0-9]+               return "INT";
 \.+                  return "PERIOD";
 

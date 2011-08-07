@@ -132,6 +132,28 @@ vows.describe("Simple source to source transformation").addBatch({
     "it should use floating point numbers": "pending"// function() {
     //       transformEqual("3.1415926", "3.1415926");
     //     }
+  },
+
+  'math operators': {
+    "it can use *": function() {
+      transformEqual("(* 1 2)", "1 * 2;\n");
+    },
+
+    "it can work with many arguments": function() {
+      transformEqual("(* 1 2 3)", "1 * 2 * 3;\n");
+    },
+
+    "it can use +": function() {
+      transformEqual("(+ 1 2)", "1 + 2;\n");
+    },
+
+    "it can use -": function() {
+      transformEqual("(- 1 2)", "1 - 2;\n");
+    },
+
+    "it can use /": function() {
+      transformEqual("(/ 1 2)", "1 / 2;\n");
+    }
   }
 
   // "it should transform an assignment": function() {
