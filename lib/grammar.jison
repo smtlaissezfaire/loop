@@ -10,12 +10,16 @@
 
 /lex
 
-%start s-expression
+%start program
 %%
 
+program
+  : s-expression { return $1; }
+;
+
 s-expression
-  : atom { return $1; }
-  | list { return $1; }
+  : atom { $$ = $1; }
+  | list { $$ = $1; }
 ;
 
 list
@@ -28,9 +32,8 @@ list
 ;
 
 list-members
-  : list-members list { $$ = $1.concat($2); }
-  | list-members atom { $$ = $1.concat($2); }
-  | atom { $$ = [$1]; }
+  : list-members s-expression { $$ = $1.concat($2); }
+  | s-expression { $$ = [$1]; }
 ;
 
 atom
