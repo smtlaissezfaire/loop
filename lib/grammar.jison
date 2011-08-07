@@ -19,14 +19,18 @@ s-expression
 ;
 
 list
-  : OPEN_PAREN atoms CLOSE_PAREN %{
+  : OPEN_PAREN list-members CLOSE_PAREN %{
     $$ = require(__dirname + "/loop/transformers").makeList($2);
+  }
+  | OPEN_PAREN CLOSE_PAREN %{
+    $$ = require(__dirname + "/loop/transformers").makeList([]);
   }
 ;
 
-atoms
-  : atoms atom { $$ = $1.concat($2) }
-  | atom { $$ = [$1] }
+list-members
+  : list-members list { $$ = $1.concat($2); }
+  | list-members atom { $$ = $1.concat($2); }
+  | atom { $$ = [$1]; }
 ;
 
 atom

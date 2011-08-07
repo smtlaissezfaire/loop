@@ -45,6 +45,46 @@ vows.describe("Simple source to source transformation").addBatch({
 
     "it should transform a call to one with no args": function() {
       transformEqual("(foo)", "foo();\n");
+    },
+
+    "it should be able to create a function with function": function() {
+      var str = "";
+      str += "function() { \n";
+      str += "  x;\n";
+      str += "};\n";
+
+      transformEqual("(function () x)", str);
+    },
+
+    "it should use the correct args with a self defined function": function() {
+      var str = "";
+      str += "function(one, two, three) { \n";
+      str += "  x;\n";
+      str += "};\n";
+
+      transformEqual("(function (one two three) x)", str);
+    },
+
+    "it should have the body of the function": function() {
+      var str = "";
+      str += "function(one, two, three) { \n";
+      str += "  x;\n";
+      str += "  y;\n";
+      str += "  z;\n";
+      str += "};\n";
+
+      transformEqual("(function (one two three) x y z)", str);
+    },
+
+    "it should be able to return at the end of a function": function() {
+      var str = "";
+      str += "function(one, two, three) { \n";
+      str += "  x;\n";
+      str += "  y;\n";
+      str += "  return(z);\n";
+      str += "};\n";
+
+      transformEqual("(function (one two three) x y (return z))", str);
     }
   },
 
