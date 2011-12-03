@@ -3,14 +3,11 @@ h1. Loop
 Dependencies:
 
     node
-    npm install vows -g
-    npm install jake -g
-    npm install jslint -g
-    npm install async
-    npm install jison
+    npm
 
-TODO:
-  - move to packages.json
+Installation:
+
+    jake deps
 
 Layers:
   - loop program
@@ -18,7 +15,7 @@ Layers:
   - loop syntax tree
   - javascript syntax tree
   - raw javascript (pretty printed)
-  - uglify javascript (compressed)
+  - uglify javascript (compressed) - DONE (loop.compress(js))
 
 Loop principles:
 

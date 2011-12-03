@@ -1,8 +1,13 @@
-var async = require('async');
 var childProcess = require("child_process");
 
+try {
+  var async = require('async');
+} catch(e) {
+  console.warn("Are all dependencies resolved?  If not, try running jake deps");
+}
+
 desc("Lint + Run tests");
-task("default", ["grammar", "lint", "test"]);
+task("default", ["lint", "spec"]);
 
 var backtick = function(command, args, options, callback) {
   var stream = childProcess.spawn(command, args, options);
@@ -33,13 +38,10 @@ var backtick = function(command, args, options, callback) {
 };
 
 desc("Run tests");
-task("test", [], function() {
+task("spec", [], function() {
   process.env.NODE_ENV = "test";
   backtick("vows", [], null);
 });
-
-desc("Run tests");
-task("spec", ["test"]);
 
 var EXCLUDED_LINT_FILES = [
   /node_modules/,
@@ -50,18 +52,18 @@ desc("Run js lint (jsl)");
 task("lint", [], function() {
   backtick("find", [__dirname, '-name', '*.js'], null, function(err, out) {
     if (err) { throw new Error(err); }
+
     var files = out.split("\n").filter(function(f) {
       if (!f) { return false; }
       return EXCLUDED_LINT_FILES.every(function(rule) {
         return !f.match(rule);
       });
     });
+
     async.forEach(files, function(file, callback) {
       var args = [file];
-      if (/pub\/js/.test(file)) {
-        args.push("--browser");
-      }
-      backtick("jslint", args, null, function(err, out) {
+
+      backtick("./node_modules/jslint/bin/jslint.js", args, null, function(err, out) {
         if (err) {
           callback(err);
         }
@@ -73,7 +75,7 @@ task("lint", [], function() {
     }, function(err) {
       if (err && /execvp\(\)/.test(err.toString())) {
         throw new Error("jslint not installed or in path, " +
-          "install via `npm install jslint -g`");
+          "install via `jake deps`");
       }
       else if (err) {
         throw new Error(err);
@@ -89,6 +91,15 @@ task("grammar", [], function() {
       throw new Error(err);
     }
 
+    complete();
+  });
+}, true);
+
+desc('Install node package dependencies local');
+task('deps', [], function() {
+  backtick('npm', ['install'], null, function(err, out) {
+    if (err.trim().length > 0) { console.error(err); }
+    if (out.trim().length > 0) { console.error(out); }
     complete();
   });
 }, true);

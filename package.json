@@ -1,0 +1,27 @@
+{
+  "name": "loop",
+  "description": "loop programming language",
+  "version": "0.0.1",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/smtlaissezfaire/loop_js.git"
+  },
+  "dependencies": {
+    "uglify-js": "*"
+  },
+  "devDependencies": {
+    "async": "*",
+    "vows": "*",
+    "jslint": "*"
+  },
+  "engines": {
+    "node": ">=0.6",
+    "npm": "*"
+  },
+  "author": "Scott Taylor <scott@railsnewbie.com>",
+  "main": "loop",
+  "scripts": {
+    "test": "jake"
+  }
+}
