@@ -12,8 +12,11 @@ Installation:
 Layers:
   - loop program
   - loop conveniences
-  - loop syntax tree
-  - javascript syntax tree
+  - loop as loop
+  - loop syntax tree as tokens =>
+    (only: list, strings, numbers)
+  - uglify token stream
+  - javascript syntax tree (through uglify.parse(tokens))
   - raw javascript (pretty printed)
   - uglify javascript (compressed) - DONE (loop.compress(js))
 

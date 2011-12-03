@@ -8,7 +8,8 @@
     "url": "git://github.com/smtlaissezfaire/loop_js.git"
   },
   "dependencies": {
-    "uglify-js": "*"
+    "uglify-js": "*",
+    "underscore": "*"
   },
   "devDependencies": {
     "async": "*",
