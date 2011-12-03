@@ -102,7 +102,7 @@ vows.describe("Phase 2? - simplified tokens to uglify tokens").addBatch({
                                             ["name", "x"]]]);
     },
 
-    'it should work for unary-prefixes': function() {
+    'it should work for unary-prefixes (typeof foo)': function() {
       // typeof foo
       var tokens = loop.toUglifyTokens({
         type: 'list',
@@ -179,72 +179,118 @@ vows.describe("Phase 2? - simplified tokens to uglify tokens").addBatch({
       assert.deepEqual(tokens, ["stat",["assign",true,["name","a"],["num",10]]]);
     },
 
-    // 'it should work for var with one arg and no assignment (like var x;)': function() {
-    //   var tokens = loop.toUglifyTokens({
-    //     type: 'list',
-    //     contents: [
-    //       'keyword',
-    //       'var',
-    //       {
-    //         type: 'list',
-    //         contents: [
-    //           {
-    //             type: 'list',
-    //             contents: [
-    //               {
-    //                 type: 'string',
-    //                 contents: 'x'
-    //               },
-    //               {
-    //                 type: 'number',
-    //                 contents: 10
-    //               }
-    //             ]
-    //           }
-    //         ]
-    //       }
-    //     ]
-    //   });
-    //
-    //   // basically, looks like a let:
-    //   // (var ((x 10)
-    //   //       (y 20)))
-    //
-    //   assert.deepEqual(tokens, ["var",
-    //                               [["x", ["num",10]]]]);
-    // },
+    'it should work for var with one arg (like var x = 10;)': function() {
+      var tokens = loop.toUglifyTokens({
+        type: 'list',
+        contents: [
+          'keyword',
+          'var',
+          {
+            type: 'list',
+            contents: [
+              {
+                type: 'list',
+                contents: [
+                  {
+                    type: 'string',
+                    contents: 'x'
+                  },
+                  {
+                    type: 'number',
+                    contents: 10
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      });
 
-    //
-    // 'it should work for var with one arg and no assignment (like var x;)': function() {
-    //   var tokens = loop.toUglifyTokens({
-    //     type: 'list',
-    //     contents: [
-    //       'keyword',
-    //       'var',
-    //       {
-    //         type: 'list',
-    //         contents: [
-    //           {
-    //             type: 'list',
-    //             contents: [
-    //               {
-    //                 type: 'string',
-    //                 contents: 'x'
-    //               }
-    //             ]
-    //           }
-    //         ]
-    //       }
-    //     ]
-    //   });
-    //
-    //   // basically, looks like a let:
-    //   // (var ((x 10)
-    //   //       (y 20)))
-    //
-    //   assert.deepEqual(tokens, ["var",[["x"]]]);
-    // }
+      // basically, looks like a let:
+      // (var ((x 10)
+      //       (y 20)))
+
+      assert.deepEqual(tokens, ["var",
+                                  [["x", ["num",10]]]]);
+    },
 
 
+    'it should work for var with one arg and no assignment (like var x;)': function() {
+      var tokens = loop.toUglifyTokens({
+        type: 'list',
+        contents: [
+          'keyword',
+          'var',
+          {
+            type: 'list',
+            contents: [
+              {
+                type: 'list',
+                contents: [
+                  {
+                    type: 'string',
+                    contents: 'x'
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      });
+
+      // basically, looks like a let:
+      // (var ((x 10)
+      //       (y 20)))
+
+      assert.deepEqual(tokens, ["var",[["x"]]]);
+    },
+
+    'it should work for var with two args and assignemnts (like var x = 10, y = 20;)': function() {
+      var tokens = loop.toUglifyTokens({
+        type: 'list',
+        contents: [
+          'keyword',
+          'var',
+          {
+            type: 'list',
+            contents: [
+              {
+                type: 'list',
+                contents: [
+                  {
+                    type: 'string',
+                    contents: 'x'
+                  },
+                  {
+                    type: 'number',
+                    contents: 10
+                  }
+                ]
+              },
+              {
+                type: 'list',
+                contents: [
+                  {
+                    type: 'string',
+                    contents: 'y'
+                  },
+                  {
+                    type: 'number',
+                    contents: 20
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      });
+
+      // basically, looks like a let:
+      // (var ((x 10)
+      //       (y 20)))
+      assert.deepEqual(tokens, ["var", [
+                                  ["x",["num",10]],
+                                  ["y",["num",20]]]]);
+    }
   }
 }).export(module);
