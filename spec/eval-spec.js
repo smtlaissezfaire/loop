@@ -25,7 +25,9 @@ vows.describe("phase 2: eval transformed syntax").addBatch({
       ]
     };
 
-    assert.deepEqual(loop.loopEval(unevaled), {
+    unevaled = [unevaled]; // only one statement
+
+    assert.deepEqual(loop.loopEval(unevaled)[0], {
       type: 'funcall',
       function: {
         type: 'funcall',

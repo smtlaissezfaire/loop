@@ -44,7 +44,7 @@ Layers:
 
       ((lambda () (+ x x)))
 
-      equivalent in js: (function() { x + x }())
+      equivalent in js: (function() { x + x })()
 
   2. jison Parser spits out representation in json: - DONE (sort of)
 

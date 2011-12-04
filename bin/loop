@@ -11,6 +11,11 @@ process.argv.forEach(function(val, index) {
   }
 });
 
+var compile = function(str) {
+  var out = loop.compile(str);
+  process.stdout.write(out);
+};
+
 if (args.length === 0) {
   var data = "";
 
@@ -22,16 +27,11 @@ if (args.length === 0) {
   });
 
   process.stdin.on("end", function() {
-    loop.transform(data, function(str) {
-      process.stdout.write(str);
-    });
+    compile(data);
   });
 } else {
   args.forEach(function(file) {
     var buffer = fs.readFileSync(file);
-
-    loop.transform(buffer.toString(), function(str) {
-      process.stdout.write(str);
-    });
+    compile(buffer.toString());
   });
 }
