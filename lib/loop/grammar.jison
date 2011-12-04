@@ -9,9 +9,8 @@
 "."                     return "PROP_ACCESS";
 "("                     return "OPEN_PAREN";
 ")"                     return "CLOSE_PAREN";
-[a-zA-Z\=\*\/\+\-]+     return "SYMBOL";
 [0-9]+                  return "INT";
-\.+                     return "PERIOD";
+[a-zA-Z\=\*\/\+\-\_]+   return "SYMBOL";
 
 /lex
 
