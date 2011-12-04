@@ -2,7 +2,7 @@ var vows = require("vows");
 var assert = require("assert");
 var loop = require(__dirname + "/../lib/loop");
 
-vows.describe("parsing to an internal structure").addBatch({
+vows.describe("phase 1: parsing to an internal structure").addBatch({
   'parsing to an external syntax': function() {
     var str = '((lambda () (+ x x)))';
 

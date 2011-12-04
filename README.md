@@ -50,7 +50,7 @@ Layers:
 
       equivalent in js: (function() { x + x }())
 
-  2. jison Parser spits out representation in json:
+  2. jison Parser spits out representation in json: - DONE (sort of)
 
       {
         type: 'list',
@@ -84,7 +84,7 @@ Layers:
             (id x)
             (id x))))
 
-  3. Syntax tree gets "eval'ed" from pure syntax to have "meaning":
+  3. Syntax tree gets "eval'ed" from pure syntax to have "meaning":  - DONE (sort of)
 
     (notice that (lambda () ...) is actually still considered a function call)
 
