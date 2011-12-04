@@ -1,0 +1,21 @@
+#!/usr/bin/env node
+
+var jsp = require("uglify-js").parser;
+var _ = require("underscore");
+
+var args = _.select(process.argv, function(val, index) {
+  // skip node + this script name
+  return index > 1
+});
+
+if (args.length !== 1) {
+  var output = {
+    error: 'Invalid input.  Please add a first param',
+  };
+  console.log(JSON.stringify(output));
+  return;
+}
+
+var input = args[0];
+
+console.log(JSON.stringify(jsp.parse(input)));
