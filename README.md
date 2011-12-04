@@ -80,61 +80,61 @@ Layers:
               (id x)
               (id x))))
 
-  3. Syntax tree gets "eval'ed" from pure syntax to have "meaning":
+3. Syntax tree gets "eval'ed" from pure syntax to have "meaning":g
 
-      (notice that (lambda () ...) is actually still considered a function call)
+    (notice that (lambda () ...) is actually still considered a function call)
 
-      {
-        type: funcall,
-        function: {
-          type: 'funcall',
-          function: { type: 'id', contents: 'lambda' },
-          arguments: [
-            {
-              type: 'list',
-              arguments: []
-            }
-            {
-              type: 'list',
-              arguments: [
-                {
-                  type: 'funcall',
-                  function: { type: 'id', contents: '+' },
-                  arguments: [
-                    { type: 'id', contents: 'x' },
-                    { type: 'id', contents: 'x' }
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        arguments: { type: 'list', contents: [] },
-      }
+    {
+      type: funcall,
+      function: {
+        type: 'funcall',
+        function: { type: 'id', contents: 'lambda' },
+        arguments: [
+          {
+            type: 'list',
+            arguments: []
+          }
+          {
+            type: 'list',
+            arguments: [
+              {
+                type: 'funcall',
+                function: { type: 'id', contents: '+' },
+                arguments: [
+                  { type: 'id', contents: 'x' },
+                  { type: 'id', contents: 'x' }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      arguments: { type: 'list', contents: [] },
+    }
 
+    (funcall
       (funcall
-        (funcall
-          (id 'lambda')
-          (list)
-          (list
-            (funcall
-              (id +)
-              ((id x)
-               (id x)))))
-        ())
-
-
-      Equivalent:
-
-      (funcall
-        'lambda
+        (id 'lambda')
         (list)
         (list
-          'funcall
-          '+
-          (list
-            (id x)
-            (id x))))
+          (funcall
+            (id +)
+            ((id x)
+             (id x)))))
+      ())
+
+
+    Equivalent:
+
+    (funcall
+      'lambda
+      (list)
+      (list
+        'funcall
+        '+
+        (list
+          (id x)
+          (id x))))
 
   4. Syntax tree undergoes transformations to get it into an equivalent uglify syntax:
 
