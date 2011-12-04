@@ -1,7 +1,9 @@
 %lex
 %%
 
-\s+                   /* skip whitespace */
+\s+                  /* skip whitespace */
+\n+                  /* skip newlines */
+\r+                  /* skip newlines */
 "("                  return "OPEN_PAREN";
 ")"                  return "CLOSE_PAREN";
 [a-z\=\*\/\+\-\.]+   return "SYMBOL";
