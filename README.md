@@ -164,3 +164,8 @@ Loop principles:
   Loop additional packages:
     - cleanup ugly parts of javascript
     - prototypes as first class principle - use real js prototypes
+
+
+TODO:
+  * Support for strings with single quotes
+  * Support all binary, unary, and keywords
