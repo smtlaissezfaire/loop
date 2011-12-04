@@ -11,14 +11,14 @@ Installation:
 
 Syntax:
 
-  - loop convenience macros / libraries / special "syntax"
-    ??? (TODO)
+  - loop convenience macros / libraries / special "syntax",
+    macros
+      - forward declarations
+      - let (macro)
+      - better object prototypes / inheritence ?
+      - ???
 
-  - loop macros
-    ??? (TODO)
-      - let
-
-  - loop as loop (nothing new to the JS language - just a straight translation)
+  - base:
     7                           => 7
     "foo"                       => "foo"
     [1,2,3]                     => ([] 1 2 3)
@@ -38,11 +38,7 @@ Syntax:
 ======================================
 
 Layers:
-  (javascript on the left, transformation on the right of the =>)
-
-  parser => tokens (straightforward representation of syntax)
-
-  Each phase deals with json, but can also produce lisp-ish syntax
+  Each phase deals with js / json, but can also produce lisp-ish syntax
 
   1. Program
 
@@ -140,7 +136,7 @@ Layers:
           (id x)
           (id x))))
 
-  4. Syntax tree undergoes transformations to get it into an equivalent uglify syntax:
+  4. Syntax tree undergoes transformations to get it into an equivalent uglify syntax: - DONE (sort of)
 
     (notice that built in statements like + which were previously considered functions are here converted to binary, unary, etc for js)
 
@@ -156,109 +152,6 @@ Layers:
              []]]]]
 
 
-  - loop syntax tree as lisp structure =>
-    7                                                        => 7
-    "foo"                                                    => "foo"
-    ([] 1 2 3)                                               => [1,2,3]
-    foo                                                      => foo
-    (foo)                                                    => foo()
-    (function () (+ x x))                                    => function() { x + x }
-    foo.bar                                                  => foo.bar
-    ??? (TODO)                                               => foo['bar']
-    (= foo.bar 10)                                           => foo.bar = 10
-    ??? (TODO)                                               => foo['bar'] = 10
-    (foo.bar)                                                => foo.bar()
-    (= foo ({})) (change me?)                                => foo = {}
-    ({} foo 'bar')                                           => { foo: 'bar' }
-    (= x 10)   (???)                                         => x = 10
-    (var (= x 10)) (macro?) (??? should this be: (var x 10)) => var x = 10
-
-
-  - loop syntax tree as
-
-  - bridge: convert lisp syntax tree to objects:
-    (number 7) => { type: 'number', contents: a7 }
-    (list 'foo') => { type: 'list', contents: [ { type: 'string', contents: 'foo' }] }
-    (funcall
-       (function null () (...body...)
-       (list))) =>
-
-        {
-          type: 'funcall',
-          contents: [
-            {
-              type: 'funcall',
-              contents: {
-                { type: 'null'}
-                { type: 'list', contents: [] }
-                { type: 'list', contents: [....body contents ....]}
-              }
-            },
-            {
-              type: 'list',
-              contents: []
-            }
-          ]
-        }
-
-  - loop syntax tree as js tokens:
-      7       => { type: 'number', contents: 7 }
-      "foo"   => { type: 'string', contents: 'foo'}
-      [1,2,3] => {
-        type: 'list',
-        contents: [
-          { type: number, contents: 1 },
-          { type: number, contents: 2 },
-          { type: number, contents: 3 }
-        ]
-      }
-      foo => { type: id, contents: 'foo' }
-      function foo() {} => {
-        type: 'function',
-        name: 'foo',
-        formalArguments: [],
-        contents: [...body...]
-      }
-      foo() => {
-        type: 'funcall'
-        reference: { type: 'id', name: 'foo'},
-        arguments: []
-      }
-      (function() { x + x; }()) => {
-        type: 'funcall',
-        arguments: [],
-        reference: {
-          type: 'function',
-          name: null,
-          formalArguments: [],
-          contents: [...body...]
-        }
-      }
-      foo.bar => {
-        type: 'property-get',
-        object: { id: 'foo' }
-        key: { id: 'bar' }
-      }
-      foo.bar = 10 => {
-        type: 'property-set',
-        object: { id: 'foo' }
-        key: { id: 'bar' }
-        value: { number: 10 }
-      }
-      {} => {
-        type: 'object',
-        contents: []
-      }
-      { foo: 'bar' } => {
-        type: 'object'
-        contents: [
-          { id: 'foo' },
-          { string: 'bar' }
-        ]
-      }
-
-  - uglify token stream:
-      7 => ["stat", ["num", 1]]
   - javascript syntax tree (through uglify.parse(tokens))
   - raw javascript (pretty printed, through uglify)
   - uglify javascript (compressed) - DONE (loop.compress(js))
