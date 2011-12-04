@@ -45,5 +45,12 @@ vows.describe("integration spec").addBatch({
     var expectedOut = 'console.log(false)';
 
     assert.equal(loop.compile(inStream), expectedOut);
+  },
+
+  'it should be able to return a value from a function': function() {
+    var inStream = '((function() (return "foo")))';
+    var expectedOut = '(function(){return"foo"})()';
+
+    assert.equal(loop.compile(inStream), expectedOut);
   }
 }).export(module);
