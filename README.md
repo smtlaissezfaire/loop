@@ -17,39 +17,70 @@ Layers:
 
   - loop macros
     ??? (TODO)
+      - let
 
   - loop as loop (nothing new to the JS language - just a straight translation)
-    7 => 7
-    "foo" => "foo"
-    [1,2,3] => ([] 1 2 3)
-    foo => foo
-    foo() => (foo)
-    (function() { x + x }()) => (function () (+ x x))
-    foo.bar           => foo.bar
-    foo['bar']        => ??? (TODO)
-    foo.bar = 10      => (= foo.bar 10)
-    foo['bar'] = 10   => ??? (TODO)
-    foo.bar()         => (foo.bar)
-    foo = {}          => (= foo ({})) (change me?)
-    { foo: 'bar' }    => ({} foo 'bar')
+    7                           => 7
+    "foo"                       => "foo"
+    [1,2,3]                     => ([] 1 2 3)
+    foo                         => foo
+    foo()                       => (foo)
+    function() { x + x }        => (function () (+ x x))
+    foo.bar                     => foo.bar
+    foo['bar']                  => ??? (TODO)
+    foo.bar = 10                => (= foo.bar 10)
+    foo['bar'] = 10             => ??? (TODO)
+    foo.bar()                   => (foo.bar)
+    foo = {}                    => (= foo ({})) (change me?)
+    { foo: 'bar' }              => ({} foo 'bar')
+    x = 10                      => (= x 10)   (???)
+    var x = 10                  => (var (= x 10)) (macro?) (??? should this be: (var x 10))
 
   - loop syntax tree as lisp structure =>
     (only primitives: list, atoms, strings?)
-      7 => (number '7')
-      "foo" => (string 'foo')
-      [1, 2, 3] => (list (number '1') (number '2') (number '3'))
-      foo (an identifer) => (id "foo")
-      function foo() {} => (function (id 'foo') (..arguments..) (..body..))
-      foo() => (funcall (id 'foo') (list))
-      (function() { x + x }()) =>
-        (funcall
-          (function null () (...body...)
-          (list)))
-      foo.bar => (property-get (id 'foo') (id 'bar'))
-      foo.bar = 10 (property-set (id 'foo') (id 'bar') (number '10'))
-      foo['bar'] = 10  ... same ...
-      {} => (object-create (list))
-      { foo: 'bar' } => (object-create (list (id: 'foo') (name: 'bar')))
+      7                                       => (number '7')
+      "foo"                                   => (string 'foo')
+      [1, 2, 3]                               => (list (number '1') (number '2') (number '3'))
+      foo (an identifer)                      => (id "foo")
+      function foo() {}                       => (function (id 'foo') (list ..arguments..) (list ..body..))
+      foo()                                   => (funcall (id 'foo') (list))
+      (function() { x + x }())                => (funcall
+                                                   (function null () (...body...)
+                                                   (list)))
+      foo.bar                                 => (property-get (id 'foo') (id 'bar'))
+      foo.bar = 10                            => (property-set (id 'foo') (id 'bar') (number '10'))
+      foo['bar'] = 10                         => ... same ...
+      {}                                      => (object-create (list))
+      { foo: 'bar' }                          => (object-create (list (id: 'foo') (name: 'bar')))
+      x = 10                                  => (funcall (id: '=') (id: 'x') (number: '10'))
+      var x = 10                              => (funcall var x "10")
+
+  - loop syntax tree as
+
+  - bridge: convert lisp syntax tree to objects:
+    (number 7) => { type: 'number', contents: a7 }
+    (list 'foo') => { type: 'list', contents: [ { type: 'string', contents: 'foo' }] }
+    (funcall
+       (function null () (...body...)
+       (list))) =>
+
+        {
+          type: 'funcall',
+          contents: [
+            {
+              type: 'funcall',
+              contents: {
+                { type: 'null'}
+                { type: 'list', contents: [] }
+                { type: 'list', contents: [....body contents ....]}
+              }
+            },
+            {
+              type: 'list',
+              contents: []
+            }
+          ]
+        }
 
   - loop syntax tree as js tokens:
       7       => { type: 'number', contents: 7 }
