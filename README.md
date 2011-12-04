@@ -183,3 +183,4 @@ equivalent syntax in loop:
 * Utf-8?
 * Use function keyword as well as lambda
 * use define as well as var
+* better support for + (see http://dreaminginjavascript.wordpress.com/2008/07/04/28/ + UNARY_OPERATORS)

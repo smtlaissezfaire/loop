@@ -24,5 +24,12 @@ vows.describe("integration spec").addBatch({
     var expectedOut = 'vows.describe("integration spec").addBatch()';
 
     assert.equal(loop.compile(inStream), expectedOut);
+  },
+
+  'it should be able to support unary operators': function() {
+    var inStream = '(console.log (typeof foo))';
+    var expectedOut = 'console.log(typeof foo)';
+
+    assert.equal(loop.compile(inStream), expectedOut);
   }
 }).export(module);
