@@ -169,3 +169,5 @@ Layers:
 ## TODO:
 * Support for strings with single quotes
 * Support all binary, unary, and keywords
+* Number support
+* Utf-8?
