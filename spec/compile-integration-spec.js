@@ -31,5 +31,12 @@ vows.describe("integration spec").addBatch({
     var expectedOut = 'console.log(typeof foo)';
 
     assert.equal(loop.compile(inStream), expectedOut);
+  },
+
+  'it should handle booleans, null, undefined': function() {
+    var inStream = '(console.log false)';
+    var expectedOut = 'console.log(false)';
+
+    assert.equal(loop.compile(inStream), expectedOut);
   }
 }).export(module);
