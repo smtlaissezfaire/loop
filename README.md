@@ -174,6 +174,7 @@ equivalent syntax in loop:
           (* x x)))
     * js => loop compiler
     * translating recursion => iteration
+    * call/cc
 
 ## TODO:
 * Support for strings with single quotes
