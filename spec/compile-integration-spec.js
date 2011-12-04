@@ -8,5 +8,14 @@ vows.describe("integration spec").addBatch({
     var expectedOut = "(function(){x+x})()";
 
     assert.equal(loop.compile(inStream), expectedOut);
+  },
+
+  'it should be able to support user defined functions': function() {
+    var inStream = "";
+    inStream += "((lambda ()\n";
+    inStream += "  (console.log (+ x x))))";
+    var expectedOut = "(function(){console.log(x+x)})()";
+
+    assert.equal(loop.compile(inStream), expectedOut);
   }
 }).export(module);
