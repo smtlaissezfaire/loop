@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "uglify-js": "*",
-    "underscore": "*"
+    "underscore": "*",
+    "jison": "*"
   },
   "devDependencies": {
     "async": "*",

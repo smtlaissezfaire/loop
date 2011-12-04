@@ -9,8 +9,7 @@ Installation:
 
     jake deps
 
-Layers:
-  (javascript on the left, transformation on the right of the =>)
+Syntax:
 
   - loop convenience macros / libraries / special "syntax"
     ??? (TODO)
@@ -36,24 +35,144 @@ Layers:
     x = 10                      => (= x 10)   (???)
     var x = 10                  => (var (= x 10)) (macro?) (??? should this be: (var x 10))
 
+======================================
+
+Layers:
+  (javascript on the left, transformation on the right of the =>)
+
+  parser => tokens (straightforward representation of syntax)
+
+  Each phase deals with json, but can also produce lisp-ish syntax
+
+  1. Program
+
+      ((lambda () (+ x x)))
+
+      equivalent in js: (function() { x + x }())
+
+  2. jison Parser spits out representation in json:
+
+      {
+        type: 'list',
+        contents: [
+          {
+            type: 'list',
+            contents: [
+              { type: 'id', contents: 'lambda' },
+              { type: 'list', contents: [] },
+              {
+                type: 'list',
+                contents: [
+                  { type: 'id', contents: '+'},
+                  { type: 'id', contents: 'x'},
+                  { type: 'id', contents: 'x'}
+                ]
+              }
+            ]
+          }
+        ]
+      }
+
+    equivalent syntax in loop:
+
+      (list
+        (list
+          (id lambda)
+          (list)
+          (list
+            (id +)
+            (id x)
+            (id x))))
+
+  3. Syntax tree gets "eval'ed" from pure syntax to have "meaning":
+
+    (notice that (lambda () ...) is actually still considered a function call)
+
+    {
+      type: funcall,
+      function: {
+        type: 'funcall',
+        function: { type: 'id', contents: 'lambda' },
+        arguments: [
+          {
+            type: 'list',
+            arguments: []
+          }
+          {
+            type: 'list',
+            arguments: [
+              {
+                type: 'funcall',
+                function: { type: 'id', contents: '+' },
+                arguments: [
+                  { type: 'id', contents: 'x' },
+                  { type: 'id', contents: 'x' }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      arguments: { type: 'list', contents: [] },
+    }
+
+    (funcall
+      (funcall
+        (id 'lambda')
+        (list)
+        (list
+          (funcall
+            (id +)
+            ((id x)
+             (id x)))))
+      ())
+
+
+    Equivalent:
+
+    (funcall
+      'lambda
+      (list)
+      (list
+        'funcall
+        '+
+        (list
+          (id x)
+          (id x))))
+
+  4. Syntax tree undergoes transformations to get it into an equivalent uglify syntax:
+
+    (notice that built in statements like + which were previously considered functions are here converted to binary, unary, etc for js)
+
+    ["toplevel",
+      [
+        ["stat",
+          ["call",
+            ["function", null, [],
+              [["stat",
+                ["binary","+",
+                  ["name","x"],
+                  ["name","x"]]]]],
+             []]]]]
+
+
   - loop syntax tree as lisp structure =>
-    (only primitives: list, atoms, strings?)
-      7                                       => (number '7')
-      "foo"                                   => (string 'foo')
-      [1, 2, 3]                               => (list (number '1') (number '2') (number '3'))
-      foo (an identifer)                      => (id "foo")
-      function foo() {}                       => (function (id 'foo') (list ..arguments..) (list ..body..))
-      foo()                                   => (funcall (id 'foo') (list))
-      (function() { x + x }())                => (funcall
-                                                   (function null () (...body...)
-                                                   (list)))
-      foo.bar                                 => (property-get (id 'foo') (id 'bar'))
-      foo.bar = 10                            => (property-set (id 'foo') (id 'bar') (number '10'))
-      foo['bar'] = 10                         => ... same ...
-      {}                                      => (object-create (list))
-      { foo: 'bar' }                          => (object-create (list (id: 'foo') (name: 'bar')))
-      x = 10                                  => (funcall (id: '=') (id: 'x') (number: '10'))
-      var x = 10                              => (funcall var x "10")
+    7                                                        => 7
+    "foo"                                                    => "foo"
+    ([] 1 2 3)                                               => [1,2,3]
+    foo                                                      => foo
+    (foo)                                                    => foo()
+    (function () (+ x x))                                    => function() { x + x }
+    foo.bar                                                  => foo.bar
+    ??? (TODO)                                               => foo['bar']
+    (= foo.bar 10)                                           => foo.bar = 10
+    ??? (TODO)                                               => foo['bar'] = 10
+    (foo.bar)                                                => foo.bar()
+    (= foo ({})) (change me?)                                => foo = {}
+    ({} foo 'bar')                                           => { foo: 'bar' }
+    (= x 10)   (???)                                         => x = 10
+    (var (= x 10)) (macro?) (??? should this be: (var x 10)) => var x = 10
+
 
   - loop syntax tree as
 

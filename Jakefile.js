@@ -7,7 +7,7 @@ try {
 }
 
 desc("Lint + Run tests");
-task("default", ["lint", "spec"]);
+task("default", ["grammar", "lint", "spec"]);
 
 var backtick = function(command, args, options, callback) {
   var stream = childProcess.spawn(command, args, options);
@@ -86,7 +86,7 @@ task("lint", [], function() {
 
 desc("Compile the jison grammar");
 task("grammar", [], function() {
-  backtick("jison", ["./lib/grammar.jison", "-o", "./lib/grammar.js"], null, function(err, out) {
+  backtick("jison", ["./lib/loop/grammar.jison", "-o", "./lib/loop/grammar.js"], null, function(err, out) {
     if (err) {
       throw new Error(err);
     }
