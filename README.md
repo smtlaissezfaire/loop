@@ -151,8 +151,6 @@ Layers:
                   ["name","x"]]]]],
              []]]]]
 
-
-  - javascript syntax tree (through uglify.parse(tokens))
   - raw javascript (pretty printed, through uglify)
   - uglify javascript (compressed) - DONE (loop.compress(js))
 
