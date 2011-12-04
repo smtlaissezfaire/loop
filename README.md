@@ -166,9 +166,19 @@ equivalent syntax in loop:
     - cleanup ugly parts of javascript
     - prototypes as first class principle - use real js prototypes
 
+  Other things that may be interesting:
+    * translating sync => async
+    * adding types:
+      (var square
+        (lambda ((number x) (number x))
+          (* x x)))
+    * js => loop compiler
+    * translating recursion => iteration
 
 ## TODO:
 * Support for strings with single quotes
 * Support all binary, unary, and keywords
 * Number support
 * Utf-8?
+* Use function keyword as well as lambda
+* use define as well as var
