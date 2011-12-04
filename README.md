@@ -38,51 +38,52 @@
 ======================================
 
 Layers:
-  Each phase deals with js / json, but can also produce lisp-ish syntax
 
-  1. Program
+Each phase deals with js / json, but can also produce lisp-ish syntax
 
-        ((lambda () (+ x x)))
+1. Program
 
-        equivalent in js: (function() { x + x })()
+      ((lambda () (+ x x)))
 
-  2. jison Parser spits out representation in json:
+      equivalent in js: (function() { x + x })()
 
+2. jison Parser spits out representation in json:
+
+    {
+      type: 'list',
+      contents: [
         {
           type: 'list',
           contents: [
+            { type: 'id', contents: 'lambda' },
+            { type: 'list', contents: [] },
             {
               type: 'list',
               contents: [
-                { type: 'id', contents: 'lambda' },
-                { type: 'list', contents: [] },
-                {
-                  type: 'list',
-                  contents: [
-                    { type: 'id', contents: '+'},
-                    { type: 'id', contents: 'x'},
-                    { type: 'id', contents: 'x'}
-                  ]
-                }
+                { type: 'id', contents: '+'},
+                { type: 'id', contents: 'x'},
+                { type: 'id', contents: 'x'}
               ]
             }
           ]
         }
+      ]
+    }
 
-      equivalent syntax in loop:
+equivalent syntax in loop:
 
+    (list
+      (list
+        (id lambda)
+        (list)
         (list
-          (list
-            (id lambda)
-            (list)
-            (list
-              (id +)
-              (id x)
-              (id x))))
+          (id +)
+          (id x)
+          (id x))))
 
 3. Syntax tree gets "eval'ed" from pure syntax to have "meaning":g
 
-    (notice that (lambda () ...) is actually still considered a function call)
+(notice that (lambda () ...) is actually still considered a function call)
 
     {
       type: funcall,
@@ -136,23 +137,23 @@ Layers:
           (id x)
           (id x))))
 
-  4. Syntax tree undergoes transformations to get it into an equivalent uglify syntax:
+4. Syntax tree undergoes transformations to get it into an equivalent uglify syntax:
 
-      (notice that built in statements like + which were previously considered functions are here converted to binary, unary, etc for js)
+(notice that built in statements like + which were previously considered functions are here converted to binary, unary, etc for js)
 
-      ["toplevel",
-        [
-          ["stat",
-            ["call",
-              ["function", null, [],
-                [["stat",
-                  ["binary","+",
-                    ["name","x"],
-                    ["name","x"]]]]],
-               []]]]]
+    ["toplevel",
+      [
+        ["stat",
+          ["call",
+            ["function", null, [],
+              [["stat",
+                ["binary","+",
+                  ["name","x"],
+                  ["name","x"]]]]],
+             []]]]]
 
-  - raw javascript (pretty printed, through uglify)
-  - uglify javascript (compressed)
+- raw javascript (pretty printed, through uglify)
+- uglify javascript (compressed)
 
 ## Loop principles:
 
