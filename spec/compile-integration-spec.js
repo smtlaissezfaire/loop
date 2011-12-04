@@ -19,6 +19,13 @@ vows.describe("integration spec").addBatch({
     assert.equal(loop.compile(inStream), expectedOut);
   },
 
+  'it should be able to compile a function with function': function() {
+    var inStream = "((function () (+ x x)))";
+    var expectedOut = "(function(){x+x})()";
+
+    assert.equal(loop.compile(inStream), expectedOut);
+  },
+
   'it should be able to support strings': function() {
     var inStream = '((vows.describe "integration spec").addBatch)';
     var expectedOut = 'vows.describe("integration spec").addBatch()';
