@@ -1,15 +1,15 @@
-h1. Loop
+# Loop
 
-Dependencies:
+## Dependencies:
 
     node
     npm
 
-Installation:
+## Installation:
 
     jake deps
 
-Syntax:
+## Syntax:
 
   - loop convenience macros / libraries / special "syntax",
     macros
@@ -154,7 +154,7 @@ Layers:
   - raw javascript (pretty printed, through uglify)
   - uglify javascript (compressed) - DONE (loop.compress(js))
 
-Loop principles:
+## Loop principles:
 
   base translator:
     - write javascript in scheme/lisp syntax
@@ -166,6 +166,6 @@ Loop principles:
     - prototypes as first class principle - use real js prototypes
 
 
-TODO:
-  * Support for strings with single quotes
-  * Support all binary, unary, and keywords
+## TODO:
+* Support for strings with single quotes
+* Support all binary, unary, and keywords
