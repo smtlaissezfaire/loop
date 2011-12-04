@@ -178,7 +178,7 @@ equivalent syntax in loop:
 
 ## TODO:
 * Support for strings with single quotes
-* Support all binary, unary, and keywords
+* Support all keywords
 * Number support
 * Utf-8?
 * Use function keyword as well as lambda
