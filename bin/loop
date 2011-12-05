@@ -11,9 +11,19 @@ process.argv.forEach(function(val, index) {
   }
 });
 
-var compile = function(str) {
-  var out = loop.compile(str);
+var compile = function(str, options) {
+  var out = loop.compile(str, options);
   process.stdout.write(out);
+};
+
+var compilationOptions = {
+  indent_start : 0,
+  indent_level : 2,
+  quote_keys   : false,
+  space_colon  : false,
+  beautify     : true,
+  ascii_only   : false,
+  inline_script: false
 };
 
 if (args.length === 0) {
@@ -27,11 +37,11 @@ if (args.length === 0) {
   });
 
   process.stdin.on("end", function() {
-    compile(data);
+    compile(data, compilationOptions);
   });
 } else {
   args.forEach(function(file) {
     var buffer = fs.readFileSync(file);
-    compile(buffer.toString());
+    compile(buffer.toString(), compilationOptions);
   });
 }
