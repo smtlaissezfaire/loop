@@ -103,3 +103,10 @@ task('deps', [], function() {
     complete();
   });
 }, true);
+
+desc("Clean project for rebuilding (deletes node modules, generated grammar)");
+task('clean', [], function() {
+  backtick('rm', ['-rf', 'node_modules'], null, function() {
+    backtick('rm', ['-rf', 'lib/loop/grammar.js']);
+  });
+});
