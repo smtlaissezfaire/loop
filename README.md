@@ -7,6 +7,9 @@
 
 ## Installation:
 
+    npm install -g jake
+    npm install -g jison
+    npm install -g vows
     jake deps
 
 ## Syntax:
