@@ -60,5 +60,9 @@ vows.describe("integration spec").addBatch({
 
   'it should support the var keyword': function() {
     assert.equal(loop.compile('(var (foo bar))'), 'var foo=bar');
+  },
+
+  'it should be able to use numbers': function() {
+    assert.equal(loop.compile('(console.log (+ 1 1))'), 'console.log(1+1)');
   }
 }).export(module);
