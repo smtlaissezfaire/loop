@@ -52,5 +52,9 @@ vows.describe("integration spec").addBatch({
     var expectedOut = '(function(){return"foo"})()';
 
     assert.equal(loop.compile(inStream), expectedOut);
+  },
+
+  'it should support the debugger keyword': function() {
+    assert.equal(loop.compile('(debugger)'), 'debugger');
   }
 }).export(module);
