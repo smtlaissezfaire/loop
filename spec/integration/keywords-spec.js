@@ -7,13 +7,17 @@ var _var = function() {
   var argumentPairs = _.toArray(arguments);
 
   var contents = _.map(argumentPairs, function(pair) {
-    var mappedPairs = _.map(pair, function(id) {
+    var mappedPairs = _.map(pair, function(id, index) {
       return { type: 'id', contents: id };
     });
 
     return {
-      type: 'list',
-      contents: mappedPairs
+      type: 'funcall',
+      function: mappedPairs[0],
+      arguments: {
+        type: 'list',
+        contents: mappedPairs.slice(1)
+      }
     };
   });
 
