@@ -41,5 +41,4 @@ vows.describe("phase 3: transform from eval'ed syntax into uglifyjs parse tree (
     var out = loop.toUglifyTree([evaled]);
     assert.equal(JSON.stringify(out), JSON.stringify(uglifyTree));
   }
-
 }).export(module);
