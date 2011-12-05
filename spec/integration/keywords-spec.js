@@ -3,6 +3,30 @@ var assert = require("assert");
 var loop = require(__dirname + "/../../lib/loop");
 var _ = require('underscore');
 
+var _var = function() {
+  var argumentPairs = _.toArray(arguments);
+
+  var contents = _.map(argumentPairs, function(pair) {
+    var mappedPairs = _.map(pair, function(id) {
+      return { type: 'id', contents: id };
+    });
+
+    return {
+      type: 'list',
+      contents: mappedPairs
+    };
+  });
+
+  return {
+    type: 'funcall',
+    function: { type: 'id', contents: 'var' },
+    arguments: {
+      type: 'list',
+      contents: contents
+    }
+  };
+};
+
 vows.describe("phase 3: transform from eval'ed syntax into uglifyjs parse tree (keywords)").addBatch({
   'it should eval return properly': function() {
     var evaled = {
@@ -19,8 +43,6 @@ vows.describe("phase 3: transform from eval'ed syntax into uglifyjs parse tree (
     var uglifyTree = ["toplevel",[["stat",["return", ["name", "foo"]]]]];
 
     var out = loop.toUglifyTree([evaled]);
-    // this is raising, for some reason:
-    // assert.deepEqual(loop.toUglifyTree([evaled]), uglifyTree);
     assert.equal(JSON.stringify(out), JSON.stringify(uglifyTree));
   },
 
@@ -37,8 +59,35 @@ vows.describe("phase 3: transform from eval'ed syntax into uglifyjs parse tree (
     var uglifyTree = ["toplevel",[["stat",["return", null]]]];
 
     var out = loop.toUglifyTree([evaled]);
-    // this is raising, for some reason:
-    // assert.deepEqual(loop.toUglifyTree([evaled]), uglifyTree);
+    assert.equal(JSON.stringify(out), JSON.stringify(uglifyTree));
+  },
+
+  'it should support var with 1 arg': function() {
+    var evaled = _var(['foo']);
+
+    var uglifyTree = ["toplevel",[["var",[["foo"]]]]];
+
+    var out = loop.toUglifyTree([evaled]);
+    assert.equal(JSON.stringify(out), JSON.stringify(uglifyTree));
+  },
+
+  'it should support var with 2 args': function() {
+    var evaled = _var(['foo', 'bar']);
+
+    var uglifyTree = ["toplevel",[["var",[["foo",["name","bar"]]]]]];
+
+    var out = loop.toUglifyTree([evaled]);
+    assert.equal(JSON.stringify(out), JSON.stringify(uglifyTree));
+  },
+
+  'it should support var with 3 args': function() {
+    // var foo=bar, baz, quxx = zed;'
+    var evaled = _var(['foo', 'bar'], ['baz']);
+
+    var uglifyTree = ["toplevel",[["var",[["foo",["name","bar"]],["baz"]]]]];
+
+    var out = loop.toUglifyTree([evaled]);
     assert.equal(JSON.stringify(out), JSON.stringify(uglifyTree));
   }
+
 }).export(module);
