@@ -179,7 +179,6 @@ equivalent syntax in loop:
 ## TODO:
 * Support for strings with single quotes
 * Support all keywords
-* Number support
 * Utf-8?
 * Use function keyword as well as lambda
 * use define as well as var

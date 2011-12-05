@@ -41,8 +41,6 @@ vows.describe("phase 3: transform from eval'ed syntax into uglifyjs parse tree")
     var uglifyTree = ["toplevel",[["stat",["call",["function",null,[],[["stat",["binary","+",["name","x"],["name","x"]]]]],[]]]]];
 
     var out = loop.toUglifyTree([evaled]);
-    // this is raising, for some reason:
-    // assert.deepEqual(loop.toUglifyTree([evaled]), uglifyTree);
     assert.equal(JSON.stringify(out), JSON.stringify(uglifyTree));
   }
 }).export(module);

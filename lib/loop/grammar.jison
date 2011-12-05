@@ -6,7 +6,7 @@
 \s+                     /* skip whitespace */
 \n+                     /* skip newlines */
 \r+                     /* same */
-"."                     return "PROP_ACCESS";
+"."                     return "DOT";
 "("                     return "OPEN_PAREN";
 ")"                     return "CLOSE_PAREN";
 [0-9]+                  return "INT";
@@ -47,13 +47,20 @@ list-members
 ;
 
 property-access
-  : s-expression PROP_ACCESS s-expression {
+  : s-expression DOT s-expression {
     $$ = require("./grammar/token-builders").makePropertyAccess($1, $3);
   }
 ;
 
+float
+  : INT DOT INT {
+    $$ = require("./grammar/token-builders").makeNumber($1, $3);
+  }
+;
+
 atom
-  : INT     { $$ = require("./grammar/token-builders").makeNumber($1); }
-  | STRING  { $$ = require("./grammar/token-builders").makeString($1); }
-  | SYMBOL  { $$ = require("./grammar/token-builders").makeSymbol($1); }
+  : float        { $$ = $1; }
+  | INT          { $$ = require("./grammar/token-builders").makeNumber($1); }
+  | STRING       { $$ = require("./grammar/token-builders").makeString($1); }
+  | SYMBOL       { $$ = require("./grammar/token-builders").makeSymbol($1); }
 ;
