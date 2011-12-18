@@ -65,5 +65,13 @@ vows.describe("integration spec").addBatch({
   'it should be able to use numbers': function() {
     assert.equal(loop.compile('(console.log (+ 1 1))'), 'console.log(1+1)');
     assert.equal(loop.compile('(console.log (+ 3.1415926 1))'), 'console.log(3.1415926+1)');
+  },
+
+  'it should allow an expanded let statement': function() {
+    var code = "";
+    code += "((lambda (x y)";
+    code += "   (console.log (+ x y))) 10 20)";
+
+    assert.equal(loop.compile(code), '(function(x,y){console.log(x+y)})(10,20)');
   }
 }).export(module);

@@ -6,6 +6,7 @@
 \s+                     /* skip whitespace */
 \n+                     /* skip newlines */
 \r+                     /* same */
+"..."                   return "MACRO_PATTERN";
 "."                     return "DOT";
 "("                     return "OPEN_PAREN";
 ")"                     return "CLOSE_PAREN";
@@ -59,8 +60,9 @@ float
 ;
 
 atom
-  : float        { $$ = $1; }
-  | INT          { $$ = require("./grammar/token-builders").makeNumber($1); }
-  | STRING       { $$ = require("./grammar/token-builders").makeString($1); }
-  | SYMBOL       { $$ = require("./grammar/token-builders").makeSymbol($1); }
+  : MACRO_PATTERN { $$ = require("./grammar/token-builders").makeMacroPattern(); }
+  | float         { $$ = $1; }
+  | INT           { $$ = require("./grammar/token-builders").makeNumber($1); }
+  | STRING        { $$ = require("./grammar/token-builders").makeString($1); }
+  | SYMBOL        { $$ = require("./grammar/token-builders").makeSymbol($1); }
 ;
