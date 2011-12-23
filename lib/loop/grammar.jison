@@ -1,17 +1,17 @@
 %lex
 %%
 
-"//"+.*                 /* skip comments */
-\"(\\.|[^\\"])*\"       return "STRING";
-\s+                     /* skip whitespace */
-\n+                     /* skip newlines */
-\r+                     /* same */
-"..."                   return "MACRO_PATTERN";
-"."                     return "DOT";
-"("                     return "OPEN_PAREN";
-")"                     return "CLOSE_PAREN";
-[0-9]+                  return "INT";
-[a-zA-Z\=\*\/\+\-\_]+   return "SYMBOL";
+"//"+.*                                                 /* skip comments */
+\"(\\.|[^\\"])*\"                                       return "STRING";
+\s+                                                     /* skip whitespace */
+\n+                                                     /* skip newlines */
+\r+                                                     /* same */
+"..."                                                   return "MACRO_PATTERN";
+"."                                                     return "DOT";
+"("                                                     return "OPEN_PAREN";
+")"                                                     return "CLOSE_PAREN";
+[0-9]+                                                  return "INT";
+[a-zA-Z\=\*\/\+\-\_\!]+                                 return "SYMBOL";
 
 /lex
 
