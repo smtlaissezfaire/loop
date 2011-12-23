@@ -73,5 +73,36 @@ vows.describe("integration spec").addBatch({
     code += "   (console.log (+ x y))) 10 20)";
 
     assert.equal(loop.compile(code), '(function(x,y){console.log(x+y)})(10,20)');
+  },
+
+  'it should be able to handle an if statement': function() {
+    var code = "(if (x) (y))";
+    assert.equal(loop.compile(code), 'if(x){y()}');
+  },
+
+  'it should be able to handle an if statement with no block conditions': function() {
+    var code = "(if (x))";
+
+    assert.equal(loop.compile(code), 'if(x){}');
+  },
+
+  'it should be able to handle an if statement with multiple block conditions': function() {
+    var code = "(if (x) (y) (+ 10 20))";
+
+    assert.equal(loop.compile(code), 'if(x){y();10+20}');
+  },
+
+  'it should throw an error if the if statement has more than one condition': function() {
+    var code = "(if (x y) (y) (+ 10 20))";
+
+    assert.throws(function() {
+      loop.compile(code);
+    }, 'More than one statement in if conditional.');
+  },
+
+  'it should allow non list types in the conditions': function() {
+    var code = "(if true (y))";
+
+    assert.equal(loop.compile(code), 'if(true){y()}');
   }
 }).export(module);
