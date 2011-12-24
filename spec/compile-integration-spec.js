@@ -131,5 +131,15 @@ vows.describe("integration spec").addBatch({
     var code = "(var (x ({} foo (+ 3 2)";
     code +=    "            bar 'something')))";
     assert.equal(loop.compile(code), 'var x={foo:3+2,bar:"something"}');
+  },
+
+  'it should be able to assign a variable': function() {
+    var code = "(= x 10)";
+    assert.equal(loop.compile(code), 'x=10');
+  },
+
+  'it should be able to write a property': function() {
+    var code = "(= foo.bar 10)";
+    assert.equal(loop.compile(code), "foo.bar=10");
   }
 }).export(module);
