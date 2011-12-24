@@ -102,5 +102,10 @@ vows.describe("integration spec").addBatch({
     var code = "(if (! foo) (y))";
 
     assert.equal(loop.compile(code), 'if(!foo){y()}');
+  },
+
+  'it should allow === as a comparison operator': function() {
+    var code = "(if (=== x 10) (console.log \"foo\"))";
+    assert.equal(loop.compile(code), 'if(x===10){console.log("foo")}');
   }
 }).export(module);

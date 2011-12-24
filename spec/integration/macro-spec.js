@@ -27,4 +27,38 @@ vows.describe("integration specs (macros)").addBatch({
 
     assert.equal(loop.compile(code), "(function(x,y){console.log(x+y)})(10,20)");
   },
+
+  'it should be able to define and use an unless macro': function() {
+    var code = "";
+    code += "(define-macro";
+    code += "  (unless condition";
+    code += "    statements ...)";
+    code += "  (if (! condition)";
+    code += "    statements ...))";
+    code += "";
+    code += "(unless (=== x 10)";
+    code += "  (bar)";
+    code += "  (baz))";
+
+    // TODO: should probably convert this into x !== 10
+    var expectedCode = "if(!(x===10)){bar();baz()}";
+
+    assert.equal(loop.compile(code), expectedCode);
+  },
+
+  'it should be able to use unless with ! and a var': function() {
+    var code = "";
+    code += "(define-macro";
+    code += "  (unless condition";
+    code += "    statements ...)";
+    code += "  (if (! condition)";
+    code += "    statements ...))";
+    code += "";
+    code += "(var (x 20))";
+    code += "";
+    code += "(unless (=== x 10)";
+    code += "  (console.log x))";
+
+    assert.equal(loop.compile(code), 'var x=20;if(!(x===10)){console.log(x)}');
+  }
 }).export(module);
