@@ -114,5 +114,22 @@ vows.describe("integration spec").addBatch({
   'it should allow === as a comparison operator': function() {
     var code = "(if (=== x 10) (console.log \"foo\"))";
     assert.equal(loop.compile(code), 'if(x===10){console.log("foo")}');
+  },
+
+  'it should be able to create an object from the {} function': function() {
+    var code = "(var (x ({})))";
+    assert.equal(loop.compile(code), 'var x={}');
+  },
+
+  'it should be able to create an object from the {} function with keys and values': function() {
+    var code = "(var (x ({} foo 3";
+    code +=    "            bar 'something')))";
+    assert.equal(loop.compile(code), 'var x={foo:3,bar:"something"}');
+  },
+
+  'it should allow a function in the value position': function() {
+    var code = "(var (x ({} foo (+ 3 2)";
+    code +=    "            bar 'something')))";
+    assert.equal(loop.compile(code), 'var x={foo:3+2,bar:"something"}');
   }
 }).export(module);
