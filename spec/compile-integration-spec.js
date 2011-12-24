@@ -141,5 +141,25 @@ vows.describe("integration spec").addBatch({
   'it should be able to write a property': function() {
     var code = "(= foo.bar 10)";
     assert.equal(loop.compile(code), "foo.bar=10");
+  },
+
+  'it should allow a throw statement': function() {
+    var code = '(throw "foo")';
+    assert.equal(loop.compile(code), 'throw("foo")');
+  },
+
+  'it should support new with no arguments': function() {
+    var code = '(new Foo)';
+    assert.equal(loop.compile(code), 'new Foo');
+  },
+
+  'it should support new with an argument': function() {
+    var code = '(new Foo 1)';
+    assert.equal(loop.compile(code), 'new Foo(1)');
+  },
+
+  'it should allow a throw with a new object': function() {
+    var code = "(throw (new Error 'foo'))";
+    assert.equal(loop.compile(code), 'throw(new Error("foo"))');
   }
 }).export(module);
