@@ -3,6 +3,7 @@
 
 "//"+.*                                                 /* skip comments */
 \"(\\.|[^\\"])*\"                                       return "STRING";
+\'(\\.|[^\\'])*\'                                       return "STRING";
 \s+                                                     /* skip whitespace */
 \n+                                                     /* skip newlines */
 \r+                                                     /* same */
