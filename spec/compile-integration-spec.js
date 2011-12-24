@@ -161,5 +161,16 @@ vows.describe("integration spec").addBatch({
   'it should allow a throw with a new object': function() {
     var code = "(throw (new Error 'foo'))";
     assert.equal(loop.compile(code), 'throw(new Error("foo"))');
+  },
+
+  'it should allow try/catch': function() {
+    var code = "";
+    code += "(try";
+    code += "   (foo+ 10 20)";
+    code += "   (+ 1 2)";
+    code += "   (catch e";
+    code += "    (throw (new Error 'function does not exist!'))))";
+
+    assert.equal(loop.compile(code), 'try{foo+(10,20);1+2}catch(e){throw(new Error("function does not exist!"))}');
   }
 }).export(module);
