@@ -60,5 +60,20 @@ vows.describe("integration specs (macros)").addBatch({
     code += "  (console.log x))";
 
     assert.equal(loop.compile(code), 'var x=20;if(!(x===10)){console.log(x)}');
+  },
+
+  'it should transform non top level macros': function() {
+    var code = "";
+    code += "(define-macro";
+    code += "  (my-let ((var val) ...)";
+    code += "    body ...)";
+    code += "  ((lambda (var ...)";
+    code += "    body ...) val ...))";
+
+    code += "(my-let ((x 10))";
+    code += "  (my-let ((y 20))";
+    code += "    (+ x y)))";
+
+    assert.equal(loop.compile(code), "(function(x){(function(y){x+y})(20)})(10)");
   }
 }).export(module);
