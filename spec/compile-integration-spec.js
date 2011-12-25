@@ -188,5 +188,12 @@ vows.describe("integration spec").addBatch({
     expected += "for(x=10;x<=20;++x){console.log(x)}";
 
     assert.equal(loop.compile(code), expected);
+  },
+
+  'it should be able to use define with an implicit pair': function() {
+    var code = "";
+    code += "(define foo bar)";
+
+    assert.equal(loop.compile(code), "var foo=bar");
   }
 }).export(module);
