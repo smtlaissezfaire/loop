@@ -172,5 +172,21 @@ vows.describe("integration spec").addBatch({
     code += "    (throw (new Error 'function does not exist!'))))";
 
     assert.equal(loop.compile(code), 'try{foo+(10,20);1+2}catch(e){throw(new Error("function does not exist!"))}');
+  },
+
+  'it should be able to use a for statement': function() {
+    var code = "";
+    code += "(var (x))";
+    code += "(for ((= x 10)";
+    code += "      (<= x 20)";
+    code += "      (++ x))";
+    code += "  (console.log x))";
+
+    // TODO: How to differentiate between x++ and ++x?
+    var expected = "";
+    expected += "var x;";
+    expected += "for(x=10;x<=20;++x){console.log(x)}";
+
+    assert.equal(loop.compile(code), expected);
   }
 }).export(module);
