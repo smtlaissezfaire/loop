@@ -195,5 +195,32 @@ vows.describe("integration spec").addBatch({
     code += "(define foo bar)";
 
     assert.equal(loop.compile(code), "var foo=bar");
+  },
+
+  'it should not insert semicolons into an if': function() {
+    var compilationOptions = {
+      indent_start : 0,
+      indent_level : 2,
+      quote_keys   : false,
+      space_colon  : true,
+      beautify     : true,
+      ascii_only   : false,
+      inline_script: false
+    };
+
+    var code = "";
+    code += "(function (str options)";
+    code += "  (if (=== (typeof options) 'undefined')";
+    code += "    (= options {})))";
+
+    var expected = "";
+    expected += "(function(str, options) {\n";
+    expected += "  if (typeof options === \"undefined\") {\n";
+    expected += "    options = {};\n";
+    expected += "  }\n";
+    expected += "});";
+
+    assert.equal(loop.compile(code, compilationOptions),
+                 expected);
   }
 }).export(module);
