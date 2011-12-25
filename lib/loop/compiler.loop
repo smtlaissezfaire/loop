@@ -4,25 +4,30 @@
   ((function (name ...)
     body ...) value ...))
 
-(let ((loop (require './../loop'))
-      (jsp (require 'uglify-js').parser)
-      (pro (require 'uglify-js').uglify)
-      (compiler {}))
+(define loop (require './../loop'))
+(define jsp (require 'uglify-js').parser)
+(define pro (require 'uglify-js').uglify)
 
+(let ((compiler {}))
   (= compiler.compile
     (function (str options)
-      (if (=== (typeof options) undefined)
-        (= options {}))))
+      (if (=== (typeof options) 'undefined')
+        (= options {}))
 
-  (let ((macroTransformedAst (loop.macroTransform (loop.parse str)))
-        (ast (loop.loopEval macroTransformedAst))
-        (uglifyAst (loop.toUglifyTree ast))))
+      // TODO: convert to letrec?
+      (define macroTransformedAst (loop.macroTransform (loop.parse str)))
+      (define ast (loop.loopEval macroTransformedAst))
+      (define uglifyAst (loop.toUglifyTree ast))
 
-    (if options.mangle
-      (= uglifyAst (pro.ast_mangle ast)))
+      (if options.mangle
+        (= uglifyAst (pro.ast_mangle ast)))
 
-    (if options.squeeze
-      (= uglifyAst (pro.ast_squeeze ast)))
+      (if options.squeeze
+        (= uglifyAst (pro.ast_squeeze ast)))
 
-    // compressed code here
-    (return (pro.gen_code uglifyAst options)))
+      // compressed code here
+      (return (pro.gen_code uglifyAst options))))
+
+  (= module.exports compiler))
+
+
