@@ -1,0 +1,28 @@
+(define-macro
+  (let ((name value) ...)
+    body ...)
+  ((function (name ...)
+    body ...) value ...))
+
+(let ((loop (require './../loop'))
+      (jsp (require 'uglify-js').parser)
+      (pro (require 'uglify-js').uglify)
+      (compiler {}))
+
+  (= compiler.compile
+    (function (str options)
+      (if (=== (typeof options) undefined)
+        (= options {}))))
+
+  (let ((macroTransformedAst (loop.macroTransform (loop.parse str)))
+        (ast (loop.loopEval macroTransformedAst))
+        (uglifyAst (loop.toUglifyTree ast))))
+
+    (if options.mangle
+      (= uglifyAst (pro.ast_mangle ast)))
+
+    (if options.squeeze
+      (= uglifyAst (pro.ast_squeeze ast)))
+
+    // compressed code here
+    (return (pro.gen_code uglifyAst options)))
