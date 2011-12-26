@@ -64,6 +64,18 @@ vows.describe("js to loop converter integration spec").addBatch({
     var source = "if (x) { foo }";
     var expected = "(if x foo)";
     assert.equal(loop.reverseCompile(source), expected);
+  },
+
+  'it should have support for strings': function() {
+    var source = "x = 'foo'";
+    var expected = "(= x \"foo\")";
+    assert.equal(loop.reverseCompile(source), expected);
+  },
+
+  'it should be able to support double quoted strings with single quote escaping': function() {
+    var source = 'x = "foo\'bar"';
+    var expected = '(= x "foo\'bar")';
+    assert.equal(loop.reverseCompile(source), expected);
   }
 
   // 'it should be able to convert the compiler file from js to loop': function() {
