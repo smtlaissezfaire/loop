@@ -40,6 +40,12 @@ vows.describe("js to loop converter integration spec").addBatch({
     var source = "foo(x, y);";
     var expected = "(foo x y)";
     assert.equal(loop.reverseCompile(source), expected);
+  },
+
+  'it should be able to convert a defined function with an anonymous fun': function() {
+    var source = "x = function(x, y) { return x + y };";
+    var expected = "(= x (lambda (x y) (return (+ x y))))";
+    assert.equal(loop.reverseCompile(source), expected);
   }
 
   // 'it should be able to convert the compiler file from js to loop': function() {
