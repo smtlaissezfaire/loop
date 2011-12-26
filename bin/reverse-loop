@@ -1,0 +1,39 @@
+#!/usr/bin/env node
+
+var loop = require(__dirname + "/../lib/loop");
+var fs = require("fs");
+
+var args = [];
+
+process.argv.forEach(function(val, index) {
+  if (index !== 0 && index !== 1) {
+    args.push(val);
+  }
+});
+
+var compile = function(str, options) {
+  var out = loop.reverseCompile(str, options);
+  process.stdout.write(out);
+};
+
+var compilationOptions = {};
+
+if (args.length === 0) {
+  var data = "";
+
+  process.stdin.resume();
+  process.stdin.setEncoding('utf8');
+
+  process.stdin.on("data", function(chunk) {
+    data += chunk;
+  });
+
+  process.stdin.on("end", function() {
+    compile(data, compilationOptions);
+  });
+} else {
+  args.forEach(function(file) {
+    var buffer = fs.readFileSync(file);
+    compile(buffer.toString(), compilationOptions);
+  });
+}
