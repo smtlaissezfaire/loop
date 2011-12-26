@@ -16,6 +16,12 @@ vows.describe("js to loop converter integration spec").addBatch({
     var source = "var y = 20;";
     var expected = "(var (y 20))";
     assert.equal(loop.reverseCompile(source), expected);
+  },
+
+  'it should be able to convert x=10': function() {
+    var source = "x=20;";
+    var expected = "(= x 20)";
+    assert.equal(loop.reverseCompile(source), expected);
   }
 
   // 'it should be able to convert the compiler file from js to loop': function() {
