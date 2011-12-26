@@ -25,3 +25,12 @@ This is still super-alpha software.  Don't use it!
 Install dependencies, (as above), and run:
 
     jake
+
+## Syntax
+
+I'm not providing any explicit examples of syntax right now, because this is still super alpha.
+
+If you are curious, dig through:
+
+    spec/compile-integration-spec.js
+    spec/integration/macro-spec.js
