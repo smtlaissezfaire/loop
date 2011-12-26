@@ -58,6 +58,12 @@ vows.describe("js to loop converter integration spec").addBatch({
     var source = "typeof x";
     var expected = "(typeof x)";
     assert.equal(loop.reverseCompile(source), expected);
+  },
+
+  'it should be able to handle an if statement': function() {
+    var source = "if (x) { foo }";
+    var expected = "(if x foo)";
+    assert.equal(loop.reverseCompile(source), expected);
   }
 
   // 'it should be able to convert the compiler file from js to loop': function() {
