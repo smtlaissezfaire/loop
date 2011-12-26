@@ -20,3 +20,8 @@ This is still super-alpha software.  Don't use it!
     npm install -g vows@0.5.13
     jake deps
 
+## Tests
+
+Install dependencies, (as above), and run:
+
+    jake
