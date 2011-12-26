@@ -76,6 +76,18 @@ vows.describe("js to loop converter integration spec").addBatch({
     var source = 'x = "foo\'bar"';
     var expected = '(= x "foo\'bar")';
     assert.equal(loop.reverseCompile(source), expected);
+  },
+
+  'it should support an empty object literal in assignment': function() {
+    var source = "x = {};";
+    var expected = '(= x {})';
+    assert.equal(loop.reverseCompile(source), expected);
+  },
+
+  'it should support an object literal with values': function() {
+    var source = "x = { a: 1, b: 2 };";
+    var expected = '(= x ({} a 1 b 2))';
+    assert.equal(loop.reverseCompile(source), expected);
   }
 
   // 'it should be able to convert the compiler file from js to loop': function() {
