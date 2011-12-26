@@ -46,6 +46,12 @@ vows.describe("js to loop converter integration spec").addBatch({
     var source = "x = function(x, y) { return x + y };";
     var expected = "(= x (lambda (x y) (return (+ x y))))";
     assert.equal(loop.reverseCompile(source), expected);
+  },
+
+  'it should be able to compare with ===': function() {
+    var source = "x === y";
+    var expected = "(=== x y)";
+    assert.equal(loop.reverseCompile(source), expected);
   }
 
   // 'it should be able to convert the compiler file from js to loop': function() {
