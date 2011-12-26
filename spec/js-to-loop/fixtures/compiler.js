@@ -1,4 +1,5 @@
 var loop = require('./../loop');
+var jsp = require("uglify-js").parser;
 var pro = require("uglify-js").uglify;
 
 var compiler = {};
