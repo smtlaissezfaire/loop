@@ -88,6 +88,12 @@ vows.describe("js to loop converter integration spec").addBatch({
     var source = "x = { a: 1, b: 2 };";
     var expected = '(= x ({} a 1 b 2))';
     assert.equal(loop.reverseCompile(source), expected);
+  },
+
+  'it should properly handle a var with a dot expression': function() {
+    var source = 'var jsp = require("uglify-js").parser;';
+    var expected = '(var (jsp (require "uglify-js").parser))';
+    assert.equal(loop.reverseCompile(source), expected);
   }
 
   // 'it should be able to convert the compiler file from js to loop': function() {
