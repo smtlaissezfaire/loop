@@ -9,7 +9,7 @@
 
     npm install -g jake
     npm install -g jison
-    npm install -g vows
+    npm install -g vows@0.5.13
     jake deps
 
 ## Syntax:
