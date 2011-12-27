@@ -141,6 +141,20 @@ vows.describe("js to loop converter integration spec").addBatch({
     assert.equal(loop.reverseCompile(source), expected);
   },
 
+  'it should be able to handle literal arrays': function() {
+    var source = 'x = [1, 2, 3]';
+    var expected = '(= x ([] 1 2 3))';
+
+    assert.equal(loop.reverseCompile(source), expected);
+  },
+
+  'it should use the literal [] for creating an empty array': function() {
+    var source = 'x = []';
+    var expected = '(= x [])';
+
+    assert.equal(loop.reverseCompile(source), expected);
+  }
+
   // 'it should be able to convert the compiler file from js to loop': function() {
   //   var source = fs.readFileSync('./spec/js-to-loop/fixtures/compiler.js').toString();
   //   var expected = fs.readFileSync('./spec/js-to-loop/fixtures/compiler.loop').toString();
