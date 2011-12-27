@@ -118,6 +118,13 @@ vows.describe("js to loop converter integration spec").addBatch({
     expected += '(console.log "default")))';
 
     assert.equal(loop.reverseCompile(source), expected);
+  },
+
+  'it should be able to process a throw': function() {
+    var source = 'throw "foo";';
+    var expected = '(throw "foo")';
+
+    assert.equal(loop.reverseCompile(source), expected);
   }
 
   // 'it should be able to convert the compiler file from js to loop': function() {
