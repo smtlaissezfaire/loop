@@ -23,8 +23,7 @@ vows.describe("switch-case").addBatch({
     var expectedCode = "";
     expectedCode += "switch(syntaxTree.type){";
     expectedCode += "case\"foo\":";
-    expectedCode += "console.log(\"foo\");";
-    expectedCode += "break";
+    expectedCode += "console.log(\"foo\")";
     expectedCode += "}";
 
     assert.equal(loop.compile(code), expectedCode);
@@ -35,10 +34,12 @@ vows.describe("switch-case").addBatch({
     code += "(switch syntaxTree.type";
     code += "  (case \"foo\"";
     code += "    (console.log 'foo')";
-    code += "    (foo 'bar'))";
+    code += "    (foo 'bar')";
+    code += "    (break))";
     code += "  (case \"baz\"";
     code += "    (console.log 'baz')";
-    code += "    (bar 'baz')))";
+    code += "    (bar 'baz')";
+    code += "    (break)))";
 
     var expectedCode = "";
     expectedCode += 'switch(syntaxTree.type){';
@@ -60,7 +61,8 @@ vows.describe("switch-case").addBatch({
     var code = "";
     code += "(switch syntaxTree.type";
     code += "  (case \"foo\"";
-    code += "    (console.log 'foo'))";
+    code += "    (console.log 'foo')";
+    code += "    (break))";
     code += "  (default";
     code += "    (console.log 'default')))";
 
