@@ -14,6 +14,7 @@ process.argv.forEach(function(val, index) {
 var compile = function(str, options) {
   var out = loop.compile(str, options);
   process.stdout.write(out);
+  process.stdout.write('\n');
 };
 
 var compilationOptions = {
