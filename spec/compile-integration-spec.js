@@ -227,5 +227,24 @@ vows.describe("integration spec").addBatch({
   'it should use || as OR': function() {
     assert.equal(loop.compile("(|| a b)"),
                  "a||b");
+  },
+
+  'it should allow [] as an empty array': function() {
+    assert.equal(loop.compile("[]"), "[]");
+  },
+
+  'it should allow [] as an array constructor': function() {
+    assert.equal(loop.compile("([] 1 2 3)"), "[1,2,3]");
+  },
+
+  'it should allow a array inside a hash': function() {
+    var source = "";
+    source += "({} type 'list'";
+    source += "    contents ([] a b))";
+
+    var expected = "";
+    expected = '({type:"list",contents:[a,b]})';
+
+    assert.equal(loop.compile(source), expected);
   }
 }).export(module);
