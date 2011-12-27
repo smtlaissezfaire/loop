@@ -222,5 +222,10 @@ vows.describe("integration spec").addBatch({
 
     assert.equal(loop.compile(code, compilationOptions),
                  expected);
+  },
+
+  'it should use || as OR': function() {
+    assert.equal(loop.compile("(|| a b)"),
+                 "a||b");
   }
 }).export(module);
