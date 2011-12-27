@@ -125,7 +125,21 @@ vows.describe("js to loop converter integration spec").addBatch({
     var expected = '(throw "foo")';
 
     assert.equal(loop.reverseCompile(source), expected);
-  }
+  },
+
+  'it should be able to handle the new keyword': function() {
+    var source = 'new FooBar;';
+    var expected = '(new FooBar)';
+
+    assert.equal(loop.reverseCompile(source), expected);
+  },
+
+  'it should be able to handle the new keyword with args': function() {
+    var source = 'new FooBar(1, 2, 3);';
+    var expected = '(new FooBar 1 2 3)';
+
+    assert.equal(loop.reverseCompile(source), expected);
+  },
 
   // 'it should be able to convert the compiler file from js to loop': function() {
   //   var source = fs.readFileSync('./spec/js-to-loop/fixtures/compiler.js').toString();
