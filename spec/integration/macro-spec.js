@@ -75,5 +75,41 @@ vows.describe("integration specs (macros)").addBatch({
     code += "    (+ x y)))";
 
     assert.equal(loop.compile(code), "(function(x){(function(y){x+y})(20)})(10)");
+  },
+
+  'it should be able to use let* (which builds off let and has multiple patterns)': function() {
+    var code = "";
+    code += "(define-macro";
+    code += "  (let ((var value) ...)";
+    code += "    body ...)";
+    code += "  ((function (var ...) body ...) value))";
+    code += "  ";
+    code += "(define-macro";
+    code += "  (let* () body ...)";
+    code += "  (let () body ...)";
+    code += "";
+    code += "  (let* ((i1 v1)";
+    code += "         (i2 v2) ...)";
+    code += "    body ...)";
+    code += "  (let ((i1 v1))";
+    code += "    (let* ((i2 v2) ...)";
+    code += "      body ...)))";
+    code += "";
+    code += "(let* ((a 10)";
+    code += "       (b 20)";
+    code += "       (x (+ a b)))";
+    code += "  (console.log x))";
+
+    var expected = "";
+    expected = "(function(a) {";
+    expected = "  (function(b) {";
+    expected = "    (function(x) {";
+    expected = "      console.log(x);";
+    expected = "    })(a + b);";
+    expected = "  })(20);";
+    expected = "})(10);";
+
+    assert.equal(loop.compile(code), expected);
+
   }
 }).export(module);

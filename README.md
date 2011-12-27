@@ -78,7 +78,7 @@ Proposed syntax:
 
 ## Macros
 
-Macros follow the conventions behind scheme's syntax-case.  For instance, here's let:
+Macros follow the conventions behind scheme's define-syntax / syntax-case.  For instance, here's let:
 
     (define-macro
       (let ((key value) ...)
