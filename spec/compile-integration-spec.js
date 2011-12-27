@@ -251,5 +251,12 @@ vows.describe("integration spec").addBatch({
     expected = '({type:"list",contents:[a,b]})';
 
     assert.equal(loop.compile(source), expected);
+  },
+
+  'it should allow utf-8 variable names': function() {
+    var source = "(= x \"汉语/漢語\")";
+    var expected = "x=\"汉语/漢語\"";
+
+    assert.equal(loop.compile(source), expected);
   }
 }).export(module);
