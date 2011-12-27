@@ -229,6 +229,11 @@ vows.describe("integration spec").addBatch({
                  "a||b");
   },
 
+  'it should allow && as a function': function() {
+    assert.equal(loop.compile("(&& a b)"),
+                 "a&&b");
+  },
+
   'it should allow [] as an empty array': function() {
     assert.equal(loop.compile("[]"), "[]");
   },
