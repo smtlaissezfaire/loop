@@ -28,9 +28,27 @@ Install dependencies, (as above), and run:
 
 ## Syntax
 
-I'm not providing any explicit examples of syntax right now, because this is still super alpha.
+    7                           => 7
+    "foo"                       => "foo"
+    'foo'                       => 'foo'
+    [1,2,3]                     => [1 2 3]
+    foo                         => foo
+    foo()                       => (foo)
+    function() { x + x }        => (function () (+ x x)) or (lambda () (+ x x))
 
-If you are curious, dig through:
+    x = 10                      => (= x 10)
+    var x = 10                  => (var (x 10)) or (define x 10)
+    var x,                      => (var (x)
+        y = 20                          (y 20))
 
-    spec/compile-integration-spec.js
-    spec/integration/macro-spec.js
+    foo.bar                     => foo.bar
+    foo.bar = 10                => (= foo.bar 10)
+
+    foo['bar']                  => ([] foo 'bar')
+    foo['bar'] = 10             => (= ([] foo 'bar') 10)  (or ... ([]= foo 'bar' 10) ???)
+
+    foo.bar()                   => (foo.bar)
+    foo = {}                    => (= foo {})
+    { a: 'b', c: 'd' }          => { a 'b' c 'd' }
+    [1,2,3,4]                   => [ 1 2 3 4 ]
+    x[2]                        => ([] x 2)

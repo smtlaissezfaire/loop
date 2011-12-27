@@ -7,22 +7,6 @@
         - better object prototypes / inheritence ?
         - ???
 
-    - base:
-      7                           => 7
-      "foo"                       => "foo"
-      [1,2,3]                     => ([] 1 2 3)
-      foo                         => foo
-      foo()                       => (foo)
-      function() { x + x }        => (function () (+ x x))
-      foo.bar                     => foo.bar
-      foo['bar']                  => ??? (TODO)
-      foo.bar = 10                => (= foo.bar 10)
-      foo['bar'] = 10             => ??? (TODO)
-      foo.bar()                   => (foo.bar)
-      foo = {}                    => (= foo ({})) (change me?)
-      { foo: 'bar' }              => ({} foo 'bar')
-      x = 10                      => (= x 10)   (???)
-      var x = 10                  => (var (= x 10)) (macro?) (??? should this be: (var x 10))
 
 ======================================
 
