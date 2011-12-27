@@ -94,6 +94,30 @@ vows.describe("js to loop converter integration spec").addBatch({
     var source = 'var jsp = require("uglify-js").parser;';
     var expected = '(var (jsp (require "uglify-js").parser))';
     assert.equal(loop.reverseCompile(source), expected);
+  },
+
+  'it should properly handle switch / case / default / break statements': function() {
+    var source = "";
+    source += "switch(foo) {";
+    source += "  case 'bar':";
+    source += "    console.log('bar');";
+    source += "    break;";
+    source += "  default:";
+    source += "    console.log('default');";
+    source += "}";
+
+    var expected = "";
+    expected += '(switch foo ';
+
+    expected += '(case "bar" ';
+    expected += '(console.log "bar") ';
+    expected += '(break))';
+
+    expected += ' ';
+    expected += '(default ';
+    expected += '(console.log "default")))';
+
+    assert.equal(loop.reverseCompile(source), expected);
   }
 
   // 'it should be able to convert the compiler file from js to loop': function() {
