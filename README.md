@@ -75,3 +75,25 @@ Proposed syntax:
       default:                       (default
         console.log('default');         (console.log 'default)))
     }
+
+## Macros
+
+Macros follow the conventions behind scheme's syntax-case.  For instance, here's let:
+
+    (define-macro
+      (let ((key value) ...)
+        body ...)
+      ((function (key ...)
+        body ...) value ...)
+
+Which would take:
+
+    (let ((x 10)
+          (y 20))
+      (console.log (+ x y)))
+
+and expand it (at compilation time) into:
+
+    (function (x, y) {
+      console.log(x + y);
+    })(10, 20);
