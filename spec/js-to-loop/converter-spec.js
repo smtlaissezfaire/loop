@@ -181,6 +181,13 @@ vows.describe("js to loop converter integration spec").addBatch({
     var expected = "(++ x)";
 
     assert.equal(loop.reverseCompile(source), expected);
+  },
+
+  'it should handle the ternary operator': function() {
+    var source = "x = comments ? '/comments' : ''";
+    var expected = '(= x (? comments "/comments" ""))';
+
+    assert.equal(loop.reverseCompile(source), expected);
   }
 
   // 'it should be able to convert the compiler file from js to loop': function() {
