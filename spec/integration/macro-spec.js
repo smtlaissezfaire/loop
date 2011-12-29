@@ -169,14 +169,64 @@ vows.describe("integration specs (macros)").addBatch({
     assert.equal(loop.compile(code), expected);
   },
 
+  'it should ignore macro patterns if the code is not called': function() {
+    var code = "";
+    code += '(define-macro';
+    code += '  (log arg1 arg2 ...)';
+    code += '  (console.log arg1 arg2 ...))';
+    code += "\n";
+    code += '(console.log "foo")';
+
+    var expected = "";
+    expected += 'console.log("foo")';
+
+    assert.equal(loop.compile(code), expected);
+  },
+
+  'it should be able to use multiple patterns in a macro and extract out those patterns': function() {
+    var code = "";
+    code += '(define-macro';
+    code += '  (log)';
+    code += '  (console.log "")';
+    code += "\n";
+    code += '  (log arg1 arg2 ...)';
+    code += '  (console.log arg1 arg2 ...))';
+
+    var expected = "";
+
+    assert.equal(loop.compile(code), expected);
+  },
+
+  'it should not match a macro pattern if the macro has no ellipses and the pattern is not the same length': function() {
+    var code = "";
+    code += '(define-macro';
+    code += '  (log a b c)';
+    code += '  (console.log a b c))';
+    code += '';
+    code += '(log)';
+    code += '(log 1)';
+    code += '(log 1 2)';
+    code += '(log 1 2 3)';
+    code += '(log 1 2 3 4)';
+
+    var expected = "";
+    expected += "log();";
+    expected += "log(1);";
+    expected += "log(1,2);";
+    expected += "console.log(1,2,3);";
+    expected += "log(1,2,3,4)";
+
+    assert.equal(loop.compile(code), expected);
+  },
+
   // 'it should be able to use multiple patterns in a macro if the patterns are switched': function() {
   //   var code = "";
   //   code += '(define-macro';
   //   code += '  (log)';
-  //   code += '  (console.log ""))';
+  //   code += '  (console.log "")';
   //   code += "\n";
   //   code += '  (log arg1 arg2 ...)';
-  //   code += '  (console.log arg1 arg2 ...)';
+  //   code += '  (console.log arg1 arg2 ...))';
   //   code += "\n";
   //   code += '(log)';
   //   code += '(log "foo")';
