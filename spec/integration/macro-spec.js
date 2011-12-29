@@ -119,6 +119,24 @@ vows.describe("integration specs (macros)").addBatch({
     assert.equal(loop.compile(code), expected);
   },
 
+  'it should allow the gap in ... to come in the middle of a list': function() {
+    var code = '';
+    code += '(define-macro ';
+    code += '  (log arg1 arg2 ... arg3)';
+    code += '  (console.log arg1 arg2 ... arg3))';
+    code += '';
+    code += '(log 1 2)';
+    code += '(log 1 2 3)';
+    code += '(log 1 2 3 4)';
+    code += '(log 1 2 3 4 5)';
+
+    var expected = '';
+    expected += 'console.log(1,2);';
+    expected += 'console.log(1,2,3);';
+    expected += 'console.log(1,2,3,4);';
+    expected += 'console.log(1,2,3,4,5)';
+  },
+
   'it should not try to transform a macro pattern which does not match': function() {
     var code = '';
     code += '(define-macro ';
