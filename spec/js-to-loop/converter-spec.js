@@ -188,6 +188,13 @@ vows.describe("js to loop converter integration spec").addBatch({
     var expected = '(= x (? comments "/comments" ""))';
 
     assert.equal(loop.reverseCompile(source), expected);
+  },
+
+  'it should allow subscripts': function() {
+    var source = "x[10]";
+    var expected = '([] x 10)';
+
+    assert.equal(loop.reverseCompile(source), expected);
   }
 
   // 'it should be able to convert the compiler file from js to loop': function() {
