@@ -119,35 +119,47 @@ vows.describe("integration specs (macros)").addBatch({
     assert.equal(loop.compile(code), expected);
   },
 
-  // 'it should not try to transform a macro pattern which does not match': function() {
-  //
-  // },
-  //
-  // 'it should be able to use multiple patterns in a macro': function() {
-  //   var code = "";
-  //   code += '(define-macro';
-  //   code += '  (log arg1 arg2 ...)';
-  //   code += '  (console.log arg1 arg2 ...)';
-  //   code += "\n";
-  //   code += '  (log)';
-  //   code += '  (console.log ""))';
-  //   code += "\n";
-  //   code += '(log)';
-  //   code += '(log "foo")';
-  //
-  //   var expected = "";
-  //   expected += 'console.log("");';
-  //   expected += 'console.log("foo")';
-  //   assert.equal(loop.compile(code), expected);
-  // },
-  //
+  'it should not try to transform a macro pattern which does not match': function() {
+    var code = '';
+    code += '(define-macro ';
+    code += '  (log arg1 arg2 arg3 ...)';
+    code += '  (console.log arg1 arg2 arg3 ...))';
+    code += '';
+    code += '(log 1)';
+
+    var expected = '';
+    expected += 'log(1)';
+
+    assert.equal(loop.compile(code), expected);
+  },
+
+  'it should be able to use multiple patterns in a macro': function() {
+    var code = "";
+    code += '(define-macro';
+    code += '  (log arg1 arg2 ...)';
+    code += '  (console.log arg1 arg2 ...)';
+    code += "\n";
+    code += '  (log)';
+    code += '  (console.log ""))';
+    code += "\n";
+    code += '(log)';
+    code += '(log "foo")';
+
+    var expected = "";
+    expected += 'console.log("");';
+    expected += 'console.log("foo")';
+    assert.equal(loop.compile(code), expected);
+  },
+
   // 'it should be able to use multiple patterns in a macro if the patterns are switched': function() {
   //   var code = "";
   //   code += '(define-macro';
-  //   code += '  (log arg1 arg2 ...)';
-  //   code += '  (console.log arg1 arg2 ...)';
   //   code += '  (log)';
   //   code += '  (console.log ""))';
+  //   code += "\n";
+  //   code += '  (log arg1 arg2 ...)';
+  //   code += '  (console.log arg1 arg2 ...)';
+  //   code += "\n";
   //   code += '(log)';
   //   code += '(log "foo")';
   //
