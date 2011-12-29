@@ -77,43 +77,58 @@ vows.describe("integration specs (macros)").addBatch({
     assert.equal(loop.compile(code), "(function(x){(function(y){x+y})(20)})(10)");
   },
 
-  // 'it should be able to use two different macros': function() {
-  //   var code = "";
-  //   code += "(define-macro";
-  //   code += "  (let ((var value) ...)";
-  //   code += "    body ...)";
-  //   code += "  ((function (var ...) body ...) value))";
-  //
-  //   code += "(define-macro";
-  //   code += "  (log (x y))";
-  //   code += "  (console.log x y))";
-  //
-  //   code += "(let ((x 10))";
-  //   code += "  (log x))";
-  //
-  //   var expected = "";
-  //   expected += "(function(x) {"
-  //   expected += "  console.log(x);";
-  //   expected += "})(10);";
-  //
-  //   assert.equal(loop.compile(code), expected);
-  // },
+  'it should be able to use two different macros': function() {
+    var code = "";
+    code += "(define-macro";
+    code += "  (let ((var value) ...)";
+    code += "    body ...)";
+    code += "  ((function (var ...) body ...) value))";
+
+    code += "(define-macro";
+    code += "  (log x)";
+    code += "  (console.log x))";
+
+    code += "(let ((x 10))";
+    code += "  (log x))";
+
+    var expected = "";
+    expected += "(function(x){"
+    expected += "console.log(x)";
+    expected += "})(10)";
+
+    assert.equal(loop.compile(code), expected);
+  },
   //
   // 'it should be able to use multiple patterns in a macro': function() {
   //   var code = "";
   //   code += '(define-macro';
+  //   code += '  (log arg1 arg2 ...)';
+  //   code += '  (console.log arg1 arg2 ...)';
   //   code += '  (log)';
-  //   code += '  (console.log "")';
-  //   code += '  ';
-  //   code += '  (log var ...)';
-  //   code += '  (console.log var ...))';
-  //   code += '  ';
+  //   code += '  (console.log ""))';
+  //   code += '\n';
   //   code += '(log)';
   //   code += '(log "foo")';
   //
   //   var expected = "";
-  //   expected = 'console.log("");';
-  //   expected = 'console.log("foo")';
+  //   expected += 'console.log("");';
+  //   expected += 'console.log("foo")';
+  //   assert.equal(loop.compile(code), expected);
+  // },
+  //
+  // 'it should be able to use multiple patterns in a macro if the patterns are switched': function() {
+  //   var code = "";
+  //   code += '(define-macro';
+  //   code += '  (log arg1 arg2 ...)';
+  //   code += '  (console.log arg1 arg2 ...)';
+  //   code += '  (log)';
+  //   code += '  (console.log ""))';
+  //   code += '(log)';
+  //   code += '(log "foo")';
+  //
+  //   var expected = "";
+  //   expected += 'console.log("");';
+  //   expected += 'console.log("foo")';
   //   assert.equal(loop.compile(code), expected);
   // },
 
