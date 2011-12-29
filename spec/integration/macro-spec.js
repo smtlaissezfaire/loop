@@ -219,23 +219,23 @@ vows.describe("integration specs (macros)").addBatch({
     assert.equal(loop.compile(code), expected);
   },
 
-  // 'it should be able to use multiple patterns in a macro if the patterns are switched': function() {
-  //   var code = "";
-  //   code += '(define-macro';
-  //   code += '  (log)';
-  //   code += '  (console.log "")';
-  //   code += "\n";
-  //   code += '  (log arg1 arg2 ...)';
-  //   code += '  (console.log arg1 arg2 ...))';
-  //   code += "\n";
-  //   code += '(log)';
-  //   code += '(log "foo")';
-  //
-  //   var expected = "";
-  //   expected += 'console.log("");';
-  //   expected += 'console.log("foo")';
-  //   assert.equal(loop.compile(code), expected);
-  // },
+  'it should be able to use multiple patterns in a macro if the patterns are switched': function() {
+    var code = "";
+    code += '(define-macro';
+    code += '  (log)';
+    code += '  (console.log "")';
+    code += "\n";
+    code += '  (log arg1 arg2 ...)';
+    code += '  (console.log arg1 arg2 ...))';
+    code += "\n";
+    code += '(log)';
+    code += '(log "foo")';
+
+    var expected = "";
+    expected += 'console.log("");';
+    expected += 'console.log("foo")';
+    assert.equal(loop.compile(code), expected);
+  },
 
   'it should allow one macro to reference another': function() {
     var code = "";
