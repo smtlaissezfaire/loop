@@ -209,6 +209,13 @@ vows.describe("js to loop converter integration spec").addBatch({
     var expected = '(= foo (lambda () (console.log "foo")))';
 
     assert.equal(loop.reverseCompile(source), expected);
+  },
+
+  'it should handle while statements': function() {
+    var source = "while (true) { x(); }";
+    var expected = "(while true (x))";
+
+    assert.equal(loop.reverseCompile(source), expected);
   }
 
 
