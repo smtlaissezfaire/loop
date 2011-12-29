@@ -92,7 +92,7 @@ vows.describe("integration specs (macros)").addBatch({
     code += "  (log x))";
 
     var expected = "";
-    expected += "(function(x){"
+    expected += "(function(x){";
     expected += "console.log(x)";
     expected += "})(10)";
 
