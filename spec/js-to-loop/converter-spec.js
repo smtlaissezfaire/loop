@@ -202,7 +202,15 @@ vows.describe("js to loop converter integration spec").addBatch({
     var expected = "(// \"foo.*bar\")";
 
     assert.equal(loop.reverseCompile(source), expected);
+  },
+
+  'it should handle functions in non-anonymous fashion': function() {
+    var source = 'function foo() { console.log("foo"); }';
+    var expected = '(= foo (lambda () (console.log "foo")))';
+
+    assert.equal(loop.reverseCompile(source), expected);
   }
+
 
   // 'it should be able to convert the compiler file from js to loop': function() {
   //   var source = fs.readFileSync('./spec/js-to-loop/fixtures/compiler.js').toString();
