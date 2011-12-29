@@ -174,6 +174,13 @@ vows.describe("js to loop converter integration spec").addBatch({
     var expected = "(lambda () (return null))";
 
     assert.equal(loop.reverseCompile(source), expected);
+  },
+
+  'it should handle x++': function() {
+    var source = 'x++';
+    var expected = "(++ x)";
+
+    assert.equal(loop.reverseCompile(source), expected);
   }
 
   // 'it should be able to convert the compiler file from js to loop': function() {
