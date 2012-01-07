@@ -6,15 +6,21 @@ var loop = require(__dirname + "/../../lib/loop");
 var fs = require('fs');
 
 vows.describe("js to loop converter integration spec").addBatch({
-  'it should be able to reverse compile a simple var expression': function() {
+  'it should be able to reverse compile a simple var expression (and should use define for one statement)': function() {
     var source = "var x = 10;";
-    var expected = "(var (x 10))";
+    var expected = "(define x 10)";
     assert.equal(loop.reverseCompile(source), expected);
   },
 
   'it should be able to reverse compile a simple var expression (with different vars)': function() {
     var source = "var y = 20;";
-    var expected = "(var (y 20))";
+    var expected = "(define y 20)";
+    assert.equal(loop.reverseCompile(source), expected);
+  },
+
+  'it should be able to reverse compile a multiple expression var statement': function() {
+    var source = "var x = 10, y = 20;";
+    var expected = "(var (x 10) (y 20))";
     assert.equal(loop.reverseCompile(source), expected);
   },
 
@@ -92,7 +98,7 @@ vows.describe("js to loop converter integration spec").addBatch({
 
   'it should properly handle a var with a dot expression': function() {
     var source = 'var jsp = require("uglify-js").parser;';
-    var expected = '(var (jsp (require "uglify-js").parser))';
+    var expected = '(define jsp (require "uglify-js").parser)';
     assert.equal(loop.reverseCompile(source), expected);
   },
 
