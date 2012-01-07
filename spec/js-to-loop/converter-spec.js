@@ -1,4 +1,3 @@
-
 var vows = require("vows");
 var assert = require("assert");
 var loop = require(__dirname + "/../../lib/loop");
