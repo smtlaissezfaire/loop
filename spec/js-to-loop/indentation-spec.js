@@ -11,19 +11,57 @@ vows.describe("reverse compiler - indentation").addBatch({
     assert.equal(loop.reverseCompile(source), expected);
   },
 
-  'it should indent an lambda assignment': function() {} //: function() {
-  //   var source = '';
-  //   source += 'var x = function() {';
-  //   source += '  x + y;';
-  //   source += '  z + y;';
-  //   source += '};';
-  //
-  //   var expected = '';
-  //   expected += '(define x\n';
-  //   expected += '  (lambda ()\n';
-  //   expected += '    (+ x y)\n';
-  //   expected += '    (+ z y)))';
-  //
-  //   assert.equal(loop.reverseCompile(source), expected);
-  // }
+  'it should indent an lambda assignment': function() {
+    var source = '';
+    source += 'var x = function() {';
+    source += '  x + y;';
+    source += '  z + y;';
+    source += '};';
+
+    var expected = '';
+    expected += '(define x\n';
+    expected += '  (lambda ()\n';
+    expected += '    (+ x y)\n';
+    expected += '    (+ z y)))';
+
+    assert.equal(loop.reverseCompile(source), expected);
+  },
+
+  'it should outdent after the lambda is done': function() {
+    var source = '';
+    source += 'var x = function() {';
+    source += '  x + y;';
+    source += '  z + y;';
+    source += '};';
+    source += 'var y = function() {';
+    source += '  x + y;';
+    source += '  z + y;';
+    source += '};';
+
+    var expected = '';
+    expected += '(define x\n';
+    expected += '  (lambda ()\n';
+    expected += '    (+ x y)\n';
+    expected += '    (+ z y)))';
+    expected += '\n';
+    expected += '(define y\n';
+    expected += '  (lambda ()\n';
+    expected += '    (+ x y)\n';
+    expected += '    (+ z y)))';
+
+    assert.equal(loop.reverseCompile(source), expected);
+  },
+
+  'it should indent a lambda in an assignment with =': function() {
+    var source = '';
+    source += 'var x;';
+    source += 'x = function() {};';
+
+    var expected = '';
+    expected += '(define x)\n';
+    expected += '(= x\n';
+    expected += '  (lambda ()))';
+
+    assert.equal(loop.reverseCompile(source), expected);
+  }
 }).export(module);

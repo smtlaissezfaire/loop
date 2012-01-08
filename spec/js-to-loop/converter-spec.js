@@ -5,7 +5,9 @@ var loop = require(__dirname + "/../../lib/loop");
 var fs = require('fs');
 
 var noIndentOptions = {
-  varAlignment: false
+  varAlignment: false,
+  defineIndentsLambda: false,
+  lambdaIndentation: false
 };
 
 vows.describe("js to loop converter integration spec").addBatch({
