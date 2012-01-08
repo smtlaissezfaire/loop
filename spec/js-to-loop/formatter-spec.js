@@ -101,5 +101,20 @@ vows.describe("whitespace formatting").addBatch({
     expected += 'foo bar   end';
 
     assert.equal(formatter.toString(), expected);
+  },
+
+  'it should indent indent + outdent when indent is given a block': function() {
+    formatter = new CodeFormatter();
+    formatter.indent(function() {
+      formatter.append('foo');
+    });
+    formatter.newline();
+    formatter.append('bar');
+
+    var expected = '';
+    expected += '  foo\n';
+    expected += 'bar';
+
+    assert.equal(formatter.toString(), expected);
   }
 }).export(module);
