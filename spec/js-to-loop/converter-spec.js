@@ -8,7 +8,8 @@ var noIndentOptions = {
   varAlignment: false,
   defineIndentsLambda: false,
   lambdaIndentation: false,
-  ifIndentation: false
+  ifIndentation: false,
+  forIndentation: false
 };
 
 vows.describe("js to loop converter integration spec").addBatch({
@@ -228,8 +229,18 @@ vows.describe("js to loop converter integration spec").addBatch({
     var expected = "(while true (x))";
 
     assert.equal(loop.reverseCompile(source, noIndentOptions), expected);
-  }
+  },
 
+  'it should be able to handle for': function() {
+    var source = '';
+    source += 'for (x = 0; x <= 10; x++) {';
+    source += 'z();';
+    source += '}';
+
+    var expected = '(for ((= x 0) (<= x 10) (++ x)) (z))';
+
+    assert.equal(loop.reverseCompile(source, noIndentOptions), expected);
+  }
 
   // 'it should be able to convert the compiler file from js to loop': function() {
   //   var source = fs.readFileSync('./spec/js-to-loop/fixtures/compiler.js').toString();

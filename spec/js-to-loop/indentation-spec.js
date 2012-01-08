@@ -96,4 +96,19 @@ vows.describe("reverse compiler - indentation").addBatch({
     expected += '(define y)';
     assert.equal(loop.reverseCompile(source), expected);
   },
+
+  'it should indent for': function() {
+    var source = '';
+    source += 'for (x = 0; x <= 10; x++) {';
+    source += '  y();';
+    source += '  z();';
+    source += '}';
+
+    var expected = '';
+    expected += '(for ((= x 0) (<= x 10) (++ x))\n';
+    expected += '  (y)\n';
+    expected += '  (z))';
+
+    assert.equal(loop.reverseCompile(source), expected);
+  }
 }).export(module);
