@@ -11,7 +11,7 @@ vows.describe("reverse compiler - indentation").addBatch({
     assert.equal(loop.reverseCompile(source), expected);
   },
 
-  'it should indent an lambda assignment': function() {
+  'it should indent a lambda assignment': function() {
     var source = '';
     source += 'var x = function() {';
     source += '  x + y;';
@@ -65,6 +65,17 @@ vows.describe("reverse compiler - indentation").addBatch({
     assert.equal(loop.reverseCompile(source), expected);
   },
 
+  // 'it should indent the second arg of any define if it is a list': function() {
+  //   var source = '';
+  //   source += 'var x = foo();';
+  //
+  //   var expected = '';
+  //   expected += '(define x\n';
+  //   expected += '  (foo))';
+  //
+  //   assert.equal(loop.reverseCompile(source), expected);
+  // },
+
   'it should indent if statements': function() {
     var source = '';
     source += 'if (x) {';
@@ -84,5 +95,5 @@ vows.describe("reverse compiler - indentation").addBatch({
     expected += '(define x)\n';
     expected += '(define y)';
     assert.equal(loop.reverseCompile(source), expected);
-  }
+  },
 }).export(module);
