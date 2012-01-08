@@ -7,7 +7,8 @@ var fs = require('fs');
 var noIndentOptions = {
   varAlignment: false,
   defineIndentsLambda: false,
-  lambdaIndentation: false
+  lambdaIndentation: false,
+  ifIndentation: false
 };
 
 vows.describe("js to loop converter integration spec").addBatch({

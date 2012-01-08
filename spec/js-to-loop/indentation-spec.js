@@ -63,5 +63,26 @@ vows.describe("reverse compiler - indentation").addBatch({
     expected += '  (lambda ()))';
 
     assert.equal(loop.reverseCompile(source), expected);
+  },
+
+  'it should indent if statements': function() {
+    var source = '';
+    source += 'if (x) {';
+    source += '  y + z;';
+    source += '}';
+
+    var expected = '';
+    expected += '(if x\n';
+    expected += '  (+ y z))';
+
+    assert.equal(loop.reverseCompile(source), expected);
+  },
+
+  'it should indent var x; properly': function() {
+    var source = 'var x; var y;';
+    var expected = '';
+    expected += '(define x)\n';
+    expected += '(define y)';
+    assert.equal(loop.reverseCompile(source), expected);
   }
 }).export(module);
