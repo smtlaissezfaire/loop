@@ -42,7 +42,7 @@ vows.describe("reverse compiler - indentation").addBatch({
     expected += '(define x\n';
     expected += '  (lambda ()\n';
     expected += '    (+ x y)\n';
-    expected += '    (+ z y)))';
+    expected += '    (+ z y)))\n';
     expected += '\n';
     expected += '(define y\n';
     expected += '  (lambda ()\n';
@@ -159,5 +159,35 @@ vows.describe("reverse compiler - indentation").addBatch({
     expected += '    (bar)))';
 
     assert.equal(loop.reverseCompile(source), expected);
-  }
+  },
+
+  'it should add a newline after an assignment of a variable to a lambda': function() {
+    var source = '';
+    source += 'x = function() {};';
+    source += 'y = function() {};';
+
+    var expected = '';
+    expected += '(= x\n';
+    expected += '  (lambda ()))\n';
+    expected += '\n';
+    expected += '(= y\n';
+    expected += '  (lambda ()))';
+
+    assert.equal(loop.reverseCompile(source), expected);
+  },
+
+  'it should add a newline after an assignment of a variable to a lambda with var': function() {
+    var source = '';
+    source += 'var x = function() {};';
+    source += 'var y = function() {};';
+
+    var expected = '';
+    expected += '(define x\n';
+    expected += '  (lambda ()))\n';
+    expected += '\n';
+    expected += '(define y\n';
+    expected += '  (lambda ()))';
+
+    assert.equal(loop.reverseCompile(source), expected);
+  },
 }).export(module);
