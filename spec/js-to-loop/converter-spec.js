@@ -240,6 +240,19 @@ vows.describe("js to loop converter integration spec").addBatch({
     var expected = '(for ((= x 0) (<= x 10) (++ x)) (z))';
 
     assert.equal(loop.reverseCompile(source, noIndentOptions), expected);
+  },
+
+  'it should properly evaluate a function assignment inside a function (a regression)': function() {
+    var source = '';
+    source += 'var codeFormatter = function(options) {';
+    source += '  foo = function() {};';
+    source += '};';
+
+    var expected = '';
+    expected += '(define codeFormatter (lambda (options)';
+    expected += ' (= foo (lambda ()))))';
+
+    assert.equal(loop.reverseCompile(source, noIndentOptions), expected);
   }
 
   // 'it should be able to convert the compiler file from js to loop': function() {
