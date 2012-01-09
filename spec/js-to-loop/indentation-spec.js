@@ -110,5 +110,35 @@ vows.describe("reverse compiler - indentation").addBatch({
     expected += '  (z))';
 
     assert.equal(loop.reverseCompile(source), expected);
+  },
+
+  'if statements should have an extra newline if there is a statement after the if': function() {
+    var source = '';
+    source += 'if (x) { y(); }';
+    source += 'if (a) { b(); }';
+
+    var expected = '';
+    expected += '(if x\n';
+    expected += '  (y))\n';
+    expected += '\n';
+    expected += '(if a\n';
+    expected += '  (b))';
+
+    assert.equal(loop.reverseCompile(source), expected);
+  },
+
+  'if statements should not have an extra newline inside a function when the last statement': function() {
+    var source = '';
+    source += 'var e = function() {';
+    source += '  if (c) { d(); }';
+    source += '}';
+
+    var expected = '';
+    expected += '(define e\n';
+    expected += '  (lambda ()\n';
+    expected += '    (if c\n';
+    expected += '      (d))))';
+
+    assert.equal(loop.reverseCompile(source), expected);
   }
 }).export(module);
