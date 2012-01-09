@@ -140,5 +140,22 @@ vows.describe("reverse compiler - indentation").addBatch({
     expected += '      (d))))';
 
     assert.equal(loop.reverseCompile(source), expected);
+  },
+
+  'it should indent try/catch': function() {
+    var source = '';
+    source += 'try {';
+    source += '  foo();';
+    source += '} catch (e) {';
+    source += '  bar();';
+    source += '}';
+
+    var expected = '';
+    expected += '(try\n';
+    expected += '  (foo)\n';
+    expected += '  (catch e\n';
+    expected += '    (bar)))';
+
+    assert.equal(loop.reverseCompile(source), expected);
   }
 }).export(module);

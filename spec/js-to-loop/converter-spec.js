@@ -9,7 +9,9 @@ var noIndentOptions = {
   defineIndentsLambda: false,
   lambdaIndentation: false,
   ifIndentation: false,
-  forIndentation: false
+  forIndentation: false,
+  tryIndentation: false,
+  catchIndentation: false
 };
 
 vows.describe("js to loop converter integration spec").addBatch({
@@ -251,6 +253,23 @@ vows.describe("js to loop converter integration spec").addBatch({
     var expected = '';
     expected += '(define codeFormatter (lambda (options)';
     expected += ' (= foo (lambda ()))))';
+
+    assert.equal(loop.reverseCompile(source, noIndentOptions), expected);
+  },
+
+  'it should handle try/catch': function() {
+    var source = '';
+    source += 'try {';
+    source += '  foo();';
+    source += '} catch (e) {';
+    source += '  bar();';
+    source += '}';
+
+    var expected = '';
+    expected += '(try';
+    expected += ' (foo)';
+    expected += ' (catch e';
+    expected += ' (bar)))';
 
     assert.equal(loop.reverseCompile(source, noIndentOptions), expected);
   }
