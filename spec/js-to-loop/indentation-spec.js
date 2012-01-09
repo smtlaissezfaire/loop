@@ -80,11 +80,13 @@ vows.describe("reverse compiler - indentation").addBatch({
     var source = '';
     source += 'if (x) {';
     source += '  y + z;';
+    source += '  a + b;';
     source += '}';
 
     var expected = '';
     expected += '(if x\n';
-    expected += '  (+ y z))';
+    expected += '  (+ y z)\n';
+    expected += '  (+ a b))';
 
     assert.equal(loop.reverseCompile(source), expected);
   },
