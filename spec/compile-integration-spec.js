@@ -191,10 +191,13 @@ vows.describe("integration spec").addBatch({
   },
 
   'it should be able to use define with an implicit pair': function() {
-    var code = "";
-    code += "(define foo bar)";
-
+    var code = "(define foo bar)";
     assert.equal(loop.compile(code), "var foo=bar");
+  },
+
+  'it should be able to use define without a value': function() {
+    var code = "(define foo)";
+    assert.equal(loop.compile(code), "var foo");
   },
 
   'it should not insert semicolons into an if': function() {
