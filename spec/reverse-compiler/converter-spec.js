@@ -11,7 +11,10 @@ var noIndentOptions = {
   ifIndentation: false,
   forIndentation: false,
   tryIndentation: false,
-  catchIndentation: false
+  catchIndentation: false,
+  switchIndentation: false,
+  caseIndentation: false,
+  defaultIndentation: false
 };
 
 vows.describe("js to loop converter integration spec").addBatch({

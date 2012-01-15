@@ -190,4 +190,31 @@ vows.describe("reverse compiler - indentation").addBatch({
 
     assert.equal(loop.reverseCompile(source), expected);
   },
+
+  'it should indent switch / case statements': function() {
+    var source = '';
+    source += 'switch (one) {';
+    source += '  case "two":';
+    source += '    foo();';
+    source += '    break;';
+    source += '  case "three":';
+    source += '    bar();';
+    source += '    break;';
+    source += '  default:';
+    source += '    baz();';
+    source += '}';
+
+    var expected = '';
+    expected += '(switch one\n';
+    expected += '  (case "two"\n';
+    expected += '    (foo)\n';
+    expected += '    (break))\n';
+    expected += '  (case "three"\n';
+    expected += '    (bar)\n';
+    expected += '    (break))\n';
+    expected += '  (default\n';
+    expected += '    (baz)))';
+
+    assert.equal(loop.reverseCompile(source), expected);
+  }
 }).export(module);
