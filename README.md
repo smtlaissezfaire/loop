@@ -68,6 +68,24 @@ Proposed syntax:
     if (x) { y() }              => (if x
                                       (y))
 
+    if (x) { y() }              => (if x)
+    else { z(); }                     (y)
+                                      (z))
+
+    if (a) {                    => (cond (a (b))
+      b();                               (c (d))
+    } else if (c) {                      (else (e)))
+      d();
+    } else {
+      e();
+    }
+
+    (notes on if:
+      - it can only be used with an else - it can't be used in an else if construction
+      - if and else statements must have only one expression.
+
+      Essentialy, it's just a shorthand for a 'cond')
+
     switch (foo.bar) {          => (switch foo.bar
       case 'one':                    (case 'one'
         console.log('one');             (console.log 'one')

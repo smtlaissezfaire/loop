@@ -272,7 +272,40 @@ vows.describe("js to loop converter integration spec").addBatch({
     expected += ' (bar)))';
 
     assert.equal(loop.reverseCompile(source, noIndentOptions), expected);
-  }
+  },
+
+  'it should handle if / else (with one statement)': function() {
+    var source = '';
+    source += 'if (a) {';
+    source += '  b();';
+    source += '} else {';
+    source += '  c();';
+    source += '}';
+
+    var expected = '';
+    expected += '(if a (b)';
+    expected += ' (c))';
+
+    assert.equal(loop.reverseCompile(source, noIndentOptions), expected);
+  },
+
+  'it should handle if / else if / else': function() {
+    var source = '';
+    source += 'if (a) {';
+    source += '  b();';
+    source += '} else if (c) {';
+    source += '  d();';
+    source += '} else {';
+    source += '  e();';
+    source += '}';
+
+    var expected = '';
+    expected += '(cond (a (b))';
+    expected += ' (c (d))';
+    expected += ' (else (e)))';
+
+    assert.equal(loop.reverseCompile(source, noIndentOptions), expected);
+  },
 
   // 'it should be able to convert the compiler file from js to loop': function() {
   //   var source = fs.readFileSync('./spec/js-to-loop/fixtures/compiler.js').toString();
