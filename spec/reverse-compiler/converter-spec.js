@@ -409,5 +409,21 @@ vows.describe("js to loop converter integration spec").addBatch({
     expected += '  (console.log ([] obj key)))';
 
     assert.equal(loop.reverseCompile(source), expected);
+  },
+
+  'it should support if / else if without an else': function() {
+    var source = '';
+    source += 'if (a) {';
+    source += '  b();';
+    source += '} else if (c) {';
+    source += '  d();';
+    source += '}';
+
+    var expected = '';
+    expected += '(cond';
+    expected += ' (a (b))';
+    expected += ' (c (d)))';
+
+    assert.equal(loop.reverseCompile(source, noIndentOptions), expected);
   }
 }).export(module);
