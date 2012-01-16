@@ -314,6 +314,24 @@ vows.describe("js to loop converter integration spec").addBatch({
     var source = 'x = { 10: 20 }';
     var expected = '(= x ({} 10 20))';
     assert.equal(loop.reverseCompile(source, noIndentOptions), expected);
+  },
+
+  'it should be able to handle assignments with "this"': function() {
+    var source = 'this.parseError = this.yy.parseError;';
+    var expected = "(= this.parseError this.yy.parseError)";
+    assert.equal(loop.reverseCompile(source, noIndentOptions), expected);
+  },
+
+  'it should handle uglify js not returning a proper block statement inside an if (an if returns without parents)': function() {
+    var source = '';
+    source += "if (typeof this.yy.parseError === 'function')";
+    source += "    this.parseError = this.yy.parseError;";
+
+    var expected = '';
+    expected += '(if (=== (typeof this.yy.parseError) "function")';
+    expected += ' (= this.parseError this.yy.parseError))';
+
+    assert.equal(loop.reverseCompile(source, noIndentOptions), expected);
   }
 
   // 'it should be able to convert the compiler file from js to loop': function() {
