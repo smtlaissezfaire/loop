@@ -410,11 +410,4 @@ vows.describe("js to loop converter integration spec").addBatch({
 
     assert.equal(loop.reverseCompile(source), expected);
   }
-
-  // 'it should be able to convert the compiler file from js to loop': function() {
-  //   var source = fs.readFileSync('./spec/js-to-loop/fixtures/compiler.js').toString();
-  //   var expected = fs.readFileSync('./spec/js-to-loop/fixtures/compiler.loop').toString();
-  //
-  //   assert.equal(loop.reverseCompile(source, noIndentOptions), expected);
-  // }
 }).export(module);
