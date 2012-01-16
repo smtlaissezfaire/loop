@@ -310,6 +310,12 @@ vows.describe("js to loop converter integration spec").addBatch({
     assert.equal(loop.reverseCompile(source, noIndentOptions), expected);
   },
 
+  'it should be able to handle a number as an object key': function() {
+    var source = 'x = { 10: 20 }';
+    var expected = '(= x ({} 10 20))';
+    assert.equal(loop.reverseCompile(source, noIndentOptions), expected);
+  }
+
   // 'it should be able to convert the compiler file from js to loop': function() {
   //   var source = fs.readFileSync('./spec/js-to-loop/fixtures/compiler.js').toString();
   //   var expected = fs.readFileSync('./spec/js-to-loop/fixtures/compiler.loop').toString();
