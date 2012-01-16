@@ -15,7 +15,8 @@ var noIndentOptions = {
   switchIndentation: false,
   caseIndentation: false,
   defaultIndentation: false,
-  labelIndentation: false
+  labelIndentation: false,
+  forInIndentation: false
 };
 
 vows.describe("js to loop converter integration spec").addBatch({
@@ -393,6 +394,19 @@ vows.describe("js to loop converter integration spec").addBatch({
     expected += '      (if (! (([] tests j).pass ([] items i)))\n';
     expected += '        (= allPass false)\n';
     expected += '        (break top)))))';
+
+    assert.equal(loop.reverseCompile(source), expected);
+  },
+
+  'it should support for-in': function() {
+    var source = '';
+    source += 'for (key in obj) {';
+    source += '  console.log(obj[key]);';
+    source += '}';
+
+    var expected = '';
+    expected += '(for-in obj key\n';
+    expected += '  (console.log ([] obj key)))';
 
     assert.equal(loop.reverseCompile(source), expected);
   }
