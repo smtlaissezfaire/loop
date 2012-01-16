@@ -14,7 +14,8 @@ var noIndentOptions = {
   catchIndentation: false,
   switchIndentation: false,
   caseIndentation: false,
-  defaultIndentation: false
+  defaultIndentation: false,
+  labelIndentation: false
 };
 
 vows.describe("js to loop converter integration spec").addBatch({
@@ -236,6 +237,13 @@ vows.describe("js to loop converter integration spec").addBatch({
     assert.equal(loop.reverseCompile(source, noIndentOptions), expected);
   },
 
+  'it should handle while without a block': function() {
+    var source = "while (true) x();";
+    var expected = "(while true (x))";
+
+    assert.equal(loop.reverseCompile(source, noIndentOptions), expected);
+  },
+
   'it should be able to handle for': function() {
     var source = '';
     source += 'for (x = 0; x <= 10; x++) {';
@@ -332,6 +340,61 @@ vows.describe("js to loop converter integration spec").addBatch({
     expected += ' (= this.parseError this.yy.parseError))';
 
     assert.equal(loop.reverseCompile(source, noIndentOptions), expected);
+  },
+
+  'it should be able to handle for without a block': function() {
+    var source = '';
+    source += 'for (x = 0; x <= 10; x++)';
+    source += '  console.log(x);';
+
+    var expected = '';
+    expected += '(for ((= x 0) (<= x 10) (++ x))';
+    expected += ' (console.log x))';
+    assert.equal(loop.reverseCompile(source, noIndentOptions), expected);
+  },
+
+  'it should be able to handle nested for statements': function() {
+    var source = '';
+    source += 'for (i = 0; items.length; i++)';
+    source += '  for (j = 0; j < tests.length; i++)';
+    source += '    if (!tests[j].pass(items[i])){';
+    source += '      allPass = false;';
+    source += '    }';
+
+    var expected = '';
+    expected += '(for ((= i 0) items.length (++ i))';
+    expected += ' (for ((= j 0) (< j tests.length) (++ i))';
+    expected += ' (if (! (([] tests j).pass ([] items i)))';
+    expected += ' (= allPass false))))';
+
+    assert.equal(loop.reverseCompile(source, noIndentOptions), expected);
+  },
+
+  'it should be able to handle labels': function() {
+    var source = "";
+    source += 'var allPass = true;';
+    source += 'var i, j;';
+    source += '';
+    source += 'top:';
+    source += 'for (i = 0; items.length; i++)';
+    source += '  for (j = 0; j < tests.length; i++)';
+    source += '    if (!tests[j].pass(items[i])){';
+    source += '      allPass = false;';
+    source += '      break top;';
+    source += '    }';
+
+    var expected = '';
+    expected += '(define allPass true)\n';
+    expected += '(var (i)\n';
+    expected += '     (j))\n';
+    expected += '(label top\n';
+    expected += '  (for ((= i 0) items.length (++ i))\n';
+    expected += '    (for ((= j 0) (< j tests.length) (++ i))\n';
+    expected += '      (if (! (([] tests j).pass ([] items i)))\n';
+    expected += '        (= allPass false)\n';
+    expected += '        (break top)))))';
+
+    assert.equal(loop.reverseCompile(source), expected);
   }
 
   // 'it should be able to convert the compiler file from js to loop': function() {
