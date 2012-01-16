@@ -8,7 +8,7 @@
     "url": "git://github.com/smtlaissezfaire/loop_js.git"
   },
   "dependencies": {
-    "uglify-js": "*",
+    "uglify-js": "https://github.com/smtlaissezfaire/UglifyJS/tarball/master",
     "underscore": "*",
     "jison": "*"
   },

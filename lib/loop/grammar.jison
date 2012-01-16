@@ -36,10 +36,10 @@ s-expression
 
 list
   : OPEN_PAREN list-members CLOSE_PAREN %{
-    $$ = require("./grammar/token-builders").makeList($2);
+    $$ = require("./grammar/token-builders").makeList($2, @2);
   }
   | OPEN_PAREN CLOSE_PAREN %{
-    $$ = require("./grammar/token-builders").makeList([]);
+    $$ = require("./grammar/token-builders").makeList([], @1);
   }
 ;
 
@@ -50,20 +50,20 @@ list-members
 
 property-access
   : s-expression DOT s-expression {
-    $$ = require("./grammar/token-builders").makePropertyAccess($1, $3);
+    $$ = require("./grammar/token-builders").makePropertyAccess($1, $3, @1);
   }
 ;
 
 float
   : INT DOT INT {
-    $$ = require("./grammar/token-builders").makeNumber($1, $3);
+    $$ = require("./grammar/token-builders").makeNumber($1, $3, @1);
   }
 ;
 
 atom
-  : MACRO_PATTERN { $$ = require("./grammar/token-builders").makeMacroPattern(); }
+  : MACRO_PATTERN { $$ = require("./grammar/token-builders").makeMacroPattern(@1); }
   | float         { $$ = $1; }
-  | INT           { $$ = require("./grammar/token-builders").makeNumber($1); }
-  | STRING        { $$ = require("./grammar/token-builders").makeString($1); }
-  | SYMBOL        { $$ = require("./grammar/token-builders").makeSymbol($1); }
+  | INT           { $$ = require("./grammar/token-builders").makeNumber($1, @1); }
+  | STRING        { $$ = require("./grammar/token-builders").makeString($1, @1); }
+  | SYMBOL        { $$ = require("./grammar/token-builders").makeSymbol($1, @1); }
 ;

@@ -11,7 +11,8 @@ loop.executable.run({
     space_colon  : true,
     beautify     : true,
     ascii_only   : false,
-    inline_script: false
+    inline_script: false,
+    sourceTracking: false
   },
   module: loop.compile
 });

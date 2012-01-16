@@ -268,5 +268,47 @@ vows.describe("integration spec").addBatch({
     var expected = "屌(你,老,母)";
 
     assert.equal(loop.compile(source), expected);
-  }
+  },
+
+  'it should be able to add source tracking to functions': function() {
+    var source = '';
+    source += '(= x\n';
+    source += '  (lambda ()\n';
+    source += '    (console.log "one")))\n';
+    source += '\n';
+    source += '(= y\n';
+    source += '  (lambda ()\n';
+    source += '    (console.log "two")))\n';
+
+    var expected = '';
+    expected += '// line 1, column 1\n';
+    expected += 'x=function(){console.log("one")};';
+    expected += '// line 5, column 1\n';
+    expected += 'y=function(){console.log("two")}';
+
+    assert.equal(loop.compile(source, { sourceTracking: true }), expected);
+  },
+
+  // 'it should not blow up if compiling with source tracking and compressing / minifying': function() {
+  //   var source = '';
+  //   source += '(= x\n';
+  //   source += '  (lambda ()\n';
+  //   source += '    (console.log "one")))\n';
+  //   source += '\n';
+  //   source += '(= y\n';
+  //   source += '  (lambda ()\n';
+  //   source += '    (console.log "two")))\n';
+  //
+  //   var expected = '';
+  //   expected += 'x=function(){console.log("one")};';
+  //   expected += 'y=function(){console.log("two")}';
+  //
+  //   var compilationOptions = {
+  //     sourceTracking: true,
+  //     mangle: true,
+  //     squeeze: true
+  //   };
+  //
+  //   assert.equal(loop.compile(source, compilationOptions), expected);
+  // }
 }).export(module);
