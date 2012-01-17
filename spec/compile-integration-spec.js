@@ -201,7 +201,7 @@ vows.describe("integration spec").addBatch({
   },
 
   'it should not insert semicolons into an if': function() {
-    var compilationOptions = {
+    var defaultOptions = {
       indent_start : 0,
       indent_level : 2,
       quote_keys   : false,
@@ -223,7 +223,7 @@ vows.describe("integration spec").addBatch({
     expected += "  }\n";
     expected += "});";
 
-    assert.equal(loop.compile(code, compilationOptions),
+    assert.equal(loop.compile(code, defaultOptions),
                  expected);
   },
 
@@ -286,7 +286,7 @@ vows.describe("integration spec").addBatch({
     expected += '// line 5, column 1\n';
     expected += 'y=function(){console.log("two")}';
 
-    assert.equal(loop.compile(source, { sourceTracking: true }), expected);
+    assert.equal(loop.compile(source, { source_tracking: true }), expected);
   },
 
   'it should not blow up when compressing / minifying': function() {
@@ -303,13 +303,13 @@ vows.describe("integration spec").addBatch({
     expected += 'x=function(){console.log("one")},';
     expected += 'y=function(){console.log("two")}';
 
-    var compilationOptions = {
-      sourceTracking: false,
+    var defaultOptions = {
+      source_tracking: false,
       mangle: true,
       squeeze: true
     };
 
-    assert.equal(loop.compile(source, compilationOptions), expected);
+    assert.equal(loop.compile(source, defaultOptions), expected);
   },
 
   'it should not blow up when mangling': function() {
@@ -328,13 +328,13 @@ vows.describe("integration spec").addBatch({
     expected += '// line 5, column 1\n';
     expected += 'y=function(){console.log("two")}';
 
-    var compilationOptions = {
-      sourceTracking: true,
+    var defaultOptions = {
+      source_tracking: true,
       mangle: true,
       squeeze: false
     };
 
-    assert.equal(loop.compile(source, compilationOptions), expected);
+    assert.equal(loop.compile(source, defaultOptions), expected);
   },
 
   'it should not blow up when squeezing': function() {
@@ -353,12 +353,12 @@ vows.describe("integration spec").addBatch({
     expected += '// line 5, column 1\n';
     expected += 'y=function(){console.log("two")}';
 
-    var compilationOptions = {
-      sourceTracking: true,
+    var defaultOptions = {
+      source_tracking: true,
       mangle: false,
       squeeze: true
     };
 
-    assert.equal(loop.compile(source, compilationOptions), expected);
+    assert.equal(loop.compile(source, defaultOptions), expected);
   }
 }).export(module);

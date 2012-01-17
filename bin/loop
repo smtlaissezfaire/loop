@@ -2,9 +2,25 @@
 
 var loop = require(__dirname + '/../lib/loop');
 
+var USAGE = "";
+USAGE += '[options]* [file]+\n';
+USAGE += '\n';
+USAGE += 'Compile a loop file into a javascript source file.\n';
+USAGE += '\n';
+USAGE += 'If no file is provided, file is assumed to be pipped in via STDIN.\n';
+USAGE += 'Output occurs on STDOUT.';
+
 loop.executable.run({
-  argv: process.argv,
-  compilationOptions: {
+  usage: USAGE,
+  options: [
+    ['-s --source_tracking', "Add comments in for top level function line + column positions"],
+    ['--remove_comments', "Remove comments from generated source."],
+    ['--indent_start <n>', "Source indentation level (default 0)", parseInt],
+    ['--indent_level <n>', "Number of spaces to indent", parseInt],
+    ['--quote_keys', "Quote object keys"],
+    ['--beautify', "Beautify source (uglifyjs)"]
+  ],
+  defaultOptions: {
     indent_start : 0,
     indent_level : 2,
     quote_keys   : false,
@@ -12,7 +28,7 @@ loop.executable.run({
     beautify     : true,
     ascii_only   : false,
     inline_script: false,
-    sourceTracking: false
+    source_tracking: false
   },
   module: loop.compile
 });

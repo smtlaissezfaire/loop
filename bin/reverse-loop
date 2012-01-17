@@ -2,8 +2,17 @@
 
 var loop = require(__dirname + '/../lib/loop');
 
+var USAGE = "";
+USAGE += '[options]* [file]+\n';
+USAGE += '\n';
+USAGE += 'Reverse compile a javascript file into a loop source file.\n';
+USAGE += '\n';
+USAGE += 'If no file is provided, file is assumed to be pipped in via STDIN.\n';
+USAGE += 'Output occurs on STDOUT.';
+
 loop.executable.run({
-  argv: process.argv,
-  compilationOptions: {},
+  usage: USAGE,
+  options: [],
+  defaultOptions: {},
   module: loop.reverseCompile
 });

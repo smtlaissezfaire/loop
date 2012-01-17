@@ -10,7 +10,8 @@
   "dependencies": {
     "uglify-js": "https://github.com/smtlaissezfaire/UglifyJS/tarball/master",
     "underscore": "*",
-    "jison": "*"
+    "jison": "*",
+    "commander": "*"
   },
   "devDependencies": {
     "async": "*",
