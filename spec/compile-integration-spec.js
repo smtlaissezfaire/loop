@@ -289,26 +289,26 @@ vows.describe("integration spec").addBatch({
     assert.equal(loop.compile(source, { sourceTracking: true }), expected);
   },
 
-  // 'it should not blow up if compiling with source tracking and compressing / minifying': function() {
-  //   var source = '';
-  //   source += '(= x\n';
-  //   source += '  (lambda ()\n';
-  //   source += '    (console.log "one")))\n';
-  //   source += '\n';
-  //   source += '(= y\n';
-  //   source += '  (lambda ()\n';
-  //   source += '    (console.log "two")))\n';
-  //
-  //   var expected = '';
-  //   expected += 'x=function(){console.log("one")};';
-  //   expected += 'y=function(){console.log("two")}';
-  //
-  //   var compilationOptions = {
-  //     sourceTracking: true,
-  //     mangle: true,
-  //     squeeze: true
-  //   };
-  //
-  //   assert.equal(loop.compile(source, compilationOptions), expected);
-  // }
+  'it should not blow up when compressing / minifying': function() {
+    var source = '';
+    source += '(= x\n';
+    source += '  (lambda ()\n';
+    source += '    (console.log "one")))\n';
+    source += '\n';
+    source += '(= y\n';
+    source += '  (lambda ()\n';
+    source += '    (console.log "two")))\n';
+
+    var expected = '';
+    expected += 'x=function(){console.log("one")},';
+    expected += 'y=function(){console.log("two")}';
+
+    var compilationOptions = {
+      sourceTracking: false,
+      mangle: true,
+      squeeze: true
+    };
+
+    assert.equal(loop.compile(source, compilationOptions), expected);
+  }
 }).export(module);
