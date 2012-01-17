@@ -80,7 +80,7 @@ Proposed syntax:
       e();
     }
 
-    // foo                      => (; "foo")
+    // foo                      => // foo
 
     (notes on if:
       - it can only be used with an else - it can't be used in an else if construction

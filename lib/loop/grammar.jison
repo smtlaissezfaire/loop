@@ -1,6 +1,7 @@
 %lex
 %%
 
+"//".*                                                  return "COMMENT";
 \"(\\.|[^\\"])*\"                                       return "STRING";
 \'(\\.|[^\\'])*\'                                       return "STRING";
 \s+                                                     /* skip whitespace */
@@ -31,6 +32,7 @@ s-expression
   : list            { $$ = $1; }
   | property-access { $$ = $1; }
   | atom            { $$ = $1; }
+  | comment         { $$ = $1; }
 ;
 
 list
@@ -65,4 +67,8 @@ atom
   | INT           { $$ = require("./grammar/token-builders").makeNumber($1, @1); }
   | STRING        { $$ = require("./grammar/token-builders").makeString($1, @1); }
   | SYMBOL        { $$ = require("./grammar/token-builders").makeSymbol($1, @1); }
+;
+
+comment
+  : COMMENT { $$ = require("./grammar/token-builders").makeComment($1, @1); }
 ;
