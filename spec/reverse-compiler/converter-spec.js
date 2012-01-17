@@ -425,5 +425,12 @@ vows.describe("js to loop converter integration spec").addBatch({
     expected += ' (c (d)))';
 
     assert.equal(loop.reverseCompile(source, noIndentOptions), expected);
+  },
+
+  'it should allow comments through': function() {
+    var source = '// foo bar';
+    var expected = '(; "foo bar")';
+
+    assert.equal(loop.reverseCompile(source, noIndentOptions), expected);
   }
 }).export(module);

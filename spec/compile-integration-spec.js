@@ -360,5 +360,12 @@ vows.describe("integration spec").addBatch({
     };
 
     assert.equal(loop.compile(source, defaultOptions), expected);
+  },
+
+  'it should allow comments through when compiling': function() {
+    var source   = '(; "foo    bar /foo/ (bar baz quxx 17)")';
+    var expected =  '// foo    bar /foo/ (bar baz quxx 17)';
+
+    assert.equal(loop.compile(source), expected);
   }
 }).export(module);
