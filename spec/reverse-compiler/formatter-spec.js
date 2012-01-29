@@ -1,6 +1,6 @@
 var vows = require("vows");
 var assert = require("assert");
-var CodeFormatter = require(__dirname + "/../../lib/loop/code-formatter").codeFormatter;
+var CodeFormatter = require(__dirname + "/../../lib/loop/util/code-formatter").codeFormatter;
 
 vows.describe("whitespace formatting").addBatch({
   'it should be empty by default': function() {
