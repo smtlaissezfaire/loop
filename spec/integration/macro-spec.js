@@ -255,7 +255,106 @@ vows.describe("integration specs (macros)").addBatch({
     assert.equal(loop.compile(code), expected);
   },
 
-  // 'it should allow macros to be recursive': function() {}
+  'it should pick the correct macro based on arguments': function() {
+    var macroDefinitions = '';
+    var code;
+
+    macroDefinitions += '(define-macro';
+    macroDefinitions += '  (arg-macro)';
+    macroDefinitions += '  (console.log "zero-args")';
+    macroDefinitions += '  ';
+    macroDefinitions += '  (arg-macro x)';
+    macroDefinitions += '  (console.log "one-arg")';
+    macroDefinitions += '  ';
+    macroDefinitions += '  (arg-macro x y ...)';
+    macroDefinitions += '  (console.log "multi-args"))';
+
+    code = macroDefinitions;
+    code += '(arg-macro)';
+    assert.equal(loop.compile(code), 'console.log("zero-args")');
+
+    code = macroDefinitions;
+    code += '(arg-macro 1)';
+    assert.equal(loop.compile(code), 'console.log("one-arg")');
+
+    code = macroDefinitions;
+    code += '(arg-macro 1 2)';
+    assert.equal(loop.compile(code), 'console.log("multi-args")');
+
+    code = macroDefinitions;
+    code += '(arg-macro 1 2 3)';
+    assert.equal(loop.compile(code), 'console.log("multi-args")');
+
+    //////////////////
+
+    macroDefinitions = '';
+    macroDefinitions += '(define-macro';
+    macroDefinitions += '  (arg-macro ())';
+    macroDefinitions += '  (console.log "zero-args")';
+    macroDefinitions += '  ';
+    macroDefinitions += '  (arg-macro (x))';
+    macroDefinitions += '  (console.log "one-arg")';
+    macroDefinitions += '  ';
+    macroDefinitions += '  (arg-macro (x y ...))';
+    macroDefinitions += '  (console.log "multi-args"))';
+
+    code = macroDefinitions;
+    code += '(arg-macro ())';
+    assert.equal(loop.compile(code), 'console.log("zero-args")');
+
+    code = macroDefinitions;
+    code += '(arg-macro (1))';
+    assert.equal(loop.compile(code), 'console.log("one-arg")');
+
+    code = macroDefinitions;
+    code += '(arg-macro (1 2))';
+    assert.equal(loop.compile(code), 'console.log("multi-args")');
+
+    code = macroDefinitions;
+    code += '(arg-macro (1 2 3))';
+    assert.equal(loop.compile(code), 'console.log("multi-args")');
+
+    //////////////////
+
+    macroDefinitions = '';
+    macroDefinitions += '(define-macro';
+    macroDefinitions += '  (arg-macro ())';
+    macroDefinitions += '  (console.log "zero-args")';
+    macroDefinitions += '  ';
+    macroDefinitions += '  (arg-macro (x y ...))';
+    macroDefinitions += '  (console.log x y ...))';
+
+    code = macroDefinitions;
+    code += '(arg-macro ())';
+    assert.equal(loop.compile(code), 'console.log("zero-args")');
+
+    code = macroDefinitions;
+    code += '(arg-macro (1))';
+    assert.equal(loop.compile(code), 'console.log(1)');
+
+    code = macroDefinitions;
+    code += '(arg-macro (1 2))';
+    assert.equal(loop.compile(code), 'console.log(1,2)');
+
+    code = macroDefinitions;
+    code += '(arg-macro (1 2 3))';
+    assert.equal(loop.compile(code), 'console.log(1,2,3)');
+  },
+
+  'it should allow recursion in macros': function() {
+    var code = '';
+    code += '(define-macro';
+    code += '  (recursive-foo)';
+    code += '  (bar)';
+    code += '';
+    code += '  (recursive-foo arg1 arg2 ...)';
+    code += '  (foo (recursive-foo arg2 ...)))';
+    code += '';
+    code += '(recursive-foo 1 2 3)';
+    var expected = 'foo(foo(foo(bar())))';
+
+    assert.equal(loop.compile(code), expected);
+  },
 
   // 'it should be able to use let* (which builds off let and has multiple patterns)': function() {
   //   var code = "";
@@ -281,13 +380,13 @@ vows.describe("integration specs (macros)").addBatch({
   //   code += "  (console.log x))";
   //
   //   var expected = "";
-  //   expected = "(function(a) {";
-  //   expected = "  (function(b) {";
-  //   expected = "    (function(x) {";
-  //   expected = "      console.log(x);";
-  //   expected = "    })(a + b);";
-  //   expected = "  })(20);";
-  //   expected = "})(10);";
+  //   expected += "(function(a) {";
+  //   expected += "  (function(b) {";
+  //   expected += "    (function(x) {";
+  //   expected += "      console.log(x);";
+  //   expected += "    })(a + b);";
+  //   expected += "  })(20);";
+  //   expected += "})(10);";
   //
   //   assert.equal(loop.compile(code), expected);
   // }
