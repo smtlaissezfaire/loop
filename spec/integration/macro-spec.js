@@ -28,6 +28,20 @@ vows.describe("integration specs (macros)").addBatch({
     assert.equal(loop.compile(code), "(function(x,y){console.log(x+y)})(10,20)");
   },
 
+  'it should be able to define and use let with no values': function() {
+    var code = "";
+    code += "(define-macro\n";
+    code += "  (my-let ((var val) ...)\n";
+    code += "    body ...)\n";
+    code += "  ((lambda (var ...)\n";
+    code += "    body ...) val ...))\n";
+    code += "\n";
+    code += "(my-let ()\n";
+    code += "  (console.log (+ x y)))\n";
+
+    assert.equal(loop.compile(code), "(function(){console.log(x+y)})()");
+  },
+
   'it should be able to define and use an unless macro': function() {
     var code = "";
     code += "(define-macro";
