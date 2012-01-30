@@ -70,7 +70,7 @@ vows.describe("whitespace formatting").addBatch({
 
   'it should be able to use custom indentation marks': function() {
     formatter = new CodeFormatter({
-      indentationMark: '\t'
+      indentationMark: "\t"
     });
     formatter.indent();
     formatter.append('foo');
@@ -81,10 +81,10 @@ vows.describe("whitespace formatting").addBatch({
     formatter.newline();
     formatter.append('baz');
 
-    var expected = '';
-    expected += '\tfoo\n';
-    expected += '\t\tbar\n';
-    expected += '\tbaz';
+    var expected = "";
+    expected += "\tfoo\n";
+    expected += "\t\tbar\n";
+    expected += "\tbaz";
 
     assert.equal(formatter.toString(), expected);
   },
