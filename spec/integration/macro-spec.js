@@ -358,14 +358,14 @@ vows.describe("integration specs (macros)").addBatch({
   'it should allow recursion in macros': function() {
     var code = '';
     code += '(define-macro';
-    code += '  (recursive-foo)';
+    code += '  (recursive-foo arg1)';
     code += '  (bar)';
     code += '';
     code += '  (recursive-foo arg1 arg2 ...)';
     code += '  (foo (recursive-foo arg2 ...)))';
     code += '';
     code += '(recursive-foo 1 2 3)';
-    var expected = 'foo(foo(foo(bar())))';
+    var expected = 'foo(foo(bar()))';
 
     assert.equal(loop.compile(code), expected);
   },
