@@ -7,6 +7,14 @@ var parseCode = function(code) {
   return loop.parse(code)[0];
 };
 
+var multi_arg_let_star = function() {
+  var code = "";
+  code += "  (let* ((i1 v1)";
+  code += "         (i2 v2) ...)";
+  code += "    body ...)";
+  return code;
+};
+
 vows.describe("macro matching").addBatch({
   'it should match a symbol to the same symbol': function() {
     var macro = parseCode('foo');
@@ -121,5 +129,11 @@ vows.describe("macro matching").addBatch({
     var code = parseCode('(let* (x 10) foo bar)');
 
     assert.equal(false, macroCompiler.macroMatchesTree(macro, code));
+  },
+  'it should match a let* with a one arg list of args and a body': function() {
+    var macro = parseCode(multi_arg_let_star());
+    var code = parseCode('(let* ((x1 y1)) (console.log x))');
+
+    assert.equal(true, macroCompiler.macroMatchesTree(macro, code));
   }
 }).export(module);

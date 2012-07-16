@@ -421,52 +421,79 @@ vows.describe("integration specs (macros)").addBatch({
       assert.equal(loop.compile(code), expected);
     },
 
-    // 'it should use one argument': function() {
-    //   var code = "";
-    //   code += let_star();
-    //   code += "(let* ((x 10))";
-    //   code += "  (console.log x))";
-    //
-    //   var expected = "";
-    //   expected += "(function(x){";
-    //   expected += "console.log(x)";
-    //   expected += "})(10)";
-    //
-    //   assert.equal(loop.compile(code), expected);
-    // },
+    'it should use one argument': function() {
+      var code = "";
+      code += let_star();
+      code += "(let* ((x 10))";
+      code += "  (console.log x))";
 
-    // 'it should use two arguments': function() {
-    //   var code = "";
-    //   code += let_star();
-    //   code += "(let* ((x 10) (y 20))";
-    //   code += "  (console.log x))";
-    //
-    //   var expected = "";
-    //   expected += "(function(x){";
-    //   expected += "(function(y){";
-    //   expected += "console.log(x)";
-    //   expected += "})(20)";
-    //   expected += "})(10)";
-    //
-    //   assert.equal(loop.compile(code), expected);
-    // },
-    // 'it should use three arguments': function() {
-    //   var code = "";
-    //   code += let_star();
-    //   code += "(let* ((x 10) (y 20) (z 30))";
-    //   code += "  (console.log x))";
-    //
-    //   var expected = "";
-    //   expected += "(function(x){";
-    //   expected += "(function(y){";
-    //   expected += "(function(y){";
-    //   expected += "console.log(x)";
-    //   expected += "})(30)";
-    //   expected += "})(20)";
-    //   expected += "})(10)";
-    //
-    //   assert.equal(loop.compile(code), expected);
-    // }
+      var expected = "";
+      expected += "(function(x){";
+      expected +=   "(function(){";
+      expected +=     "console.log(x)";
+      expected +=   "})()";
+      expected += "})(10)";
+
+      assert.equal(loop.compile(code), expected);
+    },
+
+    'it should use two arguments': function() {
+      var code = "";
+      code += let_star();
+      code += "(let* ((x 10) (y 20))";
+      code += "  (console.log x))";
+
+      var expected = "";
+      expected += "(function(x){";
+      expected +=   "(function(y){";
+      expected +=     "(function(){";
+      expected +=       "console.log(x)";
+      expected +=     "})()";
+      expected +=   "})(20)";
+      expected += "})(10)";
+
+      assert.equal(loop.compile(code), expected);
+    },
+    'it should use three arguments': function() {
+      var code = "";
+      code += let_star();
+      code += "(let* ((x 10) (y 20) (z 30))";
+      code += "  (console.log x))";
+
+      var expected = "";
+      expected += "(function(x){";
+      expected +=   "(function(y){";
+      expected +=     "(function(z){";
+      expected +=       "(function(){";
+      expected +=         "console.log(x)";
+      expected +=       "})()";
+      expected +=     "})(30)";
+      expected +=   "})(20)";
+      expected += "})(10)";
+
+      assert.equal(loop.compile(code), expected);
+    },
+    'it should use one argument but multiple body statements': function() {
+      var code = "";
+      code += let_star();
+      code += "(let* ((x 10))";
+      code += "  (console.log x)";
+      code += "  (foo bar)";
+      code += "  (baz quxx one two three)";
+      code += "  (console.log 'foo'))";
+
+      var expected = "";
+      expected += "(function(x){";
+      expected +=   "(function(){";
+      expected +=     "console.log(x);";
+      expected +=     "foo(bar);";
+      expected +=     "baz(quxx,one,two,three);";
+      expected +=     "console.log(\"foo\")";
+      expected +=   "})()";
+      expected += "})(10)";
+
+      assert.equal(loop.compile(code), expected);
+    }
   }
 
 }).export(module);
