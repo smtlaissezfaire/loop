@@ -2,6 +2,27 @@ var vows = require("vows");
 var assert = require("assert");
 var loop = require(__dirname + "/../../lib/loop");
 
+var let_star = function() {
+  var code = "";
+  code += "(define-macro";
+  code += "  (let ((var value) ...)";
+  code += "    body ...)";
+  code += "  ((function (var ...) body ...) value ...))";
+  code += "";
+  code += "(define-macro";
+  code += "  (let* () body ...)";
+  code += "  (let () body ...)";
+  code += "";
+  code += "  (let* ((i1 v1)";
+  code += "         (i2 v2) ...)";
+  code += "    body ...)";
+  code += "  (let ((i1 v1))";
+  code += "    (let* ((i2 v2) ...)";
+  code += "      body ...)))";
+  code += "";
+  return code;
+};
+
 vows.describe("integration specs (macros)").addBatch({
   'it should be able to use a simple macro': function() {
     var code = "";
@@ -370,38 +391,82 @@ vows.describe("integration specs (macros)").addBatch({
     assert.equal(loop.compile(code), expected);
   },
 
-  // 'it should be able to use let* (which builds off let and has multiple patterns)': function() {
-  //   var code = "";
-  //   code += "(define-macro";
-  //   code += "  (let ((var value) ...)";
-  //   code += "    body ...)";
-  //   code += "  ((function (var ...) body ...) value))";
-  //   code += "";
-  //   code += "(define-macro";
-  //   code += "  (let* () body ...)";
-  //   code += "  (let () body ...)";
-  //   code += "";
-  //   code += "  (let* ((i1 v1)";
-  //   code += "         (i2 v2) ...)";
-  //   code += "    body ...)";
-  //   code += "  (let ((i1 v1))";
-  //   code += "    (let* ((i2 v2) ...)";
-  //   code += "      body ...)))";
-  //   code += "";
-  //   code += "(let* ((a 10)";
-  //   code += "       (b 20)";
-  //   code += "       (x (+ a b)))";
-  //   code += "  (console.log x))";
-  //
-  //   var expected = "";
-  //   expected += "(function(a) {";
-  //   expected += "  (function(b) {";
-  //   expected += "    (function(x) {";
-  //   expected += "      console.log(x);";
-  //   expected += "    })(a + b);";
-  //   expected += "  })(20);";
-  //   expected += "})(10);";
-  //
-  //   assert.equal(loop.compile(code), expected);
-  // }
+  'it should allow an empty argument list to let': function() {
+    var code = "";
+    code += "(define-macro";
+    code += "  (let ((var value) ...)";
+    code += "    body ...)";
+    code += "  ((function (var ...) body ...) value ...))";
+
+    code += "(let ()";
+    code += "  (foo))";
+
+    var expected = "(function(){foo()})()";
+
+    assert.equal(loop.compile(code), expected);
+  },
+
+  'using let-star': {
+    'it should return an empty function with 0 arguments': function() {
+      var code = "";
+      code += let_star();
+      code += "(let* ()";
+      code += "  (console.log x))";
+
+      var expected = "";
+      expected += "(function(){";
+      expected += "console.log(x)";
+      expected += "})()";
+
+      assert.equal(loop.compile(code), expected);
+    },
+
+    // 'it should use one argument': function() {
+    //   var code = "";
+    //   code += let_star();
+    //   code += "(let* ((x 10))";
+    //   code += "  (console.log x))";
+    //
+    //   var expected = "";
+    //   expected += "(function(x){";
+    //   expected += "console.log(x)";
+    //   expected += "})(10)";
+    //
+    //   assert.equal(loop.compile(code), expected);
+    // },
+
+    // 'it should use two arguments': function() {
+    //   var code = "";
+    //   code += let_star();
+    //   code += "(let* ((x 10) (y 20))";
+    //   code += "  (console.log x))";
+    //
+    //   var expected = "";
+    //   expected += "(function(x){";
+    //   expected += "(function(y){";
+    //   expected += "console.log(x)";
+    //   expected += "})(20)";
+    //   expected += "})(10)";
+    //
+    //   assert.equal(loop.compile(code), expected);
+    // },
+    // 'it should use three arguments': function() {
+    //   var code = "";
+    //   code += let_star();
+    //   code += "(let* ((x 10) (y 20) (z 30))";
+    //   code += "  (console.log x))";
+    //
+    //   var expected = "";
+    //   expected += "(function(x){";
+    //   expected += "(function(y){";
+    //   expected += "(function(y){";
+    //   expected += "console.log(x)";
+    //   expected += "})(30)";
+    //   expected += "})(20)";
+    //   expected += "})(10)";
+    //
+    //   assert.equal(loop.compile(code), expected);
+    // }
+  }
+
 }).export(module);

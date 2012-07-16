@@ -74,6 +74,12 @@ vows.describe("macro matching").addBatch({
 
     assert.equal(true, macroCompiler.macroMatchesTree(macro, code));
   },
+  'it should match ... in between arguments if the correct right + left number of arguments are present': function() {
+    var macro = parseCode("(one two ... three four)");
+    var code = parseCode("(one thee four)");
+
+    assert.equal(true, macroCompiler.macroMatchesTree(macro, code));
+  },
   'it should not match ... in between arguments if the wrong number of arguments are present': function() {
     var macro = parseCode("(foo ... bar baz)");
     var code = parseCode("(baz)");
@@ -103,5 +109,17 @@ vows.describe("macro matching").addBatch({
     var code = parseCode("(one two three)");
 
     assert.equal(true, macroCompiler.macroMatchesTree(macro, code));
+  },
+  'it should not match a one arg subexpression to an empty macro subexpression without a pattern in it': function() {
+    var macro = parseCode('(let* () body)');
+    var code = parseCode('(let* (x 10) foo)');
+
+    assert.equal(false, macroCompiler.macroMatchesTree(macro, code));
+  },
+  'it should not match a one arg subexpression to an empty macro subexpression with a pattern in the outer expression': function() {
+    var macro = parseCode('(let* () body ...)');
+    var code = parseCode('(let* (x 10) foo bar)');
+
+    assert.equal(false, macroCompiler.macroMatchesTree(macro, code));
   }
 }).export(module);
