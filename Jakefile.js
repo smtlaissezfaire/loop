@@ -152,7 +152,7 @@ task('clean_all', ['clean'], function() {
 
 namespace('compiler', function() {
   desc("Reverse compile the compiler");
-  task('reverse_compile', function() {
+  task('reverse_compile', ["grammar"], function() {
     var libFiles;
     var specFiles;
 
