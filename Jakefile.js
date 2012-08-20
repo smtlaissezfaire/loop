@@ -39,8 +39,8 @@ var backtick = function(command, args, options, callback) {
   }
 };
 
-var findJsFilesInDir = function(dir, cb) {
-  backtick("find", [dir, '-name', '*.js'], null, function(err, out) {
+var findFilesInDir = function(findArgs, cb) {
+  backtick("find", findArgs, null, function(err, out) {
     if (err) {
       return cb(err);
     }
@@ -49,6 +49,14 @@ var findJsFilesInDir = function(dir, cb) {
     var files = out.split("\n");
     cb(null, files);
   });
+};
+
+var findJsFilesInDir = function(dir, cb) {
+  findFilesInDir([dir, '-name', '*.js'], cb);
+};
+
+var findLoopFilesInDir = function(dir, cb) {
+  findFilesInDir([dir, '-name', '*.loop'], cb);
 };
 
 desc("Run tests");
@@ -122,6 +130,18 @@ desc("Clean generated grammar");
 task('clean', [], function() {
   console.log('clearing generated grammar');
   backtick('rm', ['-rf', 'lib/loop/grammar.js']);
+
+  console.log('cleaning generated loop files');
+  findLoopFilesInDir('.', function(err, files) {
+    if (err) {
+      throw err;
+    }
+
+    _.each(files, function(file) {
+      // console.log('cleaning loop file:', file);
+      backtick('rm', ['-rf', file]);
+    });
+  });
 });
 
 desc("Clean everything possible (including node_modules)");
