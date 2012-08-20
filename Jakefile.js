@@ -1,7 +1,9 @@
 var childProcess = require("child_process");
+var fs = require('fs');
 
 try {
   var async = require('async');
+  var _ = require('underscore');
 } catch(e) {
   console.warn("Are all dependencies resolved?  If not, try running jake deps");
 }
@@ -37,6 +39,18 @@ var backtick = function(command, args, options, callback) {
   }
 };
 
+var findJsFilesInDir = function(dir, cb) {
+  backtick("find", [dir, '-name', '*.js'], null, function(err, out) {
+    if (err) {
+      return cb(err);
+    }
+
+    out = out.trim();
+    var files = out.split("\n");
+    cb(null, files);
+  });
+};
+
 desc("Run tests");
 task("spec", [], function() {
   process.env.NODE_ENV = "test";
@@ -50,10 +64,10 @@ var EXCLUDED_LINT_FILES = [
 
 desc("Run js lint (jsl)");
 task("lint", [], function() {
-  backtick("find", [__dirname, '-name', '*.js'], null, function(err, out) {
+  findJsFilesInDir(__dirname, function(err, files) {
     if (err) { throw new Error(err); }
 
-    var files = out.split("\n").filter(function(f) {
+    files = files.filter(function(f) {
       if (!f) { return false; }
       return EXCLUDED_LINT_FILES.every(function(rule) {
         return !f.match(rule);
@@ -114,4 +128,45 @@ desc("Clean everything possible (including node_modules)");
 task('clean_all', ['clean'], function() {
   console.log('clearing node_modules');
   backtick('rm', ['-rf', 'node_modules']);
+});
+
+namespace('compiler', function() {
+  desc("Reverse compile the compiler");
+  task('reverse_compile', function() {
+    var libFiles;
+    var specFiles;
+
+    async.parallel({
+      libFiles: function(cb) {
+        findJsFilesInDir("lib", cb);
+      },
+      specFiles: function(cb) {
+        findJsFilesInDir('spec', cb);
+      }
+    }, function(err, fileDirs) {
+      if (err) {
+        throw err;
+      }
+
+      _.each(fileDirs, function(files, dir) {
+        _.each(files, function(file) {
+          var loopFileName = "./" + file.replace('.js', '.loop');
+          console.log('reverse compiling file:', file, '=>', loopFileName);
+          backtick('./bin/reverse-loop', [file], null, function(err, out) {
+            if (err) {
+              console.error("ERROR Compiling file:", file);
+              console.error(err);
+            }
+
+            fs.writeFile(loopFileName, out, function(err) {
+              if (err) {
+                console.error('Error writing loop file:', loopFileName);
+                console.error(err);
+              }
+            });
+          });
+        });
+      });
+    });
+  });
 });
