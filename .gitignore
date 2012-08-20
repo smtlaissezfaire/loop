@@ -1,5 +1,7 @@
-node_modules
 *.tmproj
 lib/loop/grammar.js
 TODO.txt
 *.loop
+
+node_modules/*
+!node_modules/uglify-js
