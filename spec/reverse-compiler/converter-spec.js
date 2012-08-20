@@ -434,19 +434,19 @@ vows.describe("js to loop converter integration spec").addBatch({
     assert.equal(loop.reverseCompile(source, noIndentOptions), expected);
   },
 
-  'it should support inline comments': {}//: function() {
-  //   var source = '';
-  //   source += "var defaultOptions = {\n";
-  //   source += '  //foo\n';
-  //   source += "  currentIndentationLevel: 0, //bar \n";
-  //   source += "  indentationMark: '  ' //baz \n";
-  //   source += "};";
-  //
-  //   var expected = '';
-  //   expected += '(define defaultOptions';
-  //   expected += ' ({} currentIndentationLevel 0';
-  //   expected += ' indentationMark "  "))';
-  //
-  //   assert.equal(loop.reverseCompile(source, noIndentOptions), expected);
-  // }
+  'it should ignore inline comments': function() {
+    var source = '';
+    source += "var defaultOptions = {\n";
+    source += '  //foo\n';
+    source += "  currentIndentationLevel: 0, //bar \n";
+    source += "  indentationMark: '  '//something \n";
+    source += "};";
+
+    var expected = '';
+    expected += '(define defaultOptions';
+    expected += ' ({} currentIndentationLevel 0';
+    expected += ' indentationMark "  "))';
+
+    assert.equal(loop.reverseCompile(source, noIndentOptions, null, true), expected);
+  }
 }).export(module);
