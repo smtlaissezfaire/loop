@@ -465,5 +465,18 @@ vows.describe("js to loop converter integration spec").addBatch({
   //   expected +=     "'it should do something else' {}))";
   //
   //   assert.equal(loop.reverseCompile(source, noIndentOptions, null, true), expected);
+  // },
+
+  // 'it should nest multiple ands under the same statement': function() {
+  //   var source = '';
+  //   source += 'if (foo && bar && baz && quxx) {';
+  //   source += '  something();';
+  //   source += '}';
+  //
+  //   var expected = '';
+  //   expected += '(if (&& foo bar baz quxx)';
+  //   expected +=   '(something))';
+  //
+  //   assert.equal(loop.reverseCompile(source, noIndentOptions, null, true), expected);
   // }
 }).export(module);
