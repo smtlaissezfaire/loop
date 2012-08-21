@@ -450,22 +450,40 @@ vows.describe("js to loop converter integration spec").addBatch({
     assert.equal(loop.reverseCompile(source, noIndentOptions, null, true), expected);
   },
 
-  // 'it should // comments inside an object': function() {
-  //   var source = "";
-  //   source += "var obj = {";
-  //   source += "  'it should do something': {},";
-  //   source += "  // 'it should do nothing': {},";
-  //   source += "  'it should do something else': {}";
-  //   source += "}";
-  //
-  //   var expected = "";
-  //   expected += "(define obj";
-  //   expected +=   "({}";
-  //   expected +=     "'it should do something' {}";
-  //   expected +=     "'it should do something else' {}))";
-  //
-  //   assert.equal(loop.reverseCompile(source, noIndentOptions, null, true), expected);
-  // },
+  'it should ignore inline comments (spec 2)': function() {
+    var source = '';
+    source += "var defaultOptions = {\n";
+    source += '  //foo\n';
+    source += "  currentIndentationLevel: 0, //bar \n";
+    source += "  'indentationMark': '  '//something \n";
+    source += "};";
+
+    var expected = '';
+    expected += '(define defaultOptions';
+    expected += ' ({} currentIndentationLevel 0';
+    expected += ' indentationMark "  "))';
+
+    assert.equal(loop.reverseCompile(source, noIndentOptions, null, true), expected);
+  },
+
+  'it should ignore inline comments (spec 3) - with a multiline comment': function() {
+    var source = '';
+
+    source += "obj = {\n";
+    source += "  //\n";
+    source += "  //\n";
+    source += "  'one': 'foo',\n";
+    source += "  //\n";
+    source += "  //\n";
+    source += "  'two': 'two'\n";
+    source += "  //\n";
+    source += "  //\n";
+    source += "};";
+
+    var expected = '(= obj ({} one "foo" two "two"))';
+
+    assert.equal(loop.reverseCompile(source, noIndentOptions, null, true), expected);
+  }
 
   // 'it should nest multiple ands under the same statement': function() {
   //   var source = '';
