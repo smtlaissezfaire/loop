@@ -448,5 +448,22 @@ vows.describe("js to loop converter integration spec").addBatch({
     expected += ' indentationMark "  "))';
 
     assert.equal(loop.reverseCompile(source, noIndentOptions, null, true), expected);
-  }
+  },
+
+  // 'it should // comments inside an object': function() {
+  //   var source = "";
+  //   source += "var obj = {";
+  //   source += "  'it should do something': {},";
+  //   source += "  // 'it should do nothing': {},";
+  //   source += "  'it should do something else': {}";
+  //   source += "}";
+  //
+  //   var expected = "";
+  //   expected += "(define obj";
+  //   expected +=   "({}";
+  //   expected +=     "'it should do something' {}";
+  //   expected +=     "'it should do something else' {}))";
+  //
+  //   assert.equal(loop.reverseCompile(source, noIndentOptions, null, true), expected);
+  // }
 }).export(module);
