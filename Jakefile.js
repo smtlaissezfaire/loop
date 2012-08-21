@@ -168,14 +168,64 @@ namespace('compiler', function() {
         throw err;
       }
 
+      var filesToWrite = [];
+
       _.each(fileDirs, function(files, dir) {
         _.each(files, function(file) {
-          var loopFileName = "./" + file.replace('.js', '.loop');
-          console.log('reverse compiling file:', file, '=>', loopFileName);
-          backtick('./bin/reverse-loop', [file], null, function(err, out) {
+          filesToWrite.push(file);
+        });
+      });
+
+      async.forEach(filesToWrite, function(file, cb) {
+        var loopFileName = "./" + file.replace('.js', '.loop');
+        console.log('reverse compiling file:', file, '=>', loopFileName);
+        backtick('./bin/reverse-loop', [file], null, function(err, out) {
+          if (err) {
+            console.error("ERROR Compiling file:", file);
+            console.error(err);
+            return cb(err);
+          }
+
+          fs.writeFile(loopFileName, out, function(err) {
+            if (err) {
+              console.error('Error writing loop file:', loopFileName);
+              console.error(err);
+              return cb(err);
+            }
+
+            cb();
+          });
+        });
+      }, complete);
+    });
+  }, {async: true});
+
+  desc("Compile the files into javascript");
+  task('compile', ["reverse_compile"], function() {
+    var libFiles;
+    var specFiles;
+
+    async.parallel({
+      libFiles: function(cb) {
+        findLoopFilesInDir("lib", cb);
+      },
+      // specFiles: function(cb) {
+      //   findJsFilesInDir('spec', cb);
+      // }
+    }, function(err, fileDirs) {
+      if (err) {
+        throw err;
+      }
+
+      _.each(fileDirs, function(files, dir) {
+        _.each(files, function(file) {
+          var loopFileName = "./" + file.replace('.loop', '.js');
+          console.log('compiling file:', file, '=>', loopFileName);
+          backtick('./bin/loop', [file], null, function(err, out) {
             if (err) {
               console.error("ERROR Compiling file:", file);
               console.error(err);
+              return;
             }
 
             fs.writeFile(loopFileName, out, function(err) {
