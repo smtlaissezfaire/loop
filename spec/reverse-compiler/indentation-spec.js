@@ -65,16 +65,16 @@ vows.describe("reverse compiler - indentation").addBatch({
     assert.equal(loop.reverseCompile(source), expected);
   },
 
-  // 'it should indent the second arg of any define if it is a list': function() {
-  //   var source = '';
-  //   source += 'var x = foo();';
-  //
-  //   var expected = '';
-  //   expected += '(define x\n';
-  //   expected += '  (foo))';
-  //
-  //   assert.equal(loop.reverseCompile(source), expected);
-  // },
+  'it should indent the second arg of any define if it is a list': function() {
+    var source = '';
+    source += 'var x = foo();';
+
+    var expected = '';
+    expected += '(define x\n';
+    expected += '  (foo))';
+
+    assert.equal(loop.reverseCompile(source), expected);
+  },
 
   'it should indent if statements': function() {
     var source = '';
