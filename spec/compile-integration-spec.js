@@ -367,5 +367,33 @@ vows.describe("integration spec").addBatch({
     var expected =  '// foo    bar /foo/ (bar baz quxx 17)\n';
 
     assert.equal(loop.compile(source), expected);
-  }
+  },
+
+  'it should translate (-1) as -1': function() {
+    var source = '(- 1)';
+    var expected = '-1';
+
+    assert.equal(loop.compile(source), expected);
+  },
+
+  'it should translate (+ 1) as 1': function() {
+    var source = '(+ 1)';
+    var expected = '+1';
+
+    assert.equal(loop.compile(source), expected);
+  },
+
+  'it should allow simple addition of two arguments': function() {
+    var source = '(+ 1 2)';
+    var expected = '1+2';
+
+    assert.equal(loop.compile(source), expected);
+  },
+
+  // 'it should allow simple addition of multiple arguments': function() {
+  //   var source = '(+ 1 2 3 4 5)';
+  //   var expected = '1+2+3+4+5';
+  //
+  //   assert.equal(loop.compile(source), expected);
+  // }
 }).export(module);
