@@ -390,10 +390,10 @@ vows.describe("integration spec").addBatch({
     assert.equal(loop.compile(source), expected);
   },
 
-  // 'it should allow simple addition of multiple arguments': function() {
-  //   var source = '(+ 1 2 3 4 5)';
-  //   var expected = '1+2+3+4+5';
-  //
-  //   assert.equal(loop.compile(source), expected);
-  // }
+  'it should allow simple addition of multiple arguments': function() {
+    var source = '(+ 1 2 3 4 5)';
+    var expected = '1+2+3+4+5';
+
+    assert.equal(loop.compile(source), expected);
+  }
 }).export(module);
