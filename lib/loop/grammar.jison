@@ -1,7 +1,7 @@
 %lex
 %%
 
-"//".*                                                  return "COMMENT";
+";".*                                                   return "COMMENT";
 \"(\\.|[^\\"])*\"                                       return "STRING";
 \'(\\.|[^\\'])*\'                                       return "STRING";
 \s+                                                     /* skip whitespace */
