@@ -34,7 +34,7 @@ Proposed syntax:
     7                           => 7
     "foo"                       => "foo"
     'foo'                       => 'foo'
-    [1,2,3]                     => [1 2 3]
+    [1,2,3]                     => ([] 1 2 3) (in the future: [1 2 3] ?)
     foo                         => foo
     foo()                       => (foo)
     function() { x + x }        => (function () (+ x x))
@@ -55,7 +55,7 @@ Proposed syntax:
 
     foo.bar()                   => (foo.bar)
     foo = {}                    => (= foo {})
-    { a: 'b', c: 'd' }          => { a 'b' c 'd' }
+    { a: 'b', c: 'd' }          => ({} a 'b' c 'd') (in the future: { a 'b' c 'd' } ?)
     [1,2,3,4]                   => [ 1 2 3 4 ]
     x[2]                        => ([] x 2)
 
