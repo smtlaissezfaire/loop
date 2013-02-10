@@ -34,7 +34,8 @@ Proposed syntax:
     7                           => 7
     "foo"                       => "foo"
     'foo'                       => 'foo'
-    [1,2,3]                     => ([] 1 2 3) (in the future: [1 2 3] ?)
+    [1,2,3]                     => ([] 1 2 3) (syntactic sugar: [1 2 3] or [1,2,3] or [1,2,3,])
+    { a: 'b', c: 'd' }          => ({} a 'b' c 'd') (syntactic sugar: { a 'b' c 'd' } or { a 'b', c 'd'} or { a 'b', c 'd',})
     foo                         => foo
     foo()                       => (foo)
     function() { x + x }        => (function () (+ x x))
@@ -55,7 +56,7 @@ Proposed syntax:
 
     foo.bar()                   => (foo.bar)
     foo = {}                    => (= foo {})
-    { a: 'b', c: 'd' }          => ({} a 'b' c 'd') (in the future: { a 'b' c 'd' } ?)
+
     [1,2,3,4]                   => [ 1 2 3 4 ]
     x[2]                        => ([] x 2)
 

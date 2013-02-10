@@ -11,6 +11,11 @@
 "."                                                     return "DOT";
 "("                                                     return "OPEN_PAREN";
 ")"                                                     return "CLOSE_PAREN";
+"{"                                                     return "OPEN_BRACE";
+"}"                                                     return "CLOSE_BRACE";
+"["                                                     return "OPEN_BRACKET";
+"]"                                                     return "CLOSE_BRACKET";
+","                                                     return "COMMA";
 [0-9]+                                                  return "INT";
 ([^\(\)\s\n\r])+                                        return "SYMBOL";
 
@@ -30,6 +35,8 @@ prog
 
 s-expression
   : list            { $$ = $1; }
+  | object-literal  { $$ = $1; }
+  | array-literal   { $$ = $1; }
   | property-access { $$ = $1; }
   | atom            { $$ = $1; }
   | comment         { $$ = $1; }
@@ -44,9 +51,30 @@ list
   }
 ;
 
+object-literal
+  : OPEN_BRACE list-members CLOSE_BRACE {
+    $$ = require("./grammar/token-builders").makeObjectLiteral($2, @2);
+  }
+  | OPEN_BRACE CLOSE_BRACE {
+    $$ = require("./grammar/token-builders").makeObjectLiteral(null, @1);
+  }
+;
+
+array-literal
+  : OPEN_BRACKET list-members CLOSE_BRACKET {
+    $$ = require("./grammar/token-builders").makeArrayLiteral($2, @2);
+  }
+  | OPEN_BRACKET CLOSE_BRACKET {
+    $$ = require("./grammar/token-builders").makeArrayLiteral(null, @1);
+  }
+;
+
+
 list-members
-  : list-members s-expression { $$ = $1.concat($2); }
-  | s-expression { $$ = [$1]; }
+  : list-members s-expression COMMA  { $$ = $1.concat($2); }
+  | list-members COMMA s-expression  { $$ = $1.concat($3); }
+  | list-members s-expression        { $$ = $1.concat($2) }
+  | s-expression                     { $$ = [$1]; }
 ;
 
 property-access

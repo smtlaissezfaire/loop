@@ -395,5 +395,60 @@ vows.describe("integration spec").addBatch({
     var expected = '1+2+3+4+5';
 
     assert.equal(loop.compile(source), expected);
+  },
+
+  'it should use { } as an object literal syntax': function() {
+    var source = '(define x { y "foo" })';
+    var expected = 'var x={y:"foo"}';
+    assert.equal(loop.compile(source), expected);
+  },
+
+  'it should allow multiple in an object literal values': function() {
+    var source = '(define x { y "foo" z 100 })';
+    var expected = 'var x={y:"foo",z:100}';
+    assert.equal(loop.compile(source), expected);
+  },
+
+  'it should allow no values in an object literal': function() {
+    var source = '(define x {})';
+    var expected = 'var x={}';
+    assert.equal(loop.compile(source), expected);
+  },
+
+  'it should allow an object literal off on its own': function() {
+    var source = '{}';
+    var expected = '{}';
+    assert.equal(loop.compile(source), expected);
+  },
+
+  'it should allow commas in the object literal': function() {
+    var source = '(define x { one 1, two 2})';
+    var expected = 'var x={one:1,two:2}';
+    assert.equal(loop.compile(source), expected);
+
+    source = '(define x { one 1, two 2,})';
+    assert.equal(loop.compile(source), expected);
+  },
+
+  'it should allow optional commas in a list': function() {
+    var source = "(define x ([] 1 2 3 4))";
+    var expected = 'var x=[1,2,3,4]';
+    assert.equal(loop.compile(source), expected);
+
+    source = "(define x ([] 1, 2, 3, 4))";
+    assert.equal(loop.compile(source), expected);
+  },
+  'it should allow an object literal with []': function() {
+    var source = "(define x [1 2 3 4])";
+    var expected = 'var x=[1,2,3,4]';
+    assert.equal(loop.compile(source), expected);
+
+    source = "(define x [1, 2, 3, 4])";
+    assert.equal(loop.compile(source), expected);
+  },
+  'it should allow an object literal with no values': function() {
+    var source = "(define x [])";
+    var expected = 'var x=[]';
+    assert.equal(loop.compile(source), expected);
   }
 }).export(module);
