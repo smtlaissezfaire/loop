@@ -493,7 +493,44 @@ vows.describe("integration specs (macros)").addBatch({
       expected += "})(10)";
 
       assert.equal(loop.compile(code), expected);
-    }
-  }
+    },
+  },
+  'quote': {
+    'it should be able to quote': function() {
+      var code = "(quote Foo)";
+      var expected = "\"Foo\"";
+      assert.equal(loop.compile(code), expected);
+    },
+    'it should be able to quote inside a define-macro': function() {
+      var code = '';
+      code += '(define-macro';
+      code += '  (my-quote some-var)';
+      code += '  (quote some-var))';
+      code += '(my-quote Foo)';
 
+      var expected = '"Foo"';
+
+      assert.equal(loop.compile(code), expected);
+    },
+  },
+  'it should allow substitution in the body of the macro more than once': function() {
+    var code = '';
+    code += '(define-macro ';
+    code += '  (my-square num)';
+    code += '  (mult num num))';
+    code += '(my-square 2)';
+
+    var expected = "mult(2,2)";
+    assert.equal(loop.compile(code), expected);
+  },
+  'it should allow multiple substiution on multiple levels': function() {
+    var code = '';
+    code += '(define-macro ';
+    code += '  (foo num)';
+    code += '  (mult num (mult num 1)))';
+    code += '(foo 2)';
+
+    var expected = "mult(2,mult(2,1))";
+    assert.equal(loop.compile(code), expected);
+  }
 }).export(module);
