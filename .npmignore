@@ -1,0 +1,5 @@
+*.tmproj
+TODO.txt
+*.loop
+node_modules/*
+!node_modules/uglify-js
