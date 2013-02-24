@@ -4,6 +4,7 @@
 ";".*                                                   return "COMMENT";
 \"(\\.|[^\\"])*\"                                       return "STRING";
 \'(\\.|[^\\'])*\'                                       return "STRING";
+\/(\\.|[^\\/])*\/([a-zA-Z]*)                            return "REGEXP";
 \s+                                                     /* skip whitespace */
 \n+                                                     /* skip newlines */
 \r+                                                     /* same */
@@ -94,6 +95,7 @@ atom
   | float         { $$ = $1; }
   | INT           { $$ = require("./grammar/token-builders").makeNumber($1, @1); }
   | STRING        { $$ = require("./grammar/token-builders").makeString($1, @1); }
+  | REGEXP        { $$ = require("./grammar/token-builders").makeRegexp($1, @1); }
   | SYMBOL        { $$ = require("./grammar/token-builders").makeSymbol($1, @1); }
 ;
 
