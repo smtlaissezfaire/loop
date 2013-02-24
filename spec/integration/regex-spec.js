@@ -2,7 +2,7 @@ var vows = require("vows");
 var assert = require("assert");
 var loop = require(__dirname + "/../../lib/loop");
 
-vows.describe("macro matching").addBatch({
+vows.describe("regex").addBatch({
   'it should parse a simple regexp': function() {
     assert.equal(loop.compile('/foobar/'), '/foobar/');
   },
