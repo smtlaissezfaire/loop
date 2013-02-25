@@ -61,8 +61,12 @@ var findLoopFilesInDir = function(dir, cb) {
 
 desc("Run tests");
 task("spec", [], function() {
-  process.env.NODE_ENV = "test";
-  backtick("mocha", [], null);
+  backtick("mocha", ["-c"], null);
+});
+
+desc('Run tests while watching for updates');
+task("spec-watch", [], function() {
+  backtick("mocha", ["-c", "--watch"], null);
 });
 
 var EXCLUDED_LINT_FILES = [
