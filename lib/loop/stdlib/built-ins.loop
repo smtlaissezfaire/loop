@@ -6,3 +6,8 @@
   (function body ...)
   (lambda body ...))
 
+(define-macro
+  (let ((key value) ...)
+    body ...)
+ ((lambda (key ...)
+   body ...) value ...))
