@@ -19,7 +19,6 @@ describe("if + cond", function() {
 
   it('should be able to handle an if statement with no block conditions', function() {
     var code = "(if x)";
-
     assert.equal(loop.compile(code), 'if(x){}');
   });
 
