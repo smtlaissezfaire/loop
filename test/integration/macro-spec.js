@@ -1,4 +1,3 @@
-var vows = require("vows");
 var assert = require("assert");
 var loop = require(__dirname + "/../../lib/loop");
 
@@ -23,8 +22,8 @@ var let_star = function() {
   return code;
 };
 
-vows.describe("integration specs (macros)").addBatch({
-  'it should be able to use a simple macro': function() {
+describe("integration specs (macros)", function() {
+  it('should be able to use a simple macro', function() {
     var code = "";
     code += "(define-macro";
     code += "  (swap-foo a b)";
@@ -32,9 +31,9 @@ vows.describe("integration specs (macros)").addBatch({
     code += "\n";
     code += "(swap-foo one two)";
     assert.equal(loop.compile(code), "foo(two,one)");
-  },
+  });
 
-  'it should be able to define and use let': function() {
+  it('should be able to define and use let', function() {
     var code = "";
     code += "(define-macro";
     code += "  (my-let ((var val) ...)";
@@ -47,9 +46,9 @@ vows.describe("integration specs (macros)").addBatch({
     code += "  (console.log (+ x y)))";
 
     assert.equal(loop.compile(code), "(function(x,y){console.log(x+y)})(10,20)");
-  },
+  });
 
-  'it should be able to define and use let with no values': function() {
+  it('should be able to define and use let with no values', function() {
     var code = "";
     code += "(define-macro\n";
     code += "  (my-let ((var val) ...)\n";
@@ -61,9 +60,9 @@ vows.describe("integration specs (macros)").addBatch({
     code += "  (console.log (+ x y)))\n";
 
     assert.equal(loop.compile(code), "(function(){console.log(x+y)})()");
-  },
+  });
 
-  'it should be able to define and use an unless macro': function() {
+  it('should be able to define and use an unless macro', function() {
     var code = "";
     code += "(define-macro";
     code += "  (unless condition";
@@ -79,9 +78,9 @@ vows.describe("integration specs (macros)").addBatch({
     var expectedCode = "if(!(x===10)){bar();baz()}";
 
     assert.equal(loop.compile(code), expectedCode);
-  },
+  });
 
-  'it should be able to use unless with ! and a var': function() {
+  it('should be able to use unless with ! and a var', function() {
     var code = "";
     code += "(define-macro";
     code += "  (unless condition";
@@ -95,9 +94,9 @@ vows.describe("integration specs (macros)").addBatch({
     code += "  (console.log x))";
 
     assert.equal(loop.compile(code), 'var x=20;if(!(x===10)){console.log(x)}');
-  },
+  });
 
-  'it should transform non top level macros': function() {
+  it('should transform non top level macros', function() {
     var code = "";
     code += "(define-macro";
     code += "  (my-let ((var val) ...)";
@@ -110,9 +109,9 @@ vows.describe("integration specs (macros)").addBatch({
     code += "    (+ x y)))";
 
     assert.equal(loop.compile(code), "(function(x){(function(y){x+y})(20)})(10)");
-  },
+  });
 
-  'it should be able to use two different macros': function() {
+  it('should be able to use two different macros', function() {
     var code = "";
     code += "(define-macro";
     code += "  (let ((var value) ...)";
@@ -132,9 +131,9 @@ vows.describe("integration specs (macros)").addBatch({
     expected += "})(10)";
 
     assert.equal(loop.compile(code), expected);
-  },
+  });
 
-  'it should consider ... like a * in a regex': function() {
+  it('should consider ... like a * in a regex', function() {
     var code = '';
     code += '(define-macro ';
     code += '  (log arg1 arg2 arg3 ...)';
@@ -152,9 +151,9 @@ vows.describe("integration specs (macros)").addBatch({
     expected += 'console.log(1,2,3,4,5)';
 
     assert.equal(loop.compile(code), expected);
-  },
+  });
 
-  'it should allow the gap in ... to come in the middle of a list': function() {
+  it('should allow the gap in ... to come in the middle of a list', function() {
     var code = '';
     code += '(define-macro ';
     code += '  (log arg1 arg2 ... arg3)';
@@ -170,9 +169,9 @@ vows.describe("integration specs (macros)").addBatch({
     expected += 'console.log(1,2,3);';
     expected += 'console.log(1,2,3,4);';
     expected += 'console.log(1,2,3,4,5)';
-  },
+  });
 
-  'it should not try to transform a macro pattern which does not match': function() {
+  it('should not try to transform a macro pattern which does not match', function() {
     var code = '';
     code += '(define-macro ';
     code += '  (log arg1 arg2 arg3 ...)';
@@ -184,9 +183,9 @@ vows.describe("integration specs (macros)").addBatch({
     expected += 'log(1)';
 
     assert.equal(loop.compile(code), expected);
-  },
+  });
 
-  'it should be able to use multiple patterns in a macro': function() {
+  it('should be able to use multiple patterns in a macro', function() {
     var code = "";
     code += '(define-macro';
     code += '  (log arg1 arg2 ...)';
@@ -202,9 +201,9 @@ vows.describe("integration specs (macros)").addBatch({
     expected += 'console.log("");';
     expected += 'console.log("foo")';
     assert.equal(loop.compile(code), expected);
-  },
+  });
 
-  'it should ignore macro patterns if the code is not called': function() {
+  it('should ignore macro patterns if the code is not called', function() {
     var code = "";
     code += '(define-macro';
     code += '  (log arg1 arg2 ...)';
@@ -216,9 +215,9 @@ vows.describe("integration specs (macros)").addBatch({
     expected += 'console.log("foo")';
 
     assert.equal(loop.compile(code), expected);
-  },
+  });
 
-  'it should be able to use multiple patterns in a macro and extract out those patterns': function() {
+  it('should be able to use multiple patterns in a macro and extract out those patterns', function() {
     var code = "";
     code += '(define-macro';
     code += '  (log)';
@@ -230,9 +229,9 @@ vows.describe("integration specs (macros)").addBatch({
     var expected = "";
 
     assert.equal(loop.compile(code), expected);
-  },
+  });
 
-  'it should not match a macro pattern if the macro has no ellipses and the pattern is not the same length': function() {
+  it('should not match a macro pattern if the macro has no ellipses and the pattern is not the same length', function() {
     var code = "";
     code += '(define-macro';
     code += '  (log a b c)';
@@ -252,9 +251,9 @@ vows.describe("integration specs (macros)").addBatch({
     expected += "log(1,2,3,4)";
 
     assert.equal(loop.compile(code), expected);
-  },
+  });
 
-  'it should be able to use multiple patterns in a macro if the patterns are switched': function() {
+  it('should be able to use multiple patterns in a macro if the patterns are switched', function() {
     var code = "";
     code += '(define-macro';
     code += '  (log)';
@@ -270,9 +269,9 @@ vows.describe("integration specs (macros)").addBatch({
     expected += 'console.log("");';
     expected += 'console.log("foo")';
     assert.equal(loop.compile(code), expected);
-  },
+  });
 
-  'it should allow one macro to reference another': function() {
+  it('should allow one macro to reference another', function() {
     var code = "";
     code += "(define-macro";
     code += "  (plus a b)";
@@ -288,9 +287,9 @@ vows.describe("integration specs (macros)").addBatch({
     expected += "console.log(10+20)";
 
     assert.equal(loop.compile(code), expected);
-  },
+  });
 
-  'it should pick the correct macro based on arguments': function() {
+  it('should pick the correct macro based on arguments', function() {
     var macroDefinitions = '';
     var code;
 
@@ -374,9 +373,9 @@ vows.describe("integration specs (macros)").addBatch({
     code = macroDefinitions;
     code += '(arg-macro (1 2 3))';
     assert.equal(loop.compile(code), 'console.log(1,2,3)');
-  },
+  });
 
-  'it should allow recursion in macros': function() {
+  it('should allow recursion in macros', function() {
     var code = '';
     code += '(define-macro';
     code += '  (recursive-foo arg1)';
@@ -389,9 +388,9 @@ vows.describe("integration specs (macros)").addBatch({
     var expected = 'foo(foo(bar()))';
 
     assert.equal(loop.compile(code), expected);
-  },
+  });
 
-  'it should allow an empty argument list to let': function() {
+  it('should allow an empty argument list to let', function() {
     var code = "";
     code += "(define-macro";
     code += "  (let ((var value) ...)";
@@ -404,10 +403,10 @@ vows.describe("integration specs (macros)").addBatch({
     var expected = "(function(){foo()})()";
 
     assert.equal(loop.compile(code), expected);
-  },
+  });
 
-  'using let-star': {
-    'it should return an empty function with 0 arguments': function() {
+  describe('using let-star', function() {
+    it('should return an empty function with 0 arguments', function() {
       var code = "";
       code += let_star();
       code += "(let* ()";
@@ -419,9 +418,9 @@ vows.describe("integration specs (macros)").addBatch({
       expected += "})()";
 
       assert.equal(loop.compile(code), expected);
-    },
+    });
 
-    'it should use one argument': function() {
+    it('should use one argument', function() {
       var code = "";
       code += let_star();
       code += "(let* ((x 10))";
@@ -435,9 +434,9 @@ vows.describe("integration specs (macros)").addBatch({
       expected += "})(10)";
 
       assert.equal(loop.compile(code), expected);
-    },
+    });
 
-    'it should use two arguments': function() {
+    it('should use two arguments', function() {
       var code = "";
       code += let_star();
       code += "(let* ((x 10) (y 20))";
@@ -453,8 +452,8 @@ vows.describe("integration specs (macros)").addBatch({
       expected += "})(10)";
 
       assert.equal(loop.compile(code), expected);
-    },
-    'it should use three arguments': function() {
+    });
+    it('should use three arguments', function() {
       var code = "";
       code += let_star();
       code += "(let* ((x 10) (y 20) (z 30))";
@@ -472,8 +471,8 @@ vows.describe("integration specs (macros)").addBatch({
       expected += "})(10)";
 
       assert.equal(loop.compile(code), expected);
-    },
-    'it should use one argument but multiple body statements': function() {
+    });
+    it('should use one argument but multiple body statements', function() {
       var code = "";
       code += let_star();
       code += "(let* ((x 10))";
@@ -493,15 +492,17 @@ vows.describe("integration specs (macros)").addBatch({
       expected += "})(10)";
 
       assert.equal(loop.compile(code), expected);
-    },
-  },
-  'quote': {
-    'it should be able to quote': function() {
+    });
+  });
+
+  describe('quote', function() {
+    it('should be able to quote', function() {
       var code = "(quote Foo)";
       var expected = "\"Foo\"";
       assert.equal(loop.compile(code), expected);
-    },
-    'it should be able to quote inside a define-macro': function() {
+    });
+
+    it('should be able to quote inside a define-macro', function() {
       var code = '';
       code += '(define-macro';
       code += '  (my-quote some-var)';
@@ -511,9 +512,10 @@ vows.describe("integration specs (macros)").addBatch({
       var expected = '"Foo"';
 
       assert.equal(loop.compile(code), expected);
-    },
-  },
-  'it should allow substitution in the body of the macro more than once': function() {
+    });
+  });
+
+  it('should allow substitution in the body of the macro more than once', function() {
     var code = '';
     code += '(define-macro ';
     code += '  (my-square num)';
@@ -522,8 +524,9 @@ vows.describe("integration specs (macros)").addBatch({
 
     var expected = "mult(2,2)";
     assert.equal(loop.compile(code), expected);
-  },
-  'it should allow multiple substiution on multiple levels': function() {
+  });
+
+  it('should allow multiple substiution on multiple levels', function() {
     var code = '';
     code += '(define-macro ';
     code += '  (foo num)';
@@ -532,5 +535,5 @@ vows.describe("integration specs (macros)").addBatch({
 
     var expected = "mult(2,mult(2,1))";
     assert.equal(loop.compile(code), expected);
-  }
-}).export(module);
+  });
+});

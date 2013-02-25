@@ -1,17 +1,16 @@
-var vows = require("vows");
 var assert = require("assert");
 var loop = require(__dirname + "/../../lib/loop");
 
-vows.describe("reverse compiler - indentation").addBatch({
-  'it should put a multi expression var statement on multiple lines at the same indentation)': function() {
+describe("reverse compiler - indentation", function() {
+  it('should put a multi expression var statement on multiple lines at the same indentation)', function() {
     var source = "var x = 10, y = 20;";
     var expected = '';
     expected += '(var (x 10)\n';
     expected += '     (y 20))';
     assert.equal(loop.reverseCompile(source), expected);
-  },
+  });
 
-  'it should indent a lambda assignment': function() {
+  it('should indent a lambda assignment', function() {
     var source = '';
     source += 'var x = function() {';
     source += '  x + y;';
@@ -25,9 +24,9 @@ vows.describe("reverse compiler - indentation").addBatch({
     expected += '    (+ z y)))';
 
     assert.equal(loop.reverseCompile(source), expected);
-  },
+  });
 
-  'it should outdent after the lambda is done': function() {
+  it('should outdent after the lambda is done', function() {
     var source = '';
     source += 'var x = function() {';
     source += '  x + y;';
@@ -50,9 +49,9 @@ vows.describe("reverse compiler - indentation").addBatch({
     expected += '    (+ z y)))';
 
     assert.equal(loop.reverseCompile(source), expected);
-  },
+  });
 
-  'it should indent a lambda in an assignment with =': function() {
+  it('should indent a lambda in an assignment with =', function() {
     var source = '';
     source += 'var x;';
     source += 'x = function() {};';
@@ -63,9 +62,9 @@ vows.describe("reverse compiler - indentation").addBatch({
     expected += '  (lambda ()))';
 
     assert.equal(loop.reverseCompile(source), expected);
-  },
+  });
 
-  'it should indent the second arg of any define if it is a list': function() {
+  it('should indent the second arg of any define if it is a list', function() {
     var source = '';
     source += 'var x = foo();';
 
@@ -74,9 +73,9 @@ vows.describe("reverse compiler - indentation").addBatch({
     expected += '  (foo))';
 
     assert.equal(loop.reverseCompile(source), expected);
-  },
+  });
 
-  'it should indent if statements': function() {
+  it('should indent if statements', function() {
     var source = '';
     source += 'if (x) {';
     source += '  y + z;';
@@ -89,17 +88,17 @@ vows.describe("reverse compiler - indentation").addBatch({
     expected += '  (+ a b))';
 
     assert.equal(loop.reverseCompile(source), expected);
-  },
+  });
 
-  'it should indent var x; properly': function() {
+  it('should indent var x; properly', function() {
     var source = 'var x; var y;';
     var expected = '';
     expected += '(define x)\n';
     expected += '(define y)';
     assert.equal(loop.reverseCompile(source), expected);
-  },
+  });
 
-  'it should indent for': function() {
+  it('should indent for', function() {
     var source = '';
     source += 'for (x = 0; x <= 10; x++) {';
     source += '  y();';
@@ -112,9 +111,9 @@ vows.describe("reverse compiler - indentation").addBatch({
     expected += '  (z))';
 
     assert.equal(loop.reverseCompile(source), expected);
-  },
+  });
 
-  'if statements should have an extra newline if there is a statement after the if': function() {
+  it('if statements should have an extra newline if there is a statement after the if', function() {
     var source = '';
     source += 'if (x) { y(); }';
     source += 'if (a) { b(); }';
@@ -127,9 +126,9 @@ vows.describe("reverse compiler - indentation").addBatch({
     expected += '  (b))';
 
     assert.equal(loop.reverseCompile(source), expected);
-  },
+  });
 
-  'if statements should not have an extra newline inside a function when the last statement': function() {
+  it('if statements should not have an extra newline inside a function when the last statement', function() {
     var source = '';
     source += 'var e = function() {';
     source += '  if (c) { d(); }';
@@ -142,9 +141,9 @@ vows.describe("reverse compiler - indentation").addBatch({
     expected += '      (d))))';
 
     assert.equal(loop.reverseCompile(source), expected);
-  },
+  });
 
-  'it should indent try/catch': function() {
+  it('should indent try/catch', function() {
     var source = '';
     source += 'try {';
     source += '  foo();';
@@ -159,9 +158,9 @@ vows.describe("reverse compiler - indentation").addBatch({
     expected += '    (bar)))';
 
     assert.equal(loop.reverseCompile(source), expected);
-  },
+  });
 
-  'it should add a newline after an assignment of a variable to a lambda': function() {
+  it('should add a newline after an assignment of a variable to a lambda', function() {
     var source = '';
     source += 'x = function() {};';
     source += 'y = function() {};';
@@ -174,9 +173,9 @@ vows.describe("reverse compiler - indentation").addBatch({
     expected += '  (lambda ()))';
 
     assert.equal(loop.reverseCompile(source), expected);
-  },
+  });
 
-  'it should add a newline after an assignment of a variable to a lambda with var': function() {
+  it('should add a newline after an assignment of a variable to a lambda with var', function() {
     var source = '';
     source += 'var x = function() {};';
     source += 'var y = function() {};';
@@ -189,9 +188,9 @@ vows.describe("reverse compiler - indentation").addBatch({
     expected += '  (lambda ()))';
 
     assert.equal(loop.reverseCompile(source), expected);
-  },
+  });
 
-  'it should indent switch / case statements': function() {
+  it('should indent switch / case statements', function() {
     var source = '';
     source += 'switch (one) {';
     source += '  case "two":';
@@ -216,5 +215,5 @@ vows.describe("reverse compiler - indentation").addBatch({
     expected += '    (baz)))';
 
     assert.equal(loop.reverseCompile(source), expected);
-  }
-}).export(module);
+  });
+});

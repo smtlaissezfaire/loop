@@ -1,9 +1,8 @@
-var vows = require("vows");
 var assert = require("assert");
 var loop = require(__dirname + "/../../lib/loop");
 
-vows.describe("switch-case").addBatch({
-  'it should be able to handle a switch statement with no expressions': function() {
+describe("switch-case", function() {
+  it('should be able to handle a switch statement with no expressions', function() {
     var code = "";
     code += "(switch syntaxTree.type)";
 
@@ -12,9 +11,9 @@ vows.describe("switch-case").addBatch({
     expectedCode += "}";
 
     assert.equal(loop.compile(code), expectedCode);
-  },
+  });
 
-  'it should be able to handle a simple switch statement with a case': function() {
+  it('should be able to handle a simple switch statement with a case', function() {
     var code = "";
     code += "(switch syntaxTree.type";
     code += "  (case \"foo\"";
@@ -27,9 +26,9 @@ vows.describe("switch-case").addBatch({
     expectedCode += "}";
 
     assert.equal(loop.compile(code), expectedCode);
-  },
+  });
 
-  'it should be able to handle multiple case statements': function() {
+  it('should be able to handle multiple case statements', function() {
     var code = "";
     code += "(switch syntaxTree.type";
     code += "  (case \"foo\"";
@@ -55,9 +54,9 @@ vows.describe("switch-case").addBatch({
     expectedCode += '}';
 
     assert.equal(loop.compile(code), expectedCode);
-  },
+  });
 
-  'it should be able to handle a default case': function() {
+  it('should be able to handle a default case', function() {
     var code = "";
     code += "(switch syntaxTree.type";
     code += "  (case \"foo\"";
@@ -77,5 +76,5 @@ vows.describe("switch-case").addBatch({
     expectedCode += '}';
 
     assert.equal(loop.compile(code), expectedCode);
-  }
-}).export(module);
+  });
+});

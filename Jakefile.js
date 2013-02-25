@@ -62,7 +62,7 @@ var findLoopFilesInDir = function(dir, cb) {
 desc("Run tests");
 task("spec", [], function() {
   process.env.NODE_ENV = "test";
-  backtick("vows", [], null);
+  backtick("mocha", [], null);
 });
 
 var EXCLUDED_LINT_FILES = [

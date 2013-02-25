@@ -1,9 +1,8 @@
-var vows = require("vows");
 var assert = require("assert");
 var loop = require(__dirname + "/../../lib/loop");
 
-vows.describe("phase 3: transform from eval'ed syntax into uglifyjs parse tree").addBatch({
-  'it should eval a function call': function() {
+describe("phase 3: transform from eval'ed syntax into uglifyjs parse tree", function() {
+  it('should eval a function call', function() {
     var evaled = {
       type: 'funcall',
       function: {
@@ -42,5 +41,5 @@ vows.describe("phase 3: transform from eval'ed syntax into uglifyjs parse tree")
 
     var out = loop.toUglifyTree([evaled]);
     assert.equal(JSON.stringify(out), JSON.stringify(uglifyTree));
-  }
-}).export(module);
+  });
+});

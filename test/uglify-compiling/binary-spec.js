@@ -1,4 +1,3 @@
-var vows = require("vows");
 var assert = require("assert");
 var loop = require(__dirname + "/../../lib/loop");
 var _ = require('underscore');
@@ -29,8 +28,8 @@ var BINARY_OPERATORS = [
   "%"
 ];
 
-vows.describe("phase 3: transform from eval'ed syntax into uglifyjs parse tree (binary operators)").addBatch({
-  'it should eval binary operators properly': function() {
+describe("phase 3: transform from eval'ed syntax into uglifyjs parse tree (binary operators)", function() {
+  it('should eval binary operators properly', function() {
     _.each(BINARY_OPERATORS, function(operator) {
       var evaled = {
         type: 'funcall',
@@ -49,5 +48,5 @@ vows.describe("phase 3: transform from eval'ed syntax into uglifyjs parse tree (
       var out = loop.toUglifyTree([evaled]);
       assert.equal(JSON.stringify(out), JSON.stringify(uglifyTree));
     });
-  }
-}).export(module);
+  });
+});

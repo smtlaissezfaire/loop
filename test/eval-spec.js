@@ -1,9 +1,8 @@
-var vows = require("vows");
 var assert = require("assert");
 var loop = require(__dirname + "/../lib/loop");
 
-vows.describe("phase 2: eval transformed syntax").addBatch({
-  'it should eval a function call': function() {
+describe("phase 2: eval transformed syntax", function() {
+  it('should eval a function call', function() {
     var unevaled = {
       type: 'list',
       contents: [
@@ -60,5 +59,5 @@ vows.describe("phase 2: eval transformed syntax").addBatch({
       },
       arguments: { type: 'list', contents: [] },
     });
-  }
-}).export(module);
+  });
+});

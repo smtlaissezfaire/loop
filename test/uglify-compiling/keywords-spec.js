@@ -1,4 +1,3 @@
-var vows = require("vows");
 var assert = require("assert");
 var loop = require(__dirname + "/../../lib/loop");
 var _ = require('underscore');
@@ -31,8 +30,8 @@ var _var = function() {
   };
 };
 
-vows.describe("phase 3: transform from eval'ed syntax into uglifyjs parse tree (keywords)").addBatch({
-  'it should eval return properly': function() {
+describe("phase 3: transform from eval'ed syntax into uglifyjs parse tree (keywords)", function() {
+  it('should eval return properly', function() {
     var evaled = {
       type: 'funcall',
       function: { type: 'id', contents: 'return' },
@@ -48,9 +47,9 @@ vows.describe("phase 3: transform from eval'ed syntax into uglifyjs parse tree (
 
     var out = loop.toUglifyTree([evaled]);
     assert.equal(JSON.stringify(out), JSON.stringify(uglifyTree));
-  },
+  });
 
-  'it should return empty if no args passed to return': function() {
+  it('should return empty if no args passed to return', function() {
     var evaled = {
       type: 'funcall',
       function: { type: 'id', contents: 'return' },
@@ -64,27 +63,27 @@ vows.describe("phase 3: transform from eval'ed syntax into uglifyjs parse tree (
 
     var out = loop.toUglifyTree([evaled]);
     assert.equal(JSON.stringify(out), JSON.stringify(uglifyTree));
-  },
+  });
 
-  'it should support var with 1 arg': function() {
+  it('should support var with 1 arg', function() {
     var evaled = _var(['foo']);
 
     var uglifyTree = ["toplevel",[["var",[["foo"]]]]];
 
     var out = loop.toUglifyTree([evaled]);
     assert.equal(JSON.stringify(out), JSON.stringify(uglifyTree));
-  },
+  });
 
-  'it should support var with 2 args': function() {
+  it('should support var with 2 args', function() {
     var evaled = _var(['foo', 'bar']);
 
     var uglifyTree = ["toplevel",[["var",[["foo",["name","bar"]]]]]];
 
     var out = loop.toUglifyTree([evaled]);
     assert.equal(JSON.stringify(out), JSON.stringify(uglifyTree));
-  },
+  });
 
-  'it should support var with 3 args': function() {
+  it('should support var with 3 args', function() {
     // var foo=bar, baz, quxx = zed;'
     var evaled = _var(['foo', 'bar'], ['baz']);
 
@@ -92,5 +91,5 @@ vows.describe("phase 3: transform from eval'ed syntax into uglifyjs parse tree (
 
     var out = loop.toUglifyTree([evaled]);
     assert.equal(JSON.stringify(out), JSON.stringify(uglifyTree));
-  }
-}).export(module);
+  });
+});

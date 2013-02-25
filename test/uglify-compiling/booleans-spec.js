@@ -1,4 +1,3 @@
-var vows = require("vows");
 var assert = require("assert");
 var loop = require(__dirname + "/../../lib/loop");
 var _ = require('underscore');
@@ -10,8 +9,8 @@ var BOOLEANS = [
   "undefined"
 ];
 
-vows.describe("phase 3: transform from eval'ed syntax into uglifyjs parse tree (unary operators)").addBatch({
-  'it should eval unary operators properly': function() {
+describe("phase 3: transform from eval'ed syntax into uglifyjs parse tree (unary operators)", function() {
+  it('should eval unary operators properly', function() {
     _.each(BOOLEANS, function(boolean) {
       var evaled = {
         type: 'id',
@@ -23,5 +22,5 @@ vows.describe("phase 3: transform from eval'ed syntax into uglifyjs parse tree (
       var out = loop.toUglifyTree([evaled]);
       assert.equal(JSON.stringify(out), JSON.stringify(uglifyTree));
     });
-  }
-}).export(module);
+  });
+});

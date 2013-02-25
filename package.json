@@ -14,8 +14,9 @@
     "commander": "*"
   },
   "devDependencies": {
+    "glob": "*",
     "async": "*",
-    "vows": "0.5.13",
+    "mocha": "*",
     "jslint": "0.1.0",
     "jake": "*"
   },

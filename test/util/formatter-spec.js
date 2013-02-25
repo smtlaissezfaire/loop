@@ -1,9 +1,8 @@
-var vows = require("vows");
 var assert = require("assert");
 var CodeFormatter = require(__dirname + "/../../lib/loop/util/code-formatter").codeFormatter;
 
-vows.describe("formatter spec - defining columns").addBatch({
-  'it should be able to write two columns, and set a divider': function() {
+describe("formatter spec - defining columns", function() {
+  it('should be able to write two columns, and set a divider', function() {
     var cf = new CodeFormatter();
     cf.column(1, function() {
       cf.append('foo');
@@ -14,9 +13,9 @@ vows.describe("formatter spec - defining columns").addBatch({
     });
 
     assert.equal(cf.toString(), "foo | bar");
-  },
+  });
 
-  'it should do multiple lines': function() {
+  it('should do multiple lines', function() {
     var cf = new CodeFormatter();
     cf.column(1, function() {
       cf.append('foo');
@@ -40,9 +39,9 @@ vows.describe("formatter spec - defining columns").addBatch({
     expectedString += "baz | baz";
 
     assert.equal(cf.toString(), expectedString);
-  },
+  });
 
-  'it should use the longest line': function() {
+  it('should use the longest line', function() {
     var cf = new CodeFormatter();
     cf.column(1, function() {
       cf.append('foo');
@@ -62,9 +61,9 @@ vows.describe("formatter spec - defining columns").addBatch({
     expectedString += "baz |    ";
 
     assert.equal(cf.toString(), expectedString);
-  },
+  });
 
-  'it should use the longest line if the second line is longer': function() {
+  it('should use the longest line if the second line is longer', function() {
     var cf = new CodeFormatter();
     cf.column(1, function() {
       cf.append('foo');
@@ -86,9 +85,9 @@ vows.describe("formatter spec - defining columns").addBatch({
     expectedString += "    | baz";
 
     assert.equal(cf.toString(), expectedString);
-  },
+  });
 
-  'it should use variable length columns': function() {
+  it('should use variable length columns', function() {
     var cf = new CodeFormatter();
     cf.column(1, function() {
       cf.append('one');
@@ -110,5 +109,5 @@ vows.describe("formatter spec - defining columns").addBatch({
     expectedString += "              | baz    ";
 
     assert.equal(cf.toString(), expectedString);
-  }
-}).export(module);
+  });
+});

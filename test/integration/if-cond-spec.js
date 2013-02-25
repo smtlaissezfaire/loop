@@ -1,4 +1,3 @@
-var vows = require("vows");
 var assert = require("assert");
 var loop = require(__dirname + "/../../lib/loop");
 
@@ -12,42 +11,42 @@ var defaultOptions = {
   inline_script: false
 };
 
-vows.describe("if + cond").addBatch({
-  'it should be able to handle an if statement': function() {
+describe("if + cond", function() {
+  it('should be able to handle an if statement', function() {
     var code = "(if x (y))";
     assert.equal(loop.compile(code), 'if(x){y()}');
-  },
+  });
 
-  'it should be able to handle an if statement with no block conditions': function() {
+  it('should be able to handle an if statement with no block conditions', function() {
     var code = "(if x)";
 
     assert.equal(loop.compile(code), 'if(x){}');
-  },
+  });
 
-  'it should be able to handle an if statement with multiple block conditions': function() {
+  it('should be able to handle an if statement with multiple block conditions', function() {
     var code = "(if x (y) (+ 10 20))";
 
     assert.equal(loop.compile(code), 'if(x){y();10+20}');
-  },
+  });
 
-  'it should allow non list types in the conditions': function() {
+  it('should allow non list types in the conditions', function() {
     var code = "(if true (y))";
 
     assert.equal(loop.compile(code), 'if(true){y()}');
-  },
+  });
 
-  'it should allow a ! in the conditions': function() {
+  it('should allow a ! in the conditions', function() {
     var code = "(if (! foo) (y))";
 
     assert.equal(loop.compile(code), 'if(!foo){y()}');
-  },
+  });
 
-  'it should allow === as a comparison operator': function() {
+  it('should allow === as a comparison operator', function() {
     var code = "(if (=== x 10) (console.log \"foo\"))";
     assert.equal(loop.compile(code), 'if(x===10){console.log("foo")}');
-  },
+  });
 
-  'it should not insert semicolons into an if': function() {
+  it('should not insert semicolons into an if', function() {
     var code = "";
     code += "(function (str options)";
     code += "  (if (=== (typeof options) 'undefined')";
@@ -62,9 +61,9 @@ vows.describe("if + cond").addBatch({
 
     assert.equal(loop.compile(code, defaultOptions),
                  expected);
-  },
+  });
 
-  'it should allow a cond statement': function() {
+  it('should allow a cond statement', function() {
     var code = '';
     code += '(cond';
     code += '  (true (console.log true)))';
@@ -75,9 +74,9 @@ vows.describe("if + cond").addBatch({
     expected += '};';
 
     assert.equal(loop.compile(code, defaultOptions), expected);
-  },
+  });
 
-  'it should allow an else if in a cond': function() {
+  it('should allow an else if in a cond', function() {
     var code = '';
     code += '(cond';
     code += '  (true (console.log 1))';
@@ -91,9 +90,9 @@ vows.describe("if + cond").addBatch({
     expected += '};';
 
     assert.equal(loop.compile(code, defaultOptions), expected);
-  },
+  });
 
-  'it should allow multiple else ifs in a cond': function() {
+  it('should allow multiple else ifs in a cond', function() {
     var code = '';
     code += '(cond';
     code += '  (true (console.log 1))';
@@ -110,9 +109,9 @@ vows.describe("if + cond").addBatch({
     expected += '};';
 
     assert.equal(loop.compile(code, defaultOptions), expected);
-  },
+  });
 
-  'it should use the correct arguments in a cond': function() {
+  it('should use the correct arguments in a cond', function() {
     var code = '';
     code += '(cond';
     code += '  ((=== x 1)';
@@ -126,9 +125,9 @@ vows.describe("if + cond").addBatch({
     expected += '};';
 
     assert.equal(loop.compile(code, defaultOptions), expected);
-  },
+  });
 
-  'it should allow a number in a cond': function() {
+  it('should allow a number in a cond', function() {
     var code = '';
     code += '(cond';
     code += '  (1 (console.log "1")))';
@@ -139,9 +138,9 @@ vows.describe("if + cond").addBatch({
     expected += '};';
 
     assert.equal(loop.compile(code, defaultOptions), expected);
-  },
+  });
 
-  'it should allow an else to a cond\'s if': function() {
+  it('should allow an else to a cond\'s if', function() {
     var code = '';
     code += '(cond';
     code += '  (false (console.log 1))';
@@ -155,9 +154,9 @@ vows.describe("if + cond").addBatch({
     expected += '};';
 
     assert.equal(loop.compile(code, defaultOptions), expected);
-  },
+  });
 
-  'it should error with an else if it isn\'t the last clause': function() {
+  it('should error with an else if it isn\'t the last clause', function() {
     var code = '';
     code += '(cond';
     code += '  (foo (console.log 1))';
@@ -168,9 +167,9 @@ vows.describe("if + cond").addBatch({
     assert.throws(function() {
       loop.compile(code, defaultOptions);
     });
-  },
+  });
 
-  'it should be ok if cond has an empty body': function() {
+  it('should be ok if cond has an empty body', function() {
     var code = '';
     code += '(cond';
     code += '  (foo))';
@@ -179,13 +178,13 @@ vows.describe("if + cond").addBatch({
     expected += 'if (foo) {};';
 
     assert.equal(loop.compile(code, defaultOptions), expected);
-  },
+  });
 
-  'it should raise an error if cond has no body': function() {
+  it('should raise an error if cond has no body', function() {
     var code = '';
     code += '(cond)';
     assert.throws(function() {
       loop.compile(code);
     });
-  }
-}).export(module);
+  });
+});
