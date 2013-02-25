@@ -15,6 +15,10 @@ var multi_arg_let_star = function() {
 };
 
 describe("macro matching", function() {
+  beforeEach(function() {
+    macroCompiler.reset();
+  });
+
   it('should match a symbol to the same symbol', function() {
     var macro = parseCode('foo');
     var code = parseCode('foo');

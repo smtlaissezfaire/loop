@@ -23,6 +23,10 @@ var let_star = function() {
 };
 
 describe("integration specs (macros)", function() {
+  beforeEach(function() {
+    loop.macroCompiler.reset();
+  });
+
   it('should be able to use a simple macro', function() {
     var code = "";
     code += "(define-macro";
@@ -303,18 +307,22 @@ describe("integration specs (macros)", function() {
     macroDefinitions += '  (arg-macro x y ...)';
     macroDefinitions += '  (console.log "multi-args"))';
 
+    loop.macroCompiler.reset();
     code = macroDefinitions;
     code += '(arg-macro)';
     assert.equal(loop.compile(code), 'console.log("zero-args")');
 
+    loop.macroCompiler.reset();
     code = macroDefinitions;
     code += '(arg-macro 1)';
     assert.equal(loop.compile(code), 'console.log("one-arg")');
 
+    loop.macroCompiler.reset();
     code = macroDefinitions;
     code += '(arg-macro 1 2)';
     assert.equal(loop.compile(code), 'console.log("multi-args")');
 
+    loop.macroCompiler.reset();
     code = macroDefinitions;
     code += '(arg-macro 1 2 3)';
     assert.equal(loop.compile(code), 'console.log("multi-args")');
@@ -332,18 +340,22 @@ describe("integration specs (macros)", function() {
     macroDefinitions += '  (arg-macro (x y ...))';
     macroDefinitions += '  (console.log "multi-args"))';
 
+    loop.macroCompiler.reset();
     code = macroDefinitions;
     code += '(arg-macro ())';
     assert.equal(loop.compile(code), 'console.log("zero-args")');
 
+    loop.macroCompiler.reset();
     code = macroDefinitions;
     code += '(arg-macro (1))';
     assert.equal(loop.compile(code), 'console.log("one-arg")');
 
+    loop.macroCompiler.reset();
     code = macroDefinitions;
     code += '(arg-macro (1 2))';
     assert.equal(loop.compile(code), 'console.log("multi-args")');
 
+    loop.macroCompiler.reset();
     code = macroDefinitions;
     code += '(arg-macro (1 2 3))';
     assert.equal(loop.compile(code), 'console.log("multi-args")');
@@ -358,18 +370,22 @@ describe("integration specs (macros)", function() {
     macroDefinitions += '  (arg-macro (x y ...))';
     macroDefinitions += '  (console.log x y ...))';
 
+    loop.macroCompiler.reset();
     code = macroDefinitions;
     code += '(arg-macro ())';
     assert.equal(loop.compile(code), 'console.log("zero-args")');
 
+    loop.macroCompiler.reset();
     code = macroDefinitions;
     code += '(arg-macro (1))';
     assert.equal(loop.compile(code), 'console.log(1)');
 
+    loop.macroCompiler.reset();
     code = macroDefinitions;
     code += '(arg-macro (1 2))';
     assert.equal(loop.compile(code), 'console.log(1,2)');
 
+    loop.macroCompiler.reset();
     code = macroDefinitions;
     code += '(arg-macro (1 2 3))';
     assert.equal(loop.compile(code), 'console.log(1,2,3)');
