@@ -28,4 +28,17 @@ describe("built in let", function() {
 
     assert.equal(loop.compile(code), expected);
   });
+
+  it.pending('should always return the last value', function() {
+    var code = '';
+    code += '(let ()';
+    code += '  (console.log (+ x y)))';
+
+    var expected = '';
+    expected += '(function(){';
+    expected += 'console.log(x+y)';
+    expected += '})()';
+
+    assert.equal(loop.compile(code), expected);
+  });
 });
