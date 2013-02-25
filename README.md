@@ -18,7 +18,7 @@ This is still super-alpha software.  Don't use it!
     git submodule update --init
     npm install -g jake
     npm install -g jison
-    npm install -g vows@0.5.13
+    npm install -g mocha
     jake deps
 
 ## Tests
