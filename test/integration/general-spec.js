@@ -391,4 +391,16 @@ describe("integration spec", function() {
     var expected = 'var x=[]';
     assert.equal(loop.compile(source), expected);
   });
+
+  it("should convert +=", function() {
+    var source = "(+= foo 10)";
+    var expected = "foo+=10";
+    assert.equal(loop.compile(source), expected);
+  });
+
+  it("should convert -=", function() {
+    var source = "(-= foo 10)";
+    var expected = "foo-=10";
+    assert.equal(loop.compile(source), expected);
+  });
 });
