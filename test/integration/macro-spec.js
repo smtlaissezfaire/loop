@@ -469,6 +469,7 @@ describe("integration specs (macros)", function() {
 
       assert.equal(loop.compile(code), expected);
     });
+
     it('should use three arguments', function() {
       var code = "";
       code += let_star();
@@ -488,6 +489,7 @@ describe("integration specs (macros)", function() {
 
       assert.equal(loop.compile(code), expected);
     });
+
     it('should use one argument but multiple body statements', function() {
       var code = "";
       code += let_star();
