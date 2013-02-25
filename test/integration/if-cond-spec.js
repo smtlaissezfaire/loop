@@ -71,7 +71,7 @@ describe("if + cond", function() {
     var expected = '';
     expected += 'if (true) {\n';
     expected += '  console.log(true);\n';
-    expected += '};';
+    expected += '}';
 
     assert.equal(loop.compile(code, defaultOptions), expected);
   });
@@ -87,7 +87,7 @@ describe("if + cond", function() {
     expected += '  console.log(1);\n';
     expected += '} else if (true) {\n';
     expected += '  console.log(2);\n';
-    expected += '};';
+    expected += '}';
 
     assert.equal(loop.compile(code, defaultOptions), expected);
   });
@@ -106,7 +106,7 @@ describe("if + cond", function() {
     expected += '  console.log(2);\n';
     expected += '} else if (true) {\n';
     expected += '  console.log(3);\n';
-    expected += '};';
+    expected += '}';
 
     assert.equal(loop.compile(code, defaultOptions), expected);
   });
@@ -122,7 +122,7 @@ describe("if + cond", function() {
     expected += 'if (x === 1) {\n';
     expected += '  console.log("1");\n';
     expected += '  console.log("2");\n';
-    expected += '};';
+    expected += '}';
 
     assert.equal(loop.compile(code, defaultOptions), expected);
   });
@@ -135,7 +135,7 @@ describe("if + cond", function() {
     var expected = '';
     expected += 'if (1) {\n';
     expected += '  console.log("1");\n';
-    expected += '};';
+    expected += '}';
 
     assert.equal(loop.compile(code, defaultOptions), expected);
   });
@@ -151,7 +151,7 @@ describe("if + cond", function() {
     expected += '  console.log(1);\n';
     expected += '} else {\n';
     expected += '  console.log(2);\n';
-    expected += '};';
+    expected += '}';
 
     assert.equal(loop.compile(code, defaultOptions), expected);
   });
@@ -175,7 +175,7 @@ describe("if + cond", function() {
     code += '  (foo))';
 
     var expected = '';
-    expected += 'if (foo) {};';
+    expected += 'if (foo) {}';
 
     assert.equal(loop.compile(code, defaultOptions), expected);
   });
