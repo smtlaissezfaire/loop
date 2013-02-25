@@ -554,4 +554,32 @@ describe("integration specs (macros)", function() {
     var expected = "mult(2,mult(2,1))";
     assert.equal(loop.compile(code), expected);
   });
+
+  it('should be able to evaluate raw js', function() {
+    var code = '';
+    code += '(define x (__loop_js_eval__ "7 + 1"))';
+    var expected = "var x=8";
+    assert.equal(loop.compile(code), expected);
+  });
+
+  it('should be able to evaluate raw, but complex js', function() {
+    var jsCode = '(function() { var x = 10; var y = 20; return x + y }())';
+
+    var code = '';
+    code += "(define x (__loop_js_eval__ '" + jsCode + "'))";
+    var expected = "var x=30";
+    assert.equal(loop.compile(code), expected);
+  });
+
+  it("should allow a macro to evaluate its arguments", function() {
+    var code = '';
+    code += '(define-macro';
+    code += '  (eight)';
+    code += '  (__loop_eval__ (+ 7 1)))';
+    code += '(define my_eight (eight))';
+
+    var expected = "var my_eight=8";
+
+    assert.equal(loop.compile(code), expected);
+  });
 });
