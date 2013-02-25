@@ -1,7 +1,7 @@
 var vows = require("vows");
 var assert = require("assert");
-var loop = require(__dirname + "/../lib/loop");
-var macroCompiler = require(__dirname + "/../lib/loop/macro-compiler");
+var loop = require(__dirname + "/../../lib/loop");
+var macroCompiler = require(__dirname + "/../../lib/loop/macro-compiler");
 
 var parseCode = function(code) {
   return loop.parse(code)[0];

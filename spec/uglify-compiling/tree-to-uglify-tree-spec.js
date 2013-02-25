@@ -1,6 +1,6 @@
 var vows = require("vows");
 var assert = require("assert");
-var loop = require(__dirname + "/../lib/loop");
+var loop = require(__dirname + "/../../lib/loop");
 
 vows.describe("phase 3: transform from eval'ed syntax into uglifyjs parse tree").addBatch({
   'it should eval a function call': function() {
