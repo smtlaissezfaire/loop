@@ -1,3 +1,4 @@
+*.tmproj
 lib/loop/grammar.js
 TODO.txt
 
