@@ -575,7 +575,7 @@ describe("integration specs (macros)", function() {
     var code = '';
     code += '(define-macro';
     code += '  (eight)';
-    code += '  (__loop_eval__ (+ 7 1)))';
+    code += '  (loop.eval (+ 7 1)))';
     code += '(define my_eight (eight))';
 
     var expected = "var my_eight=8";

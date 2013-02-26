@@ -10,7 +10,7 @@ describe("include", function() {
   it('should be able to include a file with .loop extension', function() {
     var filePath = path.join(__dirname, '..', 'fixtures', 'define_x_equal_to_one.loop');
     var code = "";
-    code += "(__loop_include__ '" + filePath + "')";
+    code += "(loop.include '" + filePath + "')";
     var expectedCode = "var x=1";
     assert.equal(loop.compile(code), expectedCode);
   });
@@ -18,7 +18,7 @@ describe("include", function() {
   it('should be able to use the variables from a required file', function() {
     var filePath = path.join(__dirname, '..', 'fixtures', 'define_x_equal_to_one.loop');
     var code = "";
-    code += "(__loop_include__ '" + filePath + "')";
+    code += "(loop.include '" + filePath + "')";
     code += "(define y (+ x 10))";
     var expectedCode = '';
     expectedCode += "var x=1;";
@@ -29,7 +29,7 @@ describe("include", function() {
   it('should be able to use a macro from a required file', function() {
     var filePath = path.join(__dirname, '..', 'fixtures', 'macro-my-unless.loop');
     var code = "";
-    code += "(__loop_include__ \"" + filePath + "\")";
+    code += "(loop.include \"" + filePath + "\")";
     code += '(my-unless x';
     code += '  (console.log "foo!"))';
 

@@ -13,8 +13,8 @@
    body ...) value ...))
 
 (define-macro
-  (__loop_include__ filename)
-  (__loop_eval__
+  (loop.include filename)
+  (loop.eval
     (let ((buf (fs.readFileSync filename)))
       ; eek! shouldn't need this return
       (return (loop.compile (buf.toString))))))
